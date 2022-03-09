@@ -100,7 +100,7 @@ git init
 cat HEAD
 ```
 
-![image-20220307204620440](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220307204620440.png)
+![](https://gitee.com/ababa-317/image/raw/master/images/20220307204619.png)
 
 <u>大概意思就是此时HEAD指针指向了当前的master分支</u>
 
@@ -177,7 +177,7 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 
 <u>云端仓库基本创建设置</u>：注意如果本地以及有一个现成的项目想要push到云端，最后一项切记不要勾选
 
-![image-20220308162122425](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220308162122425.png)
+![](https://gitee.com/ababa-317/image/raw/master/images/20220308162120.png)
 
 ### git云端操作
 
@@ -203,7 +203,7 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 
 选择`浏览文件`即可
 
-![image-20220308164259338](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220308164259338.png)
+![](https://gitee.com/ababa-317/image/raw/master/images/20220308164257.png)
 
 PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为了提高权限
 
@@ -244,7 +244,7 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 
    合并前
 
-   ![image-20220308172650819](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220308172650819.png)
+   ![image-20220308172650819](https://gitee.com/ababa-317/image/raw/master/images/image-20220308172650819.png)
 
    合并后
 
@@ -266,7 +266,7 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 
    此时再执行`git merge dev`，就会出现如下画面
 
-   ![image-20220309100900761](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220309100900761.png)
+   ![image-20220309100900761](https://gitee.com/ababa-317/image/raw/master/images/image-20220309100900761.png)
 
    显示**自动合并失败，请手动调整冲突并提交结果**
 
