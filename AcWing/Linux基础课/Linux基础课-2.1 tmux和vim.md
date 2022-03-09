@@ -300,6 +300,12 @@ source .vimrc//启动配置文件
 
 - 设置查找高亮`set hlsearch`
 
+#### vim主题推荐
+
+1. blue
+2. murphy
+3. slate
+
 ## 作业
 
 > (0) 进入homework_0文件夹，创建文件names.txt，并顺次将下列姓名写入该文件，每个名字占一行。

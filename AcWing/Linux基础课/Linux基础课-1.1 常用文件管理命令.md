@@ -132,8 +132,8 @@ Plus：市面上超过$90$%的服务器都是$Linux$服务器
 ### 快捷键
 
 1. `ctrl+c`:终止指令、程序，直接终止本行指令书写跳转到下一行
-
 2. `ctrl+u`:清空当前在书写的一行指令（用的较少）
+2. `ctrl+z`:挂起当前程序，如果想要恢复该程序使用fg[job_spec]即可
 3. `tab`:补全命令，连按两次可以看服务器的推荐指令
 4. 方向键:不多说，应该都会（可以回退之前写过的指令）
 
@@ -219,6 +219,107 @@ Plus：市面上超过$90$%的服务器都是$Linux$服务器
 > 	rm "$var"
 > done
 > ```
+
+## OS新增内容：GCC
+
+> 讲解了以下Linux服务器下如何编译运行C代码具体操作
+
+示例：Linux下直接使用gcc将helloworld.c编译成可执行文件helloworld
+
+```shell
+gcc helloworld.c -o helloworld # 得到可执行文件
+gcc -E helloworld.c # 只进行预处理
+gcc helloworld.c -S -o helloworld.S # 汇编得到helloworld.S
+gcc helloworld -c -o helloworld.o # 只编译，不链接
+```
+
+首先来复习以下C语言编译的基本流程
+
+```mermaid
+flowchart TB
+a[(helloworld.c)]-.-A([源代码])
+A-->预处理器-->编译器-->B([汇编代码])
+b[(helloworld.s)]-.-B
+B-->汇编器-->C([目标代码])
+c[(helloworld.o)]-.-C
+d[(other.o)]-.-E([目标代码])-->连接器
+e[(库文件)]-->连接器
+C-->连接器-->D((可执行程序))
+```
+
+## OS新增内容：Make和Makefile
+
+### 概述
+
+学习Makefile前，我们先来了解一下Makefile是干什么用的？
+
+[Makefile](https://www.zhaixue.cc/makefile/makefile-intro.html)是在Linux环境下 C/C++ 程序开发必须要掌握的一个工程管理文件
+
+首先我们假设一个情景，你写了一个helloworld.c文件，此时它还是一个单文件程序，不需要和其他任何文件链接，所以执行它，只需要
+
+```shell
+gcc helloworld.c -o helloworld
+./helloworld
+```
+
+由此可见，单文件以及一些比较简单的程序，使用gcc编译运行还是非常方便的
+
+---
+
+此时我们再假设一个情景，你正在开发一个很大的项目，里面可能又几百个c源文件（不要问我为什么非要用c开发这种项目emm），并且它们之间都是相互链接的，那么此时再次运行编译运行整个项目，就需要......
+
+```shell
+gcc moudle1.c moudle2.c ... moudle100.c ... -o a.out
+./a.out
+```
+
+这是不是太麻烦了点呢？（废话.jpg）
+
+这种时候**自动化编译工具make**就派上用场了，使用make编译程序，不需要每次都输入源文件，直接再命令行下敲击make命令，即可一键自动化完成编译（make编译依赖于Makefile文件）
+
+总结：==make和Makefile就是为了方便Linux下文件编译运行而产生的（主要用于替代win系统中编译器为我们做的事情，并且由于执行主要依赖于shell命令，自由化程度比起编译器来更高，并且支持的语言不仅仅局限于c）==
+
+### 具体使用
+
+> 使用了一下后，感觉Makefile的原理非常像宏定义？？？
+
+- Makefile文件的基本格式
+
+  ```shell
+  target1: dependencies1(构建target目标所需的依赖文件)
+  	command1
+  	command2
+  	... # 获取到target文件所需要执行的指令集合
+  target2: ....
+  	...
+  ```
+
+  再看一个具体实例
+
+  ```shell
+  a.out: helloworld.o
+      gcc -o a.out helloworld.o
+  helloworld.o: helloworld.c
+      gcc -c -o helloworld.o helloworld.c
+  clean:
+      rm -f a.out helloworld.o
+  ```
+
+## OS新增内容：ctags
+
+> 同样在了解ctags的使用之前，先来了解一下ctags的具体功能
+>
+> 简单来说：IDEA中不是又个功能，ctrl+方法，再点击就会自动转到该方法具体实现的源文件相应位置处，这样查看起源代码来非常方便快捷，而ctags就是Linux下执行这一功能的（总而言之这些新增的东西全都是为了弥补Linux下没有编辑器的缺陷）
+
+1. 执行`ctags -R *`：再代码目录下生成文件tags
+2. 然后在你想要查看的函数那里`ctrl+]`即可跳转到函数实现处
+3. 最后`ctrl+o`跳转回原文件
+
+
+
+## 光标切换
+
+<font color="red">使用`echo -ne "\e[2 q"`和`echo -ne "\e[6 q"`可以使得Linux光标在粗光标和细光标之间相互切换</font>
 
 ## 作业
 
