@@ -191,7 +191,7 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 
 ==云端==
 
-![image-20220308164118496](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220308164118496.png)
+![image-20220308164118496](https://gitee.com/ababa-317/image/raw/master/images/image-20220308164118496.png)
 
 ==本地==
 
