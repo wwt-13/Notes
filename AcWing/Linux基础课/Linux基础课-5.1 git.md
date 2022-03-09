@@ -181,7 +181,7 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 
 1. `cd到本地仓库文件夹`
 2. 使用远程仓库给你的指令（这一步的目的是将本地的仓库和远程仓库连接）：`git remote add origin git@git.acwing.com:a_little_buaaer/project_test.git`
-3. 上传本地文件夹：`git push -u origin master`（master是本地分支）
+3. 上传本地文件夹：`git push -u origin master`（master是本地分支，注意只有第一次需要加上-u）
 
 这样就完成了本地和云端仓库的同步，可以通过云端的历史查看往期的各种版本
 
@@ -210,7 +210,7 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 1. 使用ssh克隆（本质实际上就是scp文件传输）：`git clone git@git.acwing.com:a_little_buaaer/project_test.git`
 2. 使用http克隆（同上，不多说）
 
-可以发现，尽管文件是和云端仓库完全同步了，但是实际上还是存在不同（所有版本管理记录都丢失了，但是所有版本节点还是有的）
+可以发现，尽管文件是和云端仓库完全同步了，但是实际上还是存在不同（所有版本管理记录都丢失了，也就是说git reflog只能查看到最新的git clone分支，但是所有版本节点还是有的）
 
 ![](https://gitee.com/ababa-317/image/raw/master/images/20220308170359.png)
 
@@ -221,6 +221,10 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 > 团队/多人开发：一般会开辟一个新的分支，而不会直接在主分支上开发
 >
 > ![](https://gitee.com/ababa-317/image/raw/master/images/3f55c44b2d26e9d813c3ba169664aeb.jpg)
+>
+> Plus1：注意暂存区是和各个分支独立的，只有commit后才会提交到当前分支
+>
+> Plus2：个人开发常用指令，git add/commit/push/pull
 
 1. 创建分支：`git checkout -b branch_name`，即可在当前节点创建一个新的分支
 
@@ -242,6 +246,42 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 
    ![](https://gitee.com/ababa-317/image/raw/master/images/20220308172812.png)
 
-   但是其实这个合并只是快速合并，并没有产生复制，只是将节点指向了合并过来的版本（不过也不用纠结那么多.......）
+   但是其实这个合并只是快速合并，并没有产生复制，只是将节点直接指向了合并过来的版本（不过也不用纠结那么多.......）
 
-5. 删除分支：`git branch -d branch_name`
+5. 删除分支：`git branch -d branch_name`（快速复制的话，就相当于直接过继节点）
+
+6. 分支冲突：很多时候，分支合并的时候会出现分支冲突，比方以test.cpp为例
+
+   ```mermaid
+   flowchart LR
+   HEAD_pre-->HEAD:添加了888
+   HEAD_pre-->dev:添加了777
+   ```
+
+   此时将master分支和dev分支合并，就会出现分支冲突
+
+   此时再执行`git merge dev`，就会出现如下画面
+
+   ![image-20220309100900761](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220309100900761.png)
+
+   显示**自动合并失败，请手动调整冲突并提交结果**
+
+   此时可以进入test.cpp查看具体冲突因素
+
+   ![](https://gitee.com/ababa-317/image/raw/master/images/20220309101343.png)
+
+   HEAD表示当前分支的内容，dev表示合并分支的内容，此时你需要修改冲突
+
+7. 将本地其他分支同步到云端：
+
+   1. 首先`git branch branch_name`到所需分支，再使用`git push`（git push是自动将当前分支上传到云端已连接的仓库）
+
+      ![](https://gitee.com/ababa-317/image/raw/master/images/20220309102629.png)
+
+      显示：当前分支并不存在云端分支，所以需要使用以下指令再云端创建dev分支并提交dev分支
+
+   2. `git push --set-upstream origin dev`：提交成功
+
+      ![](https://gitee.com/ababa-317/image/raw/master/images/20220309102943.png)
+
+8. 多人开发问题（下午再来看看）
