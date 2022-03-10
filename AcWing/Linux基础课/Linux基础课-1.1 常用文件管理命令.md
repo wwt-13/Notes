@@ -232,6 +232,7 @@ gcc helloworld.c -o helloworld # 得到可执行文件
 gcc -E helloworld.c # 只进行预处理
 gcc helloworld.c -S -o helloworld.S # 汇编得到helloworld.S
 gcc helloworld -c -o helloworld.o # 只编译，不链接
+gcc -M helloworld.c # 列出文件依赖
 ```
 
 复习以下C语言编译的基本流程
@@ -305,6 +306,66 @@ gcc moudle1.c moudle2.c ... moudle100.c ... -o a.out
   clean:
       rm -f a.out helloworld.o
   ```
+
+### 网址实例操作
+
+> 网站就是指导书上推荐的第一个http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor
+>
+> 指导书推荐的第二个网站http://www.gnu.org/software/make/manual/make.html#Reading-Makefiles
+>
+> 以下文件均放在同一目录下
+
+#### Level1
+
+```c
+//hellomake.c
+#include <hellomake.h>
+
+int main() {
+  // call a function in another file
+  myPrintHelloMake();
+
+  return(0);
+}
+```
+
+```c
+//hellofunc.c
+#include <stdio.h>
+#include <hellomake.h>
+
+void myPrintHelloMake(void) {
+
+  printf("Hello makefiles!\n");
+
+  return;
+}
+```
+
+```c
+//hellomake.h
+/*
+example include file
+*/
+
+void myPrintHelloMake(void);
+```
+
+**直接使用gcc编译**
+
+```shell
+gcc hellomake.c hellofunc.c -I -o hellomake
+# -I代表gcc会在当前目录下寻找所包含的头文件
+```
+
+**使用makefile**
+
+```shell
+hellomake: hellomake.c hellofunc.c
+	gcc hellomake.c hellofunc.c -I -o hellomake
+```
+
+
 
 ## OS新增内容：ctags
 

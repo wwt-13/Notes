@@ -1,0 +1,22 @@
+[toc]
+
+## 数据库
+
+|    含义    |        $\LaTeX$        |           符号           |
+| :--------: | :--------------------: | :----------------------: |
+|    投影    |          \Pi           |          $\Pi$           |
+|    选择    |         \sigma         |         $\sigma$         |
+|   重命名   |          \rho          |          $\rho$          |
+|  聚合函数  |      \mathcal{G}       |      $\mathcal{G}$       |
+|     交     |          \cap          |          $\cap$          |
+|     并     |          \cup          |          $\cup$          |
+|  自然连接  |        \bowtie         |        $\bowtie$         |
+| 笛卡尔乘积 |         \times         |         $\times$         |
+|     除     |          \div          |          $\div$          |
+|    赋值    |       \leftarrow       |       $\leftarrow$       |
+|  条件并列  |         \land          |         $\land$          |
+|     非     |          \neg          |          $\neg$          |
+|    存在    |        \exists         |        $\exists$         |
+|   对所有   |        \forall         |        $\forall$         |
+| 各种小括号 | \big(\Big(\bigg(\Bigg( | $\big(\Big(\bigg(\Bigg($ |
+

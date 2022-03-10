@@ -6,7 +6,9 @@
 >
 > 系统学习！！！！
 
+参考os网站上不学git的下场
 
+![](https://gitee.com/ababa-317/image/raw/master/images/0-23.jpg)
 
 ## git宏观认识
 
@@ -332,3 +334,34 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
    解决冲突后，push成功
 
    ![](https://gitee.com/ababa-317/image/raw/master/images/20220309141846.png)
+
+## 关于解决git冲突的高级操作
+
+> 实验指导书：[git stash解决git pull冲突](http://www.01happy.com/git-resolve-conflicts/)
+
+## 关于练习使用git的网站
+
+> 实验指导书：[GitHug](https://github.com/Gazler/githug)
+
+## 关于OS实验课的分支说明
+
+**labx**
+
+这是我们提交实验代码的分支，这个分支不需要我们手动创建。当写好代码提交到服务器上后，在该次实验结束后，使用后面提到的可获取到新的实验分支，到时只需要使用git checkout labx即可进行新的实验。
+
+```shell
+git checkout lab0
+```
+
+**labx-exam laxb-extra**
+
+这是我们周一小测实验的分支，每次需要使用 git branch 指令将刚完成的实验分支拷贝一份到对应分支下，并进行小测代码的填写。
+
+```shell
+git checkout -b branch_name # 创建分支即可默认拷贝
+git push origin branch_name # git push即可将本地分支提交到云端分支(云端自动创建)
+```
+
+**labx-result**
+
+这是我们每次实验结果的分支，每次的实验结果将会在该分支工作区的 **log** 文件夹下，数字越大代表检测的时间越近。测试下方Summary : Number (in 100)，只要Number >= 60即算作通过本次实验。

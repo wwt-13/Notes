@@ -150,6 +150,8 @@ Plus:不知道为啥，但是AC Terminal中的tmux的划分窗口快捷键前缀
 
 > vim:终端编辑器，类似于Nodepad++和vscode的综合体，但是自由性碾压二者
 >
+> os指导书推荐网站http://coolshell.cn/articles/5426.html/
+>
 > **重点！！！**
 
 ### 基本介绍

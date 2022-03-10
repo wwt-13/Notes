@@ -847,6 +847,77 @@ source filename
 
 引入文件之后，你就可以调用其中的函数和变量啦！！！
 
+### OS新增内容：find
+
+> 文件搜索指令find，用于在指定目录下查找符合自己列举条件的文件。
+>
+> 条件包括但不限于：文件名、文件类型、用户、时间戳......
+
+find指令基本形式：`find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]`
+
+删去不常用参数：`find [path...] [expression]`
+
+- path：find命令所查找的目录路径。
+- expression：可以分为`-options [-print -exec -ok ...]`
+  - -options：用于指定find命令的常用选项
+  - -print：find命令将匹配文件输出到标准输出
+  - -exec：find命令将匹配的文件执行该参数给出的shell命令，常用形式`'command' { } \`，注意空格
+
+<u>find指令基本结构</u>
+
+```shell
+find start_directory test 
+     options 
+     criteria_to_match 
+     action_to_perform_on_results
+```
+
+空讲参数没啥意义，下面举几个示例来理解以下
+
+---
+
+#### find命令常用示例
+
+> 返回的都是所查找到文件的路径，如下图
+>
+> ![](https://gitee.com/ababa-317/image/raw/master/images/20220310192335.png)
+
+1. `-name filename`在当前目录下查找名为filename的文件
+
+   - `find . -name "*.txt"`查找到当前目录下的所有txt文件
+
+2. `-exec 'command' {} \`对查找到的文件做出command操作
+
+   - `find . -name "*.txt" -exec "rm" {} \;`删除所有txt格式的文件
+
+3. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
+
+   比方说我想要搜索当前目录下的`ab1.txt`
+
+   ```shell
+   find -regex "./[a-b]{2}.txt" -print
+   ```
+
+   
+
+
+
+### OS新增内容：grep
+
+### OS新增内容：tree
+
+### OS新增内容：locate
+
+### OS新增内容：chmod
+
+### OS新增内容：diff
+
+### OS新增内容：sed
+
+### OS新增内容：awk
+
+
+
 ## 总结
 
 > 天哪终于把Shell语法看完了，感觉简直要屎了
