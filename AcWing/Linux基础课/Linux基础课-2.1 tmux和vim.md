@@ -18,7 +18,7 @@
 >
 > 经过修改后，现在已经支持==ctrl+shift+c/v==作为Linux和Windows的内外交互指令了
 >
-> 博主用的是Ubnutu 18.04 LTS（默认值处打开`使用ctrl+shift+c/v作为复制粘贴的快捷键即可`）
+> 博主用的是Ubnutu 20.04 LTS（默认值处打开`使用ctrl+shift+c/v作为复制粘贴的快捷键即可`）
 
 ### 不同文件之间交互
 
@@ -83,9 +83,9 @@ Plus:不知道为啥，但是AC Terminal中的tmux的划分窗口快捷键前缀
 
 3. `ctrl+d`:关闭当前pane，如果此时pane为当前window，则自动关闭window，如果当前session的window均关闭，则自动关闭当前session，直到退出shell窗口为止
 
-4. `ctrl+b 方向键`:选择相邻的pane
+4. ~~`ctrl+b 方向键`:选择相邻的pane~~
 
-5. 同时按下`ctrl+b+方向键`:调整相邻pane的分割线位置
+5. ~~同时按下`ctrl+b+方向键`:调整相邻pane的分割线位置~~
 
    4、5可以使用一句话解决，在tmux配置文件.tmux.conf中添加
 
@@ -146,9 +146,11 @@ Plus:不知道为啥，但是AC Terminal中的tmux的划分窗口快捷键前缀
 
 ## vim
 
-> vim:终端编辑器，类似于Nodepad++和vscode的综合体，但是自由性碾压二者
 
-AcTermainl中vim复制文本到系统编辑板的方法，按住shift，选择文本，ctrl+insert即可
+
+> vim:终端编辑器，类似于Nodepad++和vscode的综合体，但是自由性碾压二者
+>
+> **重点！！！**
 
 ### 基本介绍
 
@@ -192,7 +194,7 @@ AcTermainl中vim复制文本到系统编辑板的方法，按住shift，选择�
 
 6. `G`:将光标移动到最后一行
 
-5. `:n`:将光标移动到第n行
+5. `:n`:将光标移动到第n行（建议使用另外一种方式，这种方法无法使用组合命令）
 
 6. `gg`:将光标移动到第一行，反正就是连按g（和G关联起来）
 
@@ -224,7 +226,7 @@ AcTermainl中vim复制文本到系统编辑板的方法，按住shift，选择�
 
     `:set hlsearch`:开启
 
-12. `v+方向键`:选中文本（有啥用嘞？选中了之后不久可以开始复制粘贴剪切删除了嘛...）
+12. `v+方向键`:选中文本（有啥用嘞？选中了之后不就可以开始复制粘贴剪切删除了嘛...）
 
 13. `d`:剪切选中文本
 
@@ -299,6 +301,24 @@ source .vimrc//启动配置文件
 ```
 
 - 设置查找高亮`set hlsearch`
+
+**目前配置一览**
+
+```shell
+set number
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+set mouse=a
+set showmatch
+set tabstop=4
+set shiftwidth=4
+set autoindent
+set ruler
+set hlsearch
+syntax on
+colorscheme koehler
+```
 
 #### vim主题推荐
 
