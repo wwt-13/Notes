@@ -227,6 +227,34 @@ int[] arr={1,3,234,2341,123,3};
 Array.sort(arr);
 ```
 
+### Java数组拷贝的几种方法
+
+1. 直接赋值：==浅拷贝==（没啥用）
+
+2. 使用Arrays类的copyOf方法：注意第二个参数指定的是新数组的长度（超出原数组长度用默认值填充），==深拷贝==
+
+   ```java
+   package copytest;
+   
+   import java.util.Arrays;
+   
+   public class copyOf {
+       public static void main(String[] args) {
+           int[] arr={1,123,23,13234,1,35,1,3413};
+           int[] arrNew= Arrays.copyOf(arr,9);//sourceArr,newLength
+           arr[1]=12312313;
+           System.out.println(Arrays.toString(arrNew));
+       }
+   }
+   
+   ```
+
+3. 使用Arrays的CopyOfRange方法
+
+   ```java
+   //Arrays.copyOfRange(dataType[] srcArray,int startIndex,int endIndex);其中endIndex的定义和上面一致
+   ```
+
 ### Java命令行
 
 > Java程序的入口是main方法，main方法可以接受一个命令行参数，它是一个String[]数组
