@@ -855,13 +855,13 @@ source filename
 
 find指令基本形式：`find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]`
 
-删去不常用参数：`find [path...] [expression]`
+**删去不常用参数**：`find [path...] [expression]`
 
 - path：find命令所查找的目录路径。
 - expression：可以分为`-options [-print -exec -ok ...]`
   - -options：用于指定find命令的常用选项
   - -print：find命令将匹配文件输出到标准输出
-  - -exec：find命令将匹配的文件执行该参数给出的shell命令，常用形式`'command' { } \`，注意空格
+  - -exec：find命令将匹配的文件执行该参数给出的shell命令，常用形式`'command' {} \`，注意空格
 
 <u>find指令基本结构</u>
 
@@ -889,6 +889,7 @@ find start_directory test
 2. `-exec 'command' {} \`对查找到的文件做出command操作
 
    - `find . -name "*.txt" -exec "rm" {} \;`删除所有txt格式的文件
+   - `find . -regex "\\./[a-z]+.*.txt" -exec rm {} \;`找到当前目录下所有小写字母开头的txt文件并删除
 
 3. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
 
@@ -898,21 +899,124 @@ find start_directory test
    find -regex "./[a-b]{2}.txt" -print
    ```
 
-   
 
-
+其他根据权限、修改时间、文件大小的options就等用到的时候再来更新吧.......（虽然感觉基本用不到）
 
 ### OS新增内容：grep
 
+> 和find指令类似，都是查找指令，但是grep指令的功能是在指定的文件中查找指定内容
+>
+> 是一种强大的文本搜索工具，能使用正则表达式搜索文本，并将匹配到的行打印出来。
+
+基本命令格式：`grep [options] pattern file`
+
+[options]主要参数介绍
+
+| 参数 |                      含义                      |
+| :--: | :--------------------------------------------: |
+|  -c  |       只输出匹配行的计数（输出总共几行）       |
+|  -i  |         不区分大小写（只适用于单字符）         |
+|  -h  |         查询多文件的时**不显示文件名**         |
+|  -l  | 查询多文件的时候只输出包含pattern的**文件名**  |
+|  -n  |             显示匹配行以及**行号**             |
+|  -v  | **反向显示**（显示的是不包含匹配文本的所有行） |
+|  -s  |                 不显示错误信息                 |
+|  -r  |               文件夹**递归查找**               |
+
+pattern：正则相关内容，注意字符匹配符号和Java中支持的不太一样，建议采用[a-z1-9]这样的形式（貌似不支持\\\\w这种）
+
+#### 配合find指令使用
+
+- `find . -regex "\\./[a-z]+.*.txt" -exec grep -l "test" {} \;`在当前路径下查找所有包含test字符串的以至少一个小写字母开头的txt文件并输出相应文件名
+
+  建议配合测试文件使用
+
+  ```shell
+  #! /bin/bash
+  for i in {a..z}
+  do
+          if [ -e $i.txt ]
+          then
+                  rm "$i.txt"
+          fi
+          touch "$i.txt"
+          for j in {1..10}
+          do
+                  if [ $i \< "j" ]
+                  then
+                          echo $i$j'test' >> $i.txt
+                  else
+                          echo 'TEST' >> $i.txt
+                  fi
+          done
+  done
+  ```
+
+  再执行上述查找指令的输出结果
+
+  ![](https://gitee.com/ababa-317/image/raw/master/images/image-20220311190341822.png)
+
 ### OS新增内容：tree
+
+> 基本使用形式：`tree [options] path`
+>
+> 效果：以树状形式显示出path文件路径下的所有文件，一般用于检查lab实验代码是否符合相关需求
+>
+> 参数：-a代表列举所有文件（默认也是），-d只列举目录
+>
+> tree指令掌握这点就行了。
 
 ### OS新增内容：locate
 
+> locate和find类似，但是它的速度要快于find，因为locate直接查找的是数据库，个人认为只要掌握find指令的使用即可（而且网上对于locate指令的教程也不是很多）
+
 ### OS新增内容：chmod
+
+> 权限分配指令，具体权限可以使用`ls -ll filename`查看
+>
+> - 第1位为文件类型，`-`代表是普通文件，`d`代表是文件夹
+>
+> - 第2-4位为用户(作者)本身权限，第5-7位为同组权限，第8-10位为其他用户的权限
+>
+> ![image-20220311191553110](https://gitee.com/ababa-317/image/raw/master/images/image-20220311191553110.png)
+>
+> **常用**：`chmod +x file.sh`，这样file脚本就能直接使用`./file.sh`运行了。
+
+chmod指令基本格式：`chmod [ugoa] [][+-=][rwx]] filename`
+
+- u 表示该文件的拥有者，g 表示与该文件的拥有者属于同一个群组，o 表示其他以外的人，a 表示这三者皆是。
+- \+ 表示增加权限、- 表示取消权限、= 表示唯一设定权限。
+- r 表示可读取，w 表示可写入，x 表示可执行。
+
+- 此外chmod也可以用数字来表示权限，格式为：
+
+  ```shell
+  chmod abc 文件
+  ```
+
+  abc为三个数字，分别表示拥有者，群组，其他人的权限。r=4，w=2，x=1，用这些数字的加和来表示权限。例如`chmod 777 file`和`chmod a=rwx file`效果相同
 
 ### OS新增内容：diff
 
+> 用于比较两个文件的差异（第一次使用是在git里，`git diff filename`用于比较暂存区和工作区文件的差异）
+
+diff指令基本格式：`diff [options] file1 file2`
+
+| 参数 |        作用        |
+| :--: | :----------------: |
+|  -b  |   不检查空格字符   |
+|  -B  |     不检查空行     |
+|  -q  | 只检查是否存在差异 |
+
+
+
 ### OS新增内容：sed
+
+> sed是一个文本编辑工具，可以将其类比为**命令行中的vim**
+>
+> 二者的区别在于：vim采用的是交互式文本编辑模式，而sed采用的是流编辑模式（所以可以将其应用再脚本中）
+
+
 
 ### OS新增内容：awk
 
