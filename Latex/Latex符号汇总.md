@@ -19,4 +19,7 @@
 |    存在    |        \exists         |        $\exists$         |
 |   对所有   |        \forall         |        $\forall$         |
 | 各种小括号 | \big(\Big(\bigg(\Bigg( | $\big(\Big(\bigg(\Bigg($ |
+|     差     |                        |            $$            |
+|            |                        |                          |
+|            |                        |                          |
 

@@ -1,4 +1,4 @@
-# Linux基础课-4.1 SSH
+# Linux基础课-4.1 ssh
 
 > 输入`homework 4 getinfo`即可看到AcWing为我们新分配的ssh配套服务器
 
@@ -36,7 +36,7 @@
 AcTermainl服务器参数
 User:acs_3588
 Hostname:123.57.47.211
-Password:6cd3a6b6
+Password:x'x'x'x'x'x
 ```
 
 ### 基本用法
