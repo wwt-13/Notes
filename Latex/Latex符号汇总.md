@@ -2,13 +2,17 @@
 
 ## 集合
 
-|  含义  | $\LaTeX$ |   符号   |
-| :----: | :------: | :------: |
-|  属于  |   \in    |  $\in$   |
-| 不属于 |  \notin  | $\notin$ |
-|   且   |   \and   |  $\and$  |
-|   或   |   \or    |  $\or$   |
-|        |          |          |
+|  含义  |       $\LaTeX$       |          符号           |
+| :----: | :------------------: | :---------------------: |
+|  属于  |         \in          |          $\in$          |
+| 不属于 |        \notin        |        $\notin$         |
+|   且   |         \and         |         $\and$          |
+|   或   |         \or          |          $\or$          |
+|  包含  | \subset or \subseteq | $\subset \or \subseteq$ |
+| 包含于 |       \supset        |        $\supset$        |
+| 真包含 |      \subsetneq      |      $\subsetneq$       |
+|        |                      |                         |
+|        |                      |                         |
 
 
 
