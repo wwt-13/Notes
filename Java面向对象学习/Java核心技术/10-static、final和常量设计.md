@@ -245,13 +245,18 @@ public class Constants {
 ### 常量池
 
 - Java为很多基本类型的包装类/字符串都建立常量池
+
+- 注意所有基本类型的包装类都是不变类，同时，包装类之间的比较也要使用**equals()**来进行比较。
+
 - 常量池：相同的值只存储一份，==节省内存，共享访问==
+
 - 基本类型的包装类
   - ==Boolean、Byte、Short、Integer、Long、Character==、Float、Double
   - Boolean：true、false
   - Byte：-128-127，Character：0-127
   - Short，Int，Long：-128-127
   - Float，Double：没有缓存（常量池）
+  
 - 基本类型的包装类和字符串有两种创建方式
   - 常量式赋值创建，放在栈内存中（将会被常量化）
     - `Integer a=10;//自动装箱`
@@ -259,6 +264,13 @@ public class Constants {
   - new对象进行创建，放在堆内存中（==不会被常量话==）
     - Integer a=new Integer(10);
     - String b=new String("abc");
+  
+- **关于包装类的实例化问题**
+
+  - 方法1：`Integer n=new Integer(100);`总是创建新的实例，占用内存（堆上不存在常量池）
+  - 方法2：`Integer n=Integer.valueOf(100);`**属于静态工厂方法，它将尽可能的返回缓存的实例以节省内存**
+
+  创建新对象时，优先选用静态工厂方法而不是new操作符。
 
 **自动装箱与自动拆箱**
 

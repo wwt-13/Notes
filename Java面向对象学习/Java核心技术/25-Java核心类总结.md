@@ -52,7 +52,7 @@
    String ss=s.split("\\,");
    ```
    
-7. 字符串拼接：使用join方法
+7. 字符串拼接：使用join方法，它使用指定的字符串连接字符串数组
 
    ```java
    String[] ss={"A","B","C","D"};
@@ -78,7 +78,7 @@
 
 ```mermaid
 flowchart LR
-字符串-->|valueOf|其他类型
+其他类型-->|valueOf|字符串
 ```
 
 ```java
@@ -90,7 +90,7 @@ String.valueOf(new Object()); // 类似java.lang.Object@636be97c
 
 ```mermaid
 flowchart LR
-其他类型-->|多种方法|字符串
+字符串-->|多种方法|其他类型
 ```
 
 ```java
@@ -118,7 +118,15 @@ String s=new String(cs);//注意这里也是直接复制创建（根据String对
 
 > Java中支持拼接插入字符串的类，可变对象，操作效率要远远高于String对象
 >
-> StringBuffer支持同步，但是就效率而言一般都用StringBuilder
+> StringBuffer相比StringBuilder支持同步，但是就效率而言**一般都用StringBuilder**
+>
+> 其实现原理是通过预分配缓冲区，并且和C++类似，会进行动态扩容，只有当append内容超出capcity的时候，才会重新分配空间。
+>
+> 当需要append的次数过大的时候，可以通过预分配空间的方式提高效率
+>
+> ```java
+> var sb=new StringBuilder(1000);//预分配了1000字节的
+> ```
 
 ```java
 StringBuilder sb=new StringBuilder("12123");
@@ -129,7 +137,39 @@ for(int i=0;i<1000;i++){
 }
 ```
 
-### 链式操作
+使用System.currentTineMillis比较StringBuilder和StringBuffer的运行效率
+
+```java
+package p1;
+
+public class StringTest {
+    public static void main(String[] args) {
+        int n=100000000;
+        long startT,endT;
+        //只能通过getInstance方法获取其子类
+        var sb=new StringBuilder();
+        var sB=new StringBuffer();
+        System.out.println("StringBuilder Test");
+        startT=System.currentTimeMillis();//获取ms时间
+        //System.nanoTime();//获取ns时间
+        for(int i=0;i<n;i++){
+            sb.append("1234");
+        }
+        endT=System.currentTimeMillis();
+        System.out.println("共耗时"+(endT-startT)+"ms");
+        System.out.println("StringBuffer Test");
+        startT=System.currentTimeMillis();//获取ms时间
+        for(int i=0;i<n;i++){
+            sB.append("1234");
+        }
+        endT=System.currentTimeMillis();
+        System.out.println("共耗时"+(endT-startT)+"ms");
+    }
+}
+
+```
+
+#### 链式操作
 
 > 由StringBuilder引申出来的链式操作
 >
@@ -145,4 +185,66 @@ for(int i=0;i<1000;i++){
 > ```
 >
 > 查看StringBuilder的源码可以发现，**执行链式操作的关键就是StringBuilder定义的append()方法会返回this对象**
+
+### StringJoiner
+
+> 如果想要高效的拼接字符，应该使用StringBuilder
+>
+> 但是呢，很多时候，我们需要拼接的字符串像这样`a,b,c,d,e,d,f,d`
+>
+> ```java
+> public class Main{
+>     public static void main(String[] args){
+>        	String[] name={"a","b","c","d"};
+>         var sb=new StringBuilder();
+>         for(var i:name){
+>             sb.append(i).append(",");
+>         }
+>         sb.delete(sb.length()-1,sb.length());//删除末尾多添加的","
+>         System.out.println(sb);
+>     }
+> }
+> ```
+>
+> 但是这样的效率较低且实现繁琐，这里推荐使用Java内置的类StringJoiner
+>
+> 使用方法
+>
+> ```java
+> var sJ=new StringJoiner("sep","start","end");//指定分隔字符串，起始字符串和结束字符串
+> ```
+
+```java
+package p1;
+
+import java.util.StringJoiner;
+
+public class StringJoinerTest{
+    public static void main(String[] args){
+        long start,end;
+        int n=10000000;
+        var sb=new StringBuilder();
+        var sJ=new StringJoiner(",");
+        System.out.println("StringBuilder Test");
+        start=System.currentTimeMillis();
+        for(int i=1;i<n;i++){
+            sb.append(i).append(",");
+        }
+        sb.delete(sb.length()-1,sb.length());//删除末尾多添加的","
+        end=System.currentTimeMillis();
+        System.out.println(end-start);
+        System.out.println("StringJoiner Test");
+        start=System.currentTimeMillis();
+        for(int i=1;i<n;i++){
+            sJ.add(Integer.toString(i));
+        }
+        end=System.currentTimeMillis();
+        System.out.println(end-start);
+    }
+}
+```
+
+- 利用StringJoiner添加此类字符，可以将时间优化到原来的一半左右。
+
+## JavaBean
 
