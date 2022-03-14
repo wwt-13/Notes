@@ -25,8 +25,8 @@
 |  包含  | \subset or \subseteq | $\subset \or \subseteq$ |
 | 包含于 |       \supset        |        $\supset$        |
 | 真包含 |      \subsetneq      |      $\subsetneq$       |
-|        |                      |                         |
-|        |                      |                         |
+|  任意  |      {\forall}       |       ${\forall}$       |
+|  存在  |      {\exists}       |       ${\exists}$       |
 
 
 
