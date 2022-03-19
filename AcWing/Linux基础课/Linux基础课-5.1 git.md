@@ -335,6 +335,81 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 
    ![](https://gitee.com/ababa-317/image/raw/master/images/20220309141846.png)
 
+## git指令补充
+
+### Git配置
+
+- `git config --list`显示当前的Git配置
+- `git config -e --global`编辑当前的Git配置文件（全局）
+
+### 工作区$\leftrightarrow$暂存区
+
+- `git mv origin_file modified_file`修改文件名并将这个修改放入暂存区
+- `git commit -v`提交到工作区的时候显示所有diff信息（工作区和暂存区的差异，我的评价是：没啥用🤔）
+
+### 工作区$\leftrightarrow$版本区
+
+- `git commit -a -m "add sth"`直接将工作区中的修改提交到版本区
+
+### 分支
+
+- `git branch -r`列举出所有的远程分支
+
+- `git cherry-pick <commit>`选择一个commit**提交的修改**，合并到当前分支。（注意是分支的修改！！！）
+
+  假如我需要cherry-pick一个分支的修改到当前分支，但是被合并的分支是**merge分支**（也就是说**此时会产生歧义**，你到底是要应用主分支的修改呢还是merge来源分支的修改呢），所以此时需要指定修改来源，`-m`来指定，`1`代表主分支，`2`代表merge来源分支
+
+  **产生冲突**
+
+  > 如果操作过程中发生代码冲突，Cherry pick 会停下来，让用户决定如何继续操作。
+
+  1. `git add.`+`git cherry-pick --continue`
+
+     用户解决冲突后，使用--continue让cherry-pick继续进行
+
+  2. `--abort`
+
+     发生代码冲突后，放弃合并，返回操作前的样子
+
+  3. `--quit`
+     退出cherry pick但是不会到操作前的样子
+
+- `git push origin --delete branch_name`删除远程分支
+
+#### 分支跟踪
+
+> 从远程分支分出来的分支都是跟踪分支，当对该分支进行push和pull的时候，如果**本地分支**和**远程分支**<u>同名</u>，git就会知道需要推送到哪个远程分支。
+>
+> 其实每次clone一个仓库的时候，本地都会新建一个master分支来track远程的origin/master分支
+
+*<u>分支跟踪使用的两种情况</u>*
+
+1. <font color="orange">本地新建了一个分支但是远程没有</font>
+
+   ```shell
+   git push --set-upstream origin branch_name
+   ```
+
+   此时会在远程自动创建一个branch_name分支，并且本地的branch_name分支会自动**track**该分支，此时便可以通过`git push`和`git pull`自动同步了
+
+2. <font color="brown">远程新建了一个分支但是本地没有</font>
+
+   - `git checkout --track origin/branch_name`
+   - `git checkout branch_name`
+
+   以上两种方法应该是等效的
+
+### 标签 
+
+> 在git中，可以为你提交的版本创建标签，其作用和commit添加的说明信息类似，不过tag一般用于标注版本，比如`v1.0,v2.3`等等。
+
+1. `git tag`列出已有的标签
+2. `git tag -a v1.2 9fceb02`给过去的提交打上标签
+3. `git show v1.2`查看标签信息和对应的版本内容
+4. `git tag v1.2`给当前的commit打上标签
+5. `git tag -d v1.2`删除标签
+6. `git checkout -b branch_name v1.2`从v1.2处新建一个分支
+
 ## 关于解决git冲突的高级操作
 
 > 实验指导书：[git stash解决git pull冲突](http://www.01happy.com/git-resolve-conflicts/)
@@ -365,3 +440,7 @@ git push origin branch_name # git push即可将本地分支提交到云端分支
 **labx-result**
 
 这是我们每次实验结果的分支，每次的实验结果将会在该分支工作区的 **log** 文件夹下，数字越大代表检测的时间越近。测试下方Summary : Number (in 100)，只要Number >= 60即算作通过本次实验。
+
+# 一个学习Git操作的可视化网站
+
+[visualizing-git](https://git-school.github.io/visualizing-git/)

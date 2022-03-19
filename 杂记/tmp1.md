@@ -1,146 +1,249 @@
-[toc]
 
-# Linux基础课-3.1 Shell语法
 
-## 概论
+### 基本文件指令
 
-> 本质:是我们通过命令行与操作系统进行沟通的语言（直接运行，无需编译）
+> 参数顺序是无所谓的嗷，还有指令是支持正则表达式滴
 >
-> 可以直接在终端运行，也可以分装成一个文件，方便复用
+> Plus：`ctrl+insert`是linux控制台的复制指令，`shift+insert`则是linux控制台的粘贴指令
+
+1. `ls`:展示指令，类比windows中的`dir`
+
+   - `ls -l`:显示文件的**详细信息**，包括==是否是文件夹==、==读写权限==、==大小==、==修改实践==等等
+
+   - `ls -lh`:指令-lh代表人性化显示所查看的内容，比方说下面两条指令的对比，原来显示的是121288字节，加上h后显示为119k
+
+     ==ls kill -l==:`-rwxr-xr-x 1 root root 121288 Dec 22  2018 sed`
+
+     ==ls kill -lh==:`-rwxr-xr-x 1 root root 119K Dec 22  2018 sed`
+
+   - `ls -a`:显示所有文件，能够显示**被隐藏**起来的文件（一般都是以`.`开头的文件）
+
+   - `ls -ll`=`ls -la`
+
+2. `pwd`:显示当前所在路径
+
+3. `cd`:切换目录指令，不加参数默认返回家目录
+
+   - `cd ..`:返回上层目录
+   - `cd -`:返回上一个你待过的目录
+
+4. `cp`:文件复制+粘贴+(重命名)命令，文件复制具体操作如下图所示
+
+   ![](https://gitee.com/ababa-317/image/raw/master/images/20220120151414.png)
+
+   - `cp a b -r`:将整个a目录复制到b目录下面
+
+     如果存在==转义字符==，直接+\表示即可
+
+   - `cp a ./c -r`:直接在当前目录下复制一份`a`目录并重命名为`c`，`-r`代表操作文件夹
+
+   - ```
+     for var in *.txt
+     do
+     	cp "$var" "$var.bat"
+     done
+     ```
+
+     
+
+5. `mkdir`:创建文件夹
+
+   - `mkdir a`:创建一个`a`文件夹
+   - `mkdir a/b/c -p`:创建一个a文件夹，并在a文件夹下创建一个b文件夹，并在b文件夹下创建一个c文件夹(都是在文件夹不存在的情况下创建的)，-p用于连续创建文件夹
+
+6. `rm`:删除文件
+
+   - `rm tmp.txt tmp2.txt`:删除`tmp.txt`和`tmp2.txt`两个文件
+   - `rm a -r`:删除名为`a`的文件夹，删除多个`rm a b c -r=rm {a..c} -r`
+   - `rm {a..c}.txt`:删除`a.txt,b.txt,c.txt`
+   - `rm *`:删除当前文件夹下的所有东西，所以`rm a/*`就是删除a文件夹下的所有内容
+   - `rm * -rf`:**毁灭吧！！！**（删除所有内容，包括未显示的文件夹，f代表提高权限）
+
+7. `touch`:==创建一个文件==，只是单纯的创建，和vim的创建并编辑不同
+
+8. `mv`:剪切+粘贴指令
+
+   - `mv a/tmp.txt b/`:简简单单嗷
+   - `mv tmp2.txt tmp.txt`:就是重命名
+   - `mv dir_a/{a.txt,b.txt,c.txt} dir_b/`:移动多个文件，复制同理
+
+9. `cat`:==查看文件的内容==
+
+   - `cat tmp.cpp`:直接在控制台上显示查看内容
+   - `cat cpuinfo`:（需要cd到/proc文件夹）查看服务器配置文件
+
+> Plus:删除指定文件
 >
-> Shell语法就像脚本，就是将一整套代码逻辑进行封装，学完Shell语法后，==所有重复内容都只需要运行一次==
-
-Linux中shell脚本的语法又很多种，下面列举几种常见的（当然它们的基本架构都是类似的，只是语法上稍有不同）
-
-- Bourne Shell(`/usr/bin/sh`或`/bin/sh`)
-- <font color="blue">Bourne Again Shell</font>(`/bin/bash`)
-- C Shell(`/usr/bin/csh`)
-- K Shell(`/usr/bin/ksh`)
-- zsh
-- ......
-
-Linux系统中一般默认使用bash，当然我们学的也是这个
-
-> 注意文件开头需要添加<font color="red">#! /bin/bash</font>指明bash为脚本编辑器
+> `find -type f -name "*.txt" -delete`:删除当前目录下所有后缀为txt的文件
 >
-> 这是为了指明脚本运行的解释器，如果要指明python解释器的话，就需要<font color="red">#! /user/env python</font>
+> ```shell
+> for var in *.txt
+> do
+> 	rm "$var"
+> done
+> ```
 
-**脚本示例**
+## OS新增内容：GCC
+
+> 讲解了一下Linux服务器下如何编译运行C代码具体操作
+
+示例：Linux下直接使用gcc将helloworld.c编译成可执行文件helloworld
 
 ```shell
-#! /bin/bash
-echo "hello world" //输出hello world
-:wq //保存为test.sh
+gcc helloworld.c -o helloworld # 得到可执行文件
+gcc -E helloworld.c # 只进行预处理
+gcc helloworld.c -S -o helloworld.S # 汇编得到helloworld.S
+gcc helloworld.c -c -o helloworld.o # 只编译，不链接
+gcc -M helloworld.c # 列出文件依赖
 ```
 
-**两种运行方式**
+复习以下C语言编译的基本流程
 
-1. 解释器直接运行:`bash test.sh`(直接作为bash脚本运行)
+```mermaid
+graph TB
+a(helloworld.c)-.-A[源代码]
+A-->预处理器
+预处理器-->编译器
+编译器-->B[汇编代码]
+b(helloworld.s)-.-B
+B-->汇编器
+汇编器-->C[目标代码]
+c(helloworld.o)-.-C
+d(other.o)-.-E[目标代码]
+E[目标代码]-->连接器
+e(库文件)-->连接器
+C-->连接器-->D((可执行程序))
+```
 
-2. 作为可执行文件运行
+## OS新增内容：Make和Makefile
 
-   **文件权限解释**
+### 概述
 
-   第1位为文件类型，`-`代表是普通文件，`d`代表是文件夹
+学习Makefile前，先来了解一下Makefile是干什么用的？
 
-   第2-4位为用户(作者)本身权限，第5-7位为同组权限，第8-10位为其他用户的权限
+[Makefile](https://www.zhaixue.cc/makefile/makefile-intro.html)是在Linux环境下 C/C++ 程序开发必须要掌握的一个工程管理文件
 
-   发现所有类型的权限都没有第三个权限，所以无法执行
+首先我们假设一个情景，你写了一个helloworld.c文件，此时它还是一个单文件程序，不需要和其他任何文件链接，所以执行它，只需要
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220124112314.png)
+```shell
+gcc helloworld.c -o helloworld
+./helloworld
+```
 
-   ```shell
-   chmod +x test.sh //给文件加上执行权限*
-   ./test.sh //相对路径执行方式
-   //其余两种执行方式即使绝对路径和家目录执行
-   ```
+此时对于单文件以及一些比较简单的程序，使用gcc编译运行还是非常方便的
 
-   **添加完可执行权限后**
+---
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220124112745.png)
+此时我们再假设一个情景，你正在开发一个很大的项目，里面可能有几百个c源文件（不要问我为什么非要用c开发这种项目emm），并且它们之间都是相互链接的，那么此时再次编译运行整个项目，就需要......
+
+```shell
+gcc moudle1.c moudle2.c ... moudle100.c ... -o a.out
+./a.out
+```
+
+这是不是太麻烦了点呢？（废话.jpg）
+
+这种时候**自动化编译工具make**就派上用场了，使用make编译程序，不需要每次都输入源文件，直接再命令行下敲击make命令，即可一键自动化完成编译（make编译依赖于Makefile文件，并且可以直接把make指令看作**宏定义**来理解）
+
+总结：==make和Makefile就是为了方便Linux下文件编译运行而产生的（主要用于替代win系统中编译器为我们做的事情，并且由于执行主要依赖于shell命令，自由化程度比起编译器来更高，并且支持的语言不仅仅局限于c）==
+
+### 具体使用
+
+> 使用了一下后，感觉Makefile的原理非常像宏定义？？？
+
+- Makefile文件的基本格式
+
+  ```shell
+  target1: dependencies1(构建target目标所需的依赖文件)
+  	command1
+  	command2
+  	... # 获取到target文件所需要执行的指令集合
+  target2: ....
+  	...
+  ```
+
+  再看一个具体实例
+
+  ```shell
+  a.out: helloworld.o
+      gcc -o a.out helloworld.o
+  helloworld.o: helloworld.c
+      gcc -c -o helloworld.o helloworld.c
+  clean:
+      rm -f a.out helloworld.o
+  ```
+
+### 网址实例操作
+
+#### Level1
+
+```c
+//hellomake.c
+#include <hellomake.h>
+
+int main() {
+  // call a function in another file
+  myPrintHelloMake();
+
+  return(0);
+}
+```
+
+```c
+//hellofunc.c
+#include <stdio.h>
+#include <hellomake.h>
+
+void myPrintHelloMake(void) {
+
+  printf("Hello makefiles!\n");
+
+  return;
+}
+```
+
+```c
+//hellomake.h
+/*
+example include file
+*/
+
+void myPrintHelloMake(void);
+```
+
+**直接使用gcc编译**
+
+```shell
+gcc hellomake.c hellofunc.c -I -o hellomake
+# -I代表gcc会在当前目录下寻找所包含的头文件
+```
+
+**使用makefile**
+
+```shell
+hellomake: hellomake.c hellofunc.c
+	gcc hellomake.c hellofunc.c -o hellomake -I ./ # 在当前路径下查找所需头文件
+```
+
+
+
+## OS新增内容：ctags
+
+> 同样在了解ctags的使用之前，先来了解一下ctags的具体功能
+>
+> 简单来说：IDEA中不是有个功能，ctrl+方法，再点击就会自动转到该方法具体实现的源文件相应位置处，这样查看起源代码来非常方便快捷，而ctags就是Linux下执行这一功能的（总而言之这些新增的东西全都是为了弥补Linux下没有编辑器的缺陷）
+
+1. 执行`ctags -R *`：在代码目录下生成文件tags
+2. 然后在你想要查看的函数那里`ctrl+]`即可跳转到函数实现处
+3. 最后`ctrl+o`跳转回原文件
+
+
+
+## 光标切换
+
+**使用`echo -ne "\e[2 q"`和`echo -ne "\e[6 q"`可以使得Linux光标在粗光标和细光标之间相互切换**
 
 ## 基本语法
-
-### 注释
-
-1. `#`：单行注释
-
-2. 多行注释
-
-   ```shell
-   :<<这里随便放一些字符，假定为x
-   注释
-   注释
-   ...
-   x
-   ```
-
-### 变量
-
-- 定义变量:不需要加`$`符号（类似与python中的直接命名）
-
-  ```shell
-  name1='abab'
-  name2="abab"
-  name3=abab # 以上三种方法都可以定义字符串，第三种方法是因为命令行会自动进行变量类型转换，需要字符串是会自动转换为字符串类型
-  ```
-
-- ==使用变量==:需要加上`$`符号，或者`${}`符号，大括号主要是为了帮助解释器识别变量边界
-
-  ```shell
-  name=abab
-  echo $name
-  echo ${name} # 推荐写法
-  echo ${name}acwing # 输出ababacwing
-  # 等价于
-  echo "${name}acwing" # 因为shell中一般都为字符串类型，所以不加""也可以
-  ```
-
-- 只读变量:使用`readonly`或者`declare`可以将变量变为<u>只读</u>。
-
-  ```shell
-  name=abab
-  readonly name # 使变量只读
-  declare -r name
-  name=abc # error
-  ```
-
-- 删除变量:`unset`可以删除变量（有啥用？）
-
-- 变量类型
-
-  1. 自定义变量（局部变量）：子进程不能访问的变量
-  2. 环境变量（全局变量）：子进程可以访问的变量
-  
-  **关于进程的概念**
-  
-  进程内部有很多子进程，局部变量(自定义变量)子进程不能用，但是环境变量子进程也能用
-  
-  *自定义变量改为环境变量*
-  
-  ```shell
-  name=yxc # 定义一个变量
-  export name # 第一种方法
-  declare -x name # 第二种方法
-  ```
-  
-  *环境变量改为自定义变量*
-  
-  ```shell
-  export name=yxc # 定义全局变量
-  declare +x name # 修改为局部变量(自定义变量)
-  ```
-  
-  那么如何进入一个子进程呢？
-  
-  ```shell
-  bash # 开一个新的bash，原有的bash就会睡眠掉
-  exit or ctrl+d # 退出
-  top # 查看自己开了多少个进程
-  q # 退出
-  ```
-
-> Plus:通过`type`命令可以查看其他命令的类型
 
 ### 字符串
 
@@ -294,7 +397,7 @@ echo "输出数组长度"${#array}
 > 注意同样需要使用空格隔开
 
 + `+-`
-加减运算。两端参数会转换为整数，如果转换失败则报错。
+  加减运算。两端参数会转换为整数，如果转换失败则报错。
 
 * `* / %`
   乘，除，取模运算。两端参数会转换为整数，如果转换失败则报错。
@@ -598,45 +701,6 @@ else
 fi
 ```
 
-**case...esac形式**:类比c++中的switch语句（很少用）         
-
-```shell
-case ${x} in
-    value1)
-        语句1
-        语句2
-        ...
-        ;;  # 类似于C/C++中的break
-    value2)
-        语句1
-        语句2
-        ...
-        ;;
-    *)  # 类似于C/C++中的default
-        语句1
-        语句2
-        ...
-        ;;
-esac0
-# 举例
-a=4
-
-case $a in
-    1)
-        echo ${a}等于1
-        ;;  
-    2)
-        echo ${a}等于2
-        ;;  
-    3)                                                
-        echo ${a}等于3
-        ;;  
-    *)
-        echo 其他
-        ;;  
-esac
-```
-
 ### 循环语句
 
 #### for语句
@@ -891,11 +955,11 @@ find start_directory test
    - `find . -name "*.txt" -exec "rm" {} \;`删除所有txt格式的文件
    - `find . -regex "\\./[a-z]+.*.txt" -exec rm {} \;`找到当前目录下所有小写字母开头的txt文件并删除
 
-2. `-type`：指定搜索的文件类型，一般而言只需要知道`d:目录`、`f:普通文件`即可
+3. `-type`：指定搜索的文件类型，一般而言只需要知道`d:目录`、`f:普通文件`即可
 
-2. `empty`：查找到路径下所有空文件和文件夹
+4. `empty`：查找到路径下所有空文件和文件夹
 
-3. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
+5. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
 
    比方说我想要搜索当前目录下的`ab1.txt`
 
@@ -989,7 +1053,9 @@ pattern：正则相关内容，注意字符匹配符号和Java中支持的不太
 chmod指令基本格式：`chmod [ugoa] [][+-=][rwx]] filename`
 
 - u 表示该文件的拥有者，g 表示与该文件的拥有者属于同一个群组，o 表示其他以外的人，a 表示这三者皆是。
+
 - \+ 表示增加权限、- 表示取消权限、= 表示唯一设定权限。
+
 - r 表示可读取，w 表示可写入，x 表示可执行。
 
 - 此外chmod也可以用数字来表示权限，格式为：
@@ -1131,49 +1197,3 @@ flags标记的各种形式
 
 - `echo "my name is abc" | awk '{$4="wwt";print $0}'`：`|`是管道，会将command1的stdout发送给command2的stdin，而command2在将stdout默认发送给输出，`;`用于分割awk中的多条指令，首先将\$4赋值为"wwt"，再将整体输出。所以输出为"my name is wwt"
 - `awk '$1>2 {print $1,$3}' data.txt`：输出data.txt中所有第一项大于2的行，并输出第一项和第三项
-
-## 总结
-
-> 天哪终于把Shell语法看完了，感觉简直要屎了
-
-## 作业
-
-> 创建好作业后，先进入文件夹/home/acs/homework/lesson_3/，然后：
-> (0) 进入homework_0文件夹，编写自动完成lesson_1作业的脚本helper.sh。要求：
->     [1] 当前目录下仅包含helper.sh
->     [2] helper.sh具有可执行权限
->     [3] 在任意路径依次执行下列命令后，lesson_1的作业可以得到满分：
->         1) homework 1 create[]
->                 2) /home/acs/homework/lesson_3/homework_0/helper.sh
->     (1) 进入homework_1文件夹，编写脚本check_file.sh。要求：
->         [1] 当前目录下仅包含check_file.sh。
->         [2] check_file.sh具有可执行权限。
->         [3] check_file.sh接收一个传入参数。格式为 ./check_file.sh file
->         [4] 判断传递参数，分别在标准输出中输出如下内容（不包括双引号）：
->                 1) 如果传入参数个数不是1，则输出一行："arguments not valid"，然后退出，退出状态等于1。
->                         2) 如果file文件不存在，则输出一行："not exist"，然后退出，退出状态等于2。
->                         3) 如果file文件存在，则输出分别进行如下5个判断，然后退出，退出状态等于0。
->                     1] 如果file为普通文件，则输出一行："regular file"
->                     2] 如果file为目录（文件夹），则输出一行："directory"
->                     3] 如果file具有可读权限，则输出一行："readable"
->                     4] 如果file具有可写权限，则输出一行："writable"
->                     5] 如果file具有可执行权限，则输出一行："executable"
->             (2) 进入homework_2文件夹，编写脚本main.sh。要求：
->                 [1] 当前目录下仅包含main.sh
->                 [2] main.sh具有可执行权限
->                 [3] 该文件从stdin(标准输入)中读取一个整数n
->                 [4] 在stdout(标准输出)输出斐波那契数列的第n项。即：a[0] = 1, a[1] = 1, a[i] = a[i - 1] + a[i - 2], 求a[n]。
->                 [5] 数据保证 0 <= n <= 20，脚本不需要判断n的合法性。
->             (3) 进入homework_3文件夹，编写脚本main.sh。要求：
->                 [1] 当前目录下仅包含main.sh
->                 [2] main.sh具有可执行权限
->                 [3] 该文件从stdin(标准输入)中读取两行整数n和m
->                 [4] 在stdout(标准输出)中输出1~n的按字典序从小到大的顺序数第m个全排列，输出一行，用空格隔开所有数，行末可以有多余空格。
->                 [5] 数据保证 1 <= n <= 10, 1 <= m <= min(100, n!)，脚本不需要判断数据的合法性。
->             (4) 进入homework_4文件夹，编写脚本main.sh。要求：
->                 [1] 当前目录下仅包含main.sh
->                 [2] main.sh具有可执行权限
->                 [3] main.sh接收两个传入参数。格式为 ./main.sh input_file output_file
->                 [4] 从input_file中读取一个正整数n，然后将前n个正整数的平方和写入output_file中
->                 [5] 数据保证 1 <= n <= 100，脚本不需要判断所有数据的合法性。
-

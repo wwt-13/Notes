@@ -55,7 +55,7 @@
 tmux:每一个tmux可以开一堆session(可以理解为会话)
 
 ```mermaid
-flowchart LR
+graph LR
 server-->session1
 server-->session2
 server-->session...
@@ -284,8 +284,9 @@ Plus:不知道为啥，但是AC Terminal中的tmux的划分窗口快捷键前缀
 
 如果此时再次打开一个pane，在这个pane中再次打开该文件，那么此时就会出现读写冲突的报错
 
-1. 关掉一个进程，保证只有一个进程打开该文件
-2. 直接删除`.filename.swp`，`rm`莽就完了
+- 方案1：关掉一个进程，保证只有一个进程打开该文件
+
+- 方案2：直接删除`.filename.swp`，`rm`莽就完了
 
 ### 关于vim属性的配置
 

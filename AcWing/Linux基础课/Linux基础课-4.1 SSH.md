@@ -4,20 +4,20 @@
 
 >  ssh有什么用？
 >
-> 在未来开发的时候，使用的肯定不止一台服务器
+>  在未来开发的时候，使用的肯定不止一台服务器
 >
-> 像AcWing：web服务器（多个），评测器（多个），AcServer（AcTermainl服务器）......
+>  像AcWing：web服务器（多个），评测器（多个），AcServer（AcTermainl服务器）......
 >
-> <u>以上的服务器都是Linux服务器</u>
+>  <u>以上的服务器都是Linux服务器</u>
 >
-> 而未来开发的时候，就需要登录到不同的服务器上去进行不同的操作，这种时候就需要使用到ssh
+>  而未来开发的时候，就需要登录到不同的服务器上去进行不同的操作，这种时候就需要使用到ssh
 >
-> ```mermaid
-> flowchart LR
-> ACTermainl--ssh-->Web服务器
-> ACTermainl--ssh-->评测服务器
-> ACTermainl--ssh-->ACS服务器
-> ```
+>  ```mermaid
+>  graph LR
+>  ACTermainl--ssh-->Web服务器
+>  ACTermainl--ssh-->评测服务器
+>  ACTermainl--ssh-->ACS服务器
+>  ```
 
 
 

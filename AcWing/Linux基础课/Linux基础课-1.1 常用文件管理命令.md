@@ -208,7 +208,7 @@ Plus：市面上超过$90$%的服务器都是$Linux$服务器
 9. `cat`:==查看文件的内容==
 
    - `cat tmp.cpp`:直接在控制台上显示查看内容
-   - `cat cpuinfo`:（需要cd到proc文件夹）查看服务器配置文件
+   - `cat cpuinfo`:（需要cd到/proc文件夹）查看服务器配置文件
 
 > Plus:删除指定文件
 >
@@ -231,21 +231,25 @@ Plus：市面上超过$90$%的服务器都是$Linux$服务器
 gcc helloworld.c -o helloworld # 得到可执行文件
 gcc -E helloworld.c # 只进行预处理
 gcc helloworld.c -S -o helloworld.S # 汇编得到helloworld.S
-gcc helloworld -c -o helloworld.o # 只编译，不链接
+gcc helloworld.c -c -o helloworld.o # 只编译，不链接
 gcc -M helloworld.c # 列出文件依赖
 ```
 
 复习以下C语言编译的基本流程
 
 ```mermaid
-flowchart TB
-a[(helloworld.c)]-.-A([源代码])
-A-->预处理器-->编译器-->B([汇编代码])
-b[(helloworld.s)]-.-B
-B-->汇编器-->C([目标代码])
-c[(helloworld.o)]-.-C
-d[(other.o)]-.-E([目标代码])-->连接器
-e[(库文件)]-->连接器
+graph TB
+a(helloworld.c)-.-A[源代码]
+A-->预处理器
+预处理器-->编译器
+编译器-->B[汇编代码]
+b(helloworld.s)-.-B
+B-->汇编器
+汇编器-->C[目标代码]
+c(helloworld.o)-.-C
+d(other.o)-.-E[目标代码]
+E[目标代码]-->连接器
+e(库文件)-->连接器
 C-->连接器-->D((可执行程序))
 ```
 
@@ -362,7 +366,7 @@ gcc hellomake.c hellofunc.c -I -o hellomake
 
 ```shell
 hellomake: hellomake.c hellofunc.c
-	gcc hellomake.c hellofunc.c -I -o hellomake
+	gcc hellomake.c hellofunc.c -o hellomake -I ./ # 在当前路径下查找所需头文件
 ```
 
 
@@ -381,7 +385,7 @@ hellomake: hellomake.c hellofunc.c
 
 ## 光标切换
 
-<font color="red">使用`echo -ne "\e[2 q"`和`echo -ne "\e[6 q"`可以使得Linux光标在粗光标和细光标之间相互切换</font>
+**使用`echo -ne "\e[2 q"`和`echo -ne "\e[6 q"`可以使得Linux光标在粗光标和细光标之间相互切换**
 
 ## 作业
 

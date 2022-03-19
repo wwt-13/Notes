@@ -14,6 +14,20 @@
 |                                                              |          |                                           |
 |                                                              |          |                                           |
 
+## 日常
+
+|  含义   |    $\LaTeX$     |   符号 or 示例    |
+| :-----: | :-------------: | :---------------: |
+| 左箭头  |   \leftarrow    |   $\leftarrow$    |
+| 右箭头  |   \rightarrow   |   $\rightarrow$   |
+| 双箭头1 | \leftrightarrow | $\leftrightarrow$ |
+| 双箭头2 | \Leftrightarrow | $\Leftrightarrow$ |
+|         |                 |        $$         |
+|         |                 |        $$         |
+|         |                 |                   |
+
+
+
 ## 集合
 
 |  含义  |       $\LaTeX$       |      符号 or 示例       |
@@ -52,4 +66,17 @@
 |     差     |                        |            $$            |
 |            |                        |                          |
 |            |                        |                          |
+
+## 字体
+
+|   含义   |  $\LaTeX$  |   符号 or 示例    |
+| :------: | :--------: | :---------------: |
+|   花体   | \mathcal{} | $\mathcal{A,B,C}$ |
+| 花体plus | \mathscr{} | $\mathscr{A,B,C}$ |
+| 数学集合 | \mathbb{}  | $\mathbb{A,B,C}$  |
+|          |            |                   |
+|          |            |                   |
+|          |            |                   |
+|          |            |                   |
+|          |            |                   |
 
