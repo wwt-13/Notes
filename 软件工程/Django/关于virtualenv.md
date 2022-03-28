@@ -20,5 +20,6 @@ source venv/bin/activate # Linux系统
 # 此时命令提示符会出现(venv)前缀，代表加入了一个名为venv的Python虚拟环境
 # 此时在虚拟环境下执行各种pip就是在虚拟环境下安装各种依赖包
 # 技巧1:可以新建一个requirements.txt文件，将所有依赖包放在requirements.txt文件下，然后再虚拟环境下直接执行pip install -r requirements.txt即可(省去了手动一个一个安装包的时间)
+deactivate # 使用
 ```
 
