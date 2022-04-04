@@ -225,6 +225,8 @@ public class Switch{
 
 ### 引用数据类型（基础）
 
+#### $关于常量池$
+
 > 除开上面提到的八种基本类型，其他的都是引用数据类型（确信
 >
 > 这里说说几种比较常用的$数组$和$String$
@@ -327,6 +329,10 @@ int[] array2=new int[]{1,2,3};
 #### $String$
 
 > 作为Java中使用最频繁的引用类型，关于String的性能问题却常常被忽略，深入了解其特性，高效的使用字符串，可以提升系统的整体性能
+>
+> <u>关于String中常用的方法</u>
+>
+> ![](https://gitee.com/ababa-317/image/raw/master/images/20220329161529.png)
 
 ##### $String的不可变性$
 
@@ -339,8 +345,64 @@ public final class String
     private final char value[];
 ```
 
-1. final修饰，表示String类不可被继承
-2. 数据存储与被final修饰的char[]数组，表示String对象不可被修改
+1. final修饰，表示String类**不可被继承**
+
+2. 数据存储与被final修饰的char[]数组，表示String对象**不可被修改**
+
+3. String类变量一旦声明就不可变；如果赋值，改变的只是指向的地址，原来的字符串依旧存在并且产生垃圾
+
+   ![](https://gitee.com/ababa-317/image/raw/master/images/20220329161404.png)
+
+总结：String类是一种不可变对象
+
+##### $字符串基本$
+
+> 关于字符串的一些最常用的方法.
+
+```java
+String test="01234567890";
+test.length();//11
+test.indexOf('0');//0
+test.lastIndexOf('0');//10
+test.charAt(0);//0查看index=0处的字符串，相当于数组的arr[index](注意java字符串不具备下标查看的功能)
+```
+
+##### $字符串判断$
+
+```java
+boolean equals(Object obj);//比较字符串的内容是否相同
+boolean equalsIgnoreCase(String str);//忽略大小写
+boolean startsWith(String str);//是否以str开头
+boolean endsWith(String str);//....结尾
+```
+
+##### $字符串转换$
+
+##### $字符串拼接$
+
+- 字符串常量的拼接
+
+  **字符串常量的拼接，编译器会将其优化为一个常量字符串**
+
+  ```java
+  String str="a"+"b"+"c";//会直接优化成String str="abc"
+  System.out.println("Str="+str);
+  ```
+
+- 字符串变量的拼接
+
+  ```java
+  String str="";
+  for(int i=0;i<100;i++){
+      str=str+i;//被优化成str=(new StringBuilder(String.valueOf(str)).append(i).toString)
+  }
+  ```
+
+  但是每次循环都生成一个`StringBuilder`示例再转化为`string`，这样会大大降低系统的性能
+
+  $正确使用方法$：使用`StringBuilder`的`append`方法替代`+`
+
+
 
 
 
@@ -476,4 +538,16 @@ public static void main(String[] args){
 
 
 
+## JVM内存分布
+
+> 镇楼图在上
+>
+> ![](https://gitee.com/ababa-317/image/raw/master/images/20220401152336.png)
+
+
+
+
+
 ## Java规范
+
+- 开发过程中尽量少使用构造方法对字符串进行实例化
