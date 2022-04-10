@@ -210,3 +210,20 @@ On the other hand, padding is located inside the border of an element. The eleme
 >         </div>
 >     </div>
 > </div>
+
+### Borders
+
+> **Borders** can be applied to most HTML elements within the body.
+>
+> To make a border around an element, all you need is [`border-style`](https://htmldog.com/references/css/properties/border-style/). The values can be `solid`, `dotted`, `dashed`, `double`, `groove`, `ridge`, `inset` and `outset`.4
+
+![img](https://htmldog.com/figures/border-style.png)
+
+[`border-width`](https://htmldog.com/references/css/properties/border-width/) sets the **width** of the border, most commonly using pixels as a value. There are also properties for [`border-top-width`](https://htmldog.com/references/css/properties/border-top-width/), [`border-right-width`](https://htmldog.com/references/css/properties/border-right-width/), [`border-bottom-width`](https://htmldog.com/references/css/properties/border-bottom-width/) and [`border-left-width`](https://htmldog.com/references/css/properties/border-left-width/).
+
+Finally, [`border-color`](https://htmldog.com/references/css/properties/border-color/) sets the **color**.
+
+![image-20220404164753831](https://gitee.com/ababa-317/image/raw/master/images/image-20220404164753831.png)
+
+
+

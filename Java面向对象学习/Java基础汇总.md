@@ -8,7 +8,7 @@
 
 - Java 编程语言是一种通用的、并行的、基于类的、面向对象的语言
 - Java语言是一门**完备的**、面向生产的语言，而非C++/C性质的研究型语言
-- Java语言是高层次的，所以它无法用于表示机器层次的细节（Java内置了垃圾回收、内存管理）
+- Java语言是高层次的，所以它无法用于表示机器层次的细节（Java内置了垃圾回收、内存管理，这些东西一般不需要我们手动调用）
 - Java程序具备跨平台性（==code once, run anywhere==）
 
 ### JVM、JRE和JDK
@@ -45,7 +45,7 @@ public class Hello{
 
      <font color='red'>$Answer$</font>:Java程序是被解释执行的，它在运行的时候并不是将所有的.class文件（java源代码编译后的字节码文件，对于一个.java文件，其中包含几个类，就会编译出几个对应的.class文件）全都放到内存中，而是在遇到import的时候才回去相应的文件路径下查找相应的.class文件。而对于一个**public类**而言，<u>它是可以被项目中的任何一个类import的</u>，此时**将类名和文件名对应就可以方便虚拟机在相应的路径中去查找相应类的信息**（不然开销会很大）。
 
-     当然，如果java源文件中不存在公共类，那么java源文件的命名也确实无所谓（*当然这样设计的话，这个java源文件也就没什么意义了*）
+     当然，如果java源文件中不存在公共类，那么java源文件的命名也确实无所谓（*当然这样设计的话，这个java源文件也就没什么意义了（因为不存在公共的对外接口）*）
 
   4. 每个java源文件中只能有且最好要有一个public类，该类是这个java源文件的唯一对外公共接口（***这是一种设计上的规范，当然Java的语法也规定了必须这样***）
 
@@ -63,7 +63,9 @@ public class Hello{
 
   3. `void`修饰的是该方法返回的变量类型（这个相信有编程基础的都懂）
 
-  4. `main`，main方法在Java公共类中的一个非常特殊的方法，运行Java文件时，main方法是Java程序的**唯一公开接口**（程序由此开始运行）。
+  4. `main`，main方法在Java公共类中的一个非常特殊的方法，运行Java文件时，main方法是Java程序的**唯一公开接口**（程序**由此开始运行**）。
+
+     > 今天在复习的时候发现，哪怕public类中不存在main入口，Java程序依旧会由非public中的main方法开始执行。（相当神奇，但是自己写项目的时候可不能这样写）
 
   5. `String[] args`代表的是main方法接受的参数，代表需要传入一个字符串数组，可以类比于C中的`int main(int argc,char *argv)`
 
@@ -124,14 +126,14 @@ project --> ...
 
 ### 修饰符汇总
 
-> 这里先罗列一些各种Java修饰符的作用，具体细节会到Java面向对象中详细阐述
+> 这里先罗列一些Java修饰符的作用，具体细节会到Java面向对象中详细阐述
 
 ### 访问修饰符
 
 > ***用来定义类、方法、变量访问权限***
 
 - $public$：对==所有类==可见。使用对象：类、接口、变量、方法
-- $protected$：对==同一包内的类==和==所有子类==可见。使用对象：变量、方法。 **注意：不能修饰类（外部类）**
+- $protected$：对==同一包内的类==和==所有子类==可见。使用对象：<u>变量</u>、<u>方法</u>。 **注意：不能修饰类（外部类）**
 - $default$：（默认）， 在==同一包==内可见，不使用任何修饰符。使用对象：类、接口、变量、方法。
 - $private$：在==同一类==内可见。使用对象：变量、方法。 **注意：不能修饰类（外部类）**
 
@@ -185,10 +187,19 @@ for(int i:array){
 
 ```java
 import java.util.Scanner;//Java输入读取包
-public class Switch{
+public class SwitchTest{
     public static void main(String[] args){
         var scan=Scanner(System.in);
-        
+        String flag=scan.nextLine();
+        int opt=switch(flag){
+                case "apple"->1;
+                case "banana"->23;
+                case "orange","fruit"->1234;
+                default->{
+                    int code=scan.nextInt();
+                    yield code*2;
+                }//复杂操作采用yield的形式返回
+        };
     }
 }
 ```
@@ -213,6 +224,8 @@ public class Switch{
 
 #### $类型转换$
 
+- 普通数据类型：直接采用强制类型zhuan'huan
+
 - 规则：数据范围（非字节数）由小转到大
 
   ```java
@@ -224,8 +237,6 @@ public class Switch{
 - byte/short/int在进行运算的时候，会先提升为int类型再进行计算，所以得到的值都是int
 
 ### 引用数据类型（基础）
-
-#### $关于常量池$
 
 > 除开上面提到的八种基本类型，其他的都是引用数据类型（确信
 >
@@ -284,7 +295,7 @@ int[] array2=new int[]{1,2,3};
 
    ![image-20220328011011934](https://gitee.com/ababa-317/image/raw/master/images/image-20220328011011934.png)
 
-   总之反正数组之间的比较还是要采用Arrays的equals方法，不能直接采用对对象自带的。
+   数组之间的比较需要采用Arrays的equals方法，不能直接采用对象自带的。
 
 3. $Arrays.sort()$数组排序，默认为升序
 
@@ -378,6 +389,12 @@ boolean endsWith(String str);//....结尾
 
 ##### $字符串转换$
 
+```java
+char[] toCharArray();//把字符串转换为字符数组
+String toLowerCase();//把字符串转换为小写字符串
+String toUpperCase();//把字符串转换为大写字符串
+```
+
 ##### $字符串拼接$
 
 - 字符串常量的拼接
@@ -402,9 +419,39 @@ boolean endsWith(String str);//....结尾
 
   $正确使用方法$：使用`StringBuilder`的`append`方法替代`+`
 
+##### $字符串-杂$
 
+```java
+//其他的一些常用方法
+String trim();//去除字符串两边的空格
+String[] split(String str);//按照传入的指定字符串分割字符串
+```
 
+### 类型转换（通用）
 
+> 关于==字符串==类型和其他==基本类型==的通用转换方式
+
+- 要将其他任意基本类型转换为字符串，可以直接使用String通用的静态方法`valueOf()`，编译器会根据传入参数自动选择合适的方法
+- 要将字符串转换为其他类型，则需要根据具体情况具体考虑
+
+```mermaid
+flowchart LR
+其他类型-->|valueOf|字符串
+```
+
+```java
+String.valueOf(123); // "123"
+String.valueOf(45.67); // "45.67"
+String.valueOf(true); // "true"
+String.valueOf(new Object()); // 类似java.lang.Object@636be97c
+```
+
+```java
+//int包装类Integer
+int n1=Integer.parseInt("123");//自动拆箱
+int n2=Integer.parseInt("0xff",16);//按照指定的机制转换字符串
+//Double等包装类也有类似的parse转换字符串的方法
+```
 
 ### 基本IO
 
@@ -423,7 +470,7 @@ boolean endsWith(String str);//....结尾
 
 **常用方法**
 
-1. `next()`等待当前的输入，并读入当前的有效字符（注：next中，空格和回车是无效字符）
+1. `next()`等待当前的输入，并读入当前的有效字符（注：next中，空格和回车是无效字符，next()可以理解为读取单词）
 
    ```java
    public static void main(String[] args) {
@@ -457,7 +504,7 @@ boolean endsWith(String str);//....结尾
 
 5. `hasNext()`等待当前输入，常用于循环读入（循环读取单词）
 
-6. `hasNextLine()`和hasNext()基本一致（循环读取句子），下面用一个示例来看看二者的区别
+6. `hasNextLine()`和`hasNext()`基本一致（循环读取句子），下面用一个示例来看看二者的区别
 
    ```java
    //1
@@ -498,19 +545,87 @@ public static void main(String[] args){
 
 #### $output$
 
+> 相比于较为复杂的输入，Java中的输出就显得简单很多，常用的只有三个函数
 
+```java
+System.out.println();//最常用的输出语句：输出为基本类型时，自动转化为string
+//输出为引用类型时，会自动调用对应的toString方法(所以可以通过重写toString()方法来修改输出对象获取的信息)
+System.out.print();//和上面相比少了默认的换行
+System.out.printf();//格式化输出，类比C
+```
 
 ## Java面向对象
 
-### 构造函数
+> 面向对象编程，就是一种通过对象，把现实世界映射到计算机模型中去的编程思想。
+>
+> 具体概念定义不多解释。
 
-### 信息隐藏和this指针
+### 构造函数和this指针
+
+> 构造函数就是在对象被声明时默认会调用的函数，可以被重写
+>
+> 如果没有显示定义的话会调用默认的无参构造函数，但是一旦声明了有参构造函数，就无法再调用默认的无参构造函数了，此时使用`new A()`，会产生报错
+>
+> this指针就是指向对象实例的指针（很多语言都有）
+>
+> 并且this还可以用来代替本类得到构造函数
+>
+> - `this(5);//调用类中一个形参的构造函数`
+
+```java
+public class A{
+    private int id;
+    public A(int id){
+        this.id=id;//
+    }
+}
+```
+
+### 信息隐藏
+
+> 面向对象中的法则：信息隐藏（类的成员属性只能通过定义公开接口来进行访问）
+
+- 类的成员属性：private
+- 类的方法属性：外部只能通过public方法类修改类的成员属性
+
+>  朋友再熟悉，也不会到他的抽屉里直接拿东西，而是通过他的公开接口来访问、修改东西
+
+- 为了访问类中的成员属性，一般会定义通用的成员方法getter/setter
+
+  ```java
+  public class test{
+      private int a;
+      private int b;
+      public void setA(int a){
+          this.a=a;
+      }
+      public void setB(int b){
+          this.b=b;
+      }
+      public int getA(){
+          return this.a;
+      }
+      public int getB(){
+          return this.b;
+      }
+  }
+  ```
+
+- 可以通过IDE快速生成(IDEA：alt+insert即可)
+
+  <img src="https://gitee.com/ababa-317/image/raw/master/images/20220226225736.png" style="zoom:50%;" />
+
+### 类的继承
+
+
 
 ### static、final和常量设计
 
+
+
 ### Java访问权限
 
-### 类的继承
+
 
 ### 抽象类和接口
 
@@ -542,12 +657,20 @@ public static void main(String[] args){
 
 > 镇楼图在上
 >
-> ![](https://gitee.com/ababa-317/image/raw/master/images/20220401152336.png)
-
-
-
-
+> <img src="https://gitee.com/ababa-317/image/raw/master/images/20220401152336.png" style="zoom:80%;" />
 
 ## Java规范
 
-- 开发过程中尽量少使用构造方法对字符串进行实例化
+> 尽量采用阿里Java开发规范进行开发
+>
+> ==因为IDEA内置了阿里规范插件hhh==
+
+### 命名风格
+
+- 类名：大驼峰式命名（UserId）
+- 方法名、参数名、成员变量名、局部变量名：统一采用小驼峰式命名（userid）
+- 常量名：全部大写，且单词之间使用下划线隔开（USET_ID）
+- 抽象类：同意使用Abstract/Base开头
+- 异常类：使用Exception结尾
+- 测试类：以它要测试的类的名称开始，以Test结尾
+- 包名：统一采用小写格式
