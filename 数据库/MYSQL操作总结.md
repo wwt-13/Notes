@@ -2,7 +2,7 @@
 
 # MYSQL操作总结
 
-## 数据库和表操作
+## 数据库、表操作和数据更新
 
 > 这里讲的是数据库和表的创建和删除等一系列操作（不包括关系模型的细节操作）
 
@@ -64,10 +64,30 @@
 
   ```mysql
   rename table name_old to name_new; # 方法1
-  alter table name_old rename name_new; # 方法2
+  alter table name_old rename name_new; # 方法2，推荐使用，更加规范
   ```
 
 #### 修改表的具体结构
+
+>   整体结构如下
+>
+>   ```mysql
+>   alter table tb_name
+>   [add new_col_name data_type [integrity_constraints]|integrity_constraints]
+>   [drop col_name|integrity_constraints]
+>   [modify col_name data_type [integrity_constraints]]
+>   [change col_name new_col_name data_type [integrity_constraints]];
+>   ```
+>
+>   <u>add语句</u>：用于增加新列和新的**完整性约束条件**
+>
+>   <u>drop语句</u>：删除指定的列或者完整性约束条件
+>
+>   <u>modify语句</u>：修改指定列的数据类型
+>
+>   <u>change语句</u>：modify的基础上添加修改列名
+>
+>   $Plus:$修改原有列定义可能会破坏已有数据。
 
 - 添加字段
 
@@ -75,10 +95,26 @@
   alter table tb_name add column co_name varchar(80) not null;
   ```
 
+  添加完整性约束条件
+
+  ```mysql
+  alter table review add index(col0);
+  ```
+
 - 删除字段
 
   ```mysql
   alter table tb_name drop co_name;
+  ```
+
+  删除完整性约束
+
+  ```mysql
+  # 方法1:直接删除
+  alter table tb_name drop intrgrity_constraints col_name;
+  # 方法2:先查看约束名再进行删除(更加稳妥)
+  show create table tb_name;# 查看约束名和约束key
+  alter table tb_name drop in_co_key in_co_name;
   ```
 
 - 修改字段结构+重命名
@@ -91,8 +127,68 @@
 - 更新字段的值
 
   ```mysql
-  update table_name set col_name=new_value where condition;
+  update table_name set col_name=new_value where condition;# 需要记忆
   ```
+
+### 数据更新
+
+>   对表中的元组进行操作
+>
+>   三种常见数据更新类型
+>
+>   -   ==Insert==插入一条或多条元组（常用，已基本掌握）
+>
+>       两种用法
+>
+>       1.   自己构造数据插入
+>
+>            ```mysql
+>            insert into tb_name(col1,col2....)
+>            values
+>            (col1_va1,col2_va1,....),
+>            (col1_va2,....),
+>            ....;
+>            ```
+>
+>       2.   将从其他表查询得到的数据插入表
+>
+>            ```mysql
+>            insert into tb_name(col1,col2...)
+>            select ......;# 数据查询语句
+>            ```
+>
+>   -   ==Delete== 删除一条或多条元组（删除表中满足where语句条件的***元组***）
+>
+>       ```mysql
+>       delete from tb_name
+>       where conditions;
+>       ```
+>
+>   -   ==Update== 更新**现有**一条或多条元组中的值
+>
+>       ```mysql
+>       update tb_name
+>       set col1=expression1,col2=expression2.....
+>       where conditions;
+>       ```
+
+实例（这里讲讲之前比较少操作的方法）：
+
+1.   将从其他表中查找出的数据插入到表中（**select子句目标列必须和insert匹配**）
+
+     ```mysql
+     insert into deptage(sdept,avage)
+     select sdept,avg(sage)
+     from student
+     group by sdept;
+     ```
+
+2.   数据更新操作（修改多个元组的值，不指定where的话，**默认作用范围为所有元组**）
+
+     ```mysql
+     update student
+     set sage=sage+1;# 将所有学生的年龄+1
+     ```
 
 ## 索引
 
@@ -125,8 +221,6 @@ alter table students add unique index uni_name(name);
 # 也可以只对某一列添加一个唯一约束而不创建唯一索引
 alter table students add constraint uni_name unique(name);
 ```
-
-
 
 ---
 
@@ -237,6 +331,7 @@ creata table tmp(
     col6 int(6) zerofill, # 零填充约束
     col7 int default 0,
     primary key (col0), # 主键约束
+    index (col1) # 创建索引
     unique (col1,col2), # 复合唯一约束
     key (col4), # 自增长约束必须设置为键
     foreign key(col7) references main(id) on delete cascade, # 添加外键约束
@@ -265,7 +360,7 @@ creata table tmp(
 
    - 整型：$TINYINT,SMALLINT,MEDIUINT,INT,BIGINT$
    - 浮点型：包括单精度和双精度浮点型
-     - $float(M,D)$其中M表示浮点型的长度（不包括符号和小数点），d表示小数点后面数字的位数
+     - $float(M,D)$其中M表示浮点型的长度（不包括符号和小数点），D表示小数点后面数字的位数
      - $decimal(M,D)$以字符串的形式存储，定点类型小数，如果对于精度要求比较高的话推荐使用decimal类型
 
    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型](http://s9.51cto.com/wyfs02/M02/8A/AC/wKioL1g3mobgsiRQAAEOuN_LocM545.png)
@@ -276,11 +371,11 @@ creata table tmp(
 
    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_02](http://s5.51cto.com/wyfs02/M00/8A/B0/wKiom1g3mqOxypGaAACjNfEmuW8532.png)
 
-   SQL内建函数
+   SQL内建函数（需要实践一下）
 
    UCASE() - 将某个字段转换为大写 
 
-   LCASE() - 将某个字段转换为小写 
+   LCASE() - 将某个字段转换为小写
 
    MID() - 从某个文本字段提取字符，MySql 中使用 
 
@@ -290,7 +385,13 @@ creata table tmp(
 
    ROUND() - 对某个数值字段进行指定小数位数的四舍五入
 
+   ```mysql
+   
+   ```
+
 3. 日期时间型：$DATE,TIME,DATETIME,TIMESTAMP$
+
+   常用的为$DATE,DATETIME,TIMESTAMP$
 
    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
 
@@ -334,7 +435,7 @@ creata table tmp(
 
    关于默认值设置：只有时间戳timestamp类型支持系统默认值设置，其他类型都不支持
 
-4. 枚举型：需要列出该字段的所有可能值，存储范围是0-65535bytes
+4. 枚举型：需要列出该字段的所有可能值，存储范围是0-65535bytes（可以在一定程度上代替check约束）
 
    ```mysql
    enum('Female','Male')
@@ -460,7 +561,7 @@ order by one or more attributes;
 | 多重条件 |                and,or                |
 | 字符匹配 |            like,not like             |
 
-- 集合查询
+- **集合查询**
 
   ```mysql
   select Sname,Ssex
@@ -607,7 +708,7 @@ where grade is null;
 select 
 s1.id s1id,s2.id s2id,
 s1.name s1name,s2.name s2name,
-s1.gender s1gender,s2.gender s2gender 
+s1.gender s1gender,s2.gender s2gender
 from mysqlearn as s1,mysqlearn1 as s2;# 虽然但是，还是相当麻烦.....
 ```
 
@@ -615,7 +716,7 @@ from mysqlearn as s1,mysqlearn1 as s2;# 虽然但是，还是相当麻烦.....
 
 #### 等值连接
 
-> Where子句中的连接运算符为=号的连接操作（等价于**内连接**）
+> Where子句中的连接运算符为=号的连接操作（等价于**内连接**+on）
 >
 > `[tb1.]col1=[tb2.]col2`（引用唯一属性名的时候可以省略表名前缀）
 
@@ -749,7 +850,8 @@ where Sno in (
   );
   # 方法二:利用自然连接，一下搞定
   select Sno,Sname
-  from Student natural join SC natural join Course;
+  from Student natural join SC natural join Course
+  where Course.name='信息系统';
   # 方法三:等值连接，和方法二类似
   select Sno,Sname
   from Student,SC,Course
@@ -876,15 +978,89 @@ where Sno in (
 
 mysql只支持并操作Union，其他交（intersect）、差（except）都可以简单的利用where语句实现（因为太简单就不赘述了）
 
-## SQL操纵语句
+## 视图
 
+>   视图是一种==虚表==（virtual table），是从一个或多个基本表中导出的表（视图就是在数据库中存储的一条数据查询语句）。
+>
+>   DBMS指定CREATIVE VIEW语句只是*把视图的定义存入数据字典*，并不执行其中的查询语句。
+>
+>   对视图进行查询的时候，按照视图的定义从基本表中将数据查出
+>
+>   对于某些视图（可更新视图），可以对视图执行数据更新操作，数据库会根据视图的定义去更新对应的基本表数据。
+>
+>   ==$What\ is\ 视图\ used\ for?$==
+>
+>   可以看看视图的优点，体会视图的用途
+>
+>   1.   **简单**：使用视图的用户完全不需要关心后面对应的**表的结构、关联条件和筛选条件**，对用户来说已经是<u>***过滤好的复合条件的结果集***</u>。
+>   2.   ==**安全**==：使用视图的用户==只能访问他们被允许查询的结果集==，**对表的权限管理并不能限制到某个行某个列**，但是通过视图就可以简单的实现
+>   3.   **数据独立**：一旦视图的结构确定了，可以屏蔽表结构变化对用户的影响，源表增加列对视图没有影响；源表修改列名，则可以通过修改视图来解决，不会造成对访问者的影响
+>
+>   总而言之，使用视图的大部分情况是为了==保障数据安全性==，==提高查询效率==。比如说我们<u>**经常用到几个表的关联结果**</u>，那么我们就可以使用视图来处理，或者说第三方程序需要调用我们的业务库，可以按需创建视图给第三方程序查询。
 
+### 视图创建以及使用方法
+
+```mysql
+CREATE
+    [OR REPLACE] # 表示替换已有视图，如果该视图不存在，则无效
+    [ALGORITHM = {UNDEFINED | MERGE | TEMPTABLE}] # 表示视图选择算法
+    [DEFINER = user] # 指定谁是视图的创建者或定义者，如果不指定，则默认创建视图的用户就是定义者
+    [SQL SECURITY { DEFINER | INVOKER }] # SQL安全性
+    VIEW view_name [(column_list)]
+    AS select_statement # select语句，表示从基表或其他视图中选择列
+    [WITH [CASCADED | LOCAL] CHECK OPTION] # 表示在视图更新的时候保证约束
+```
+
+**视图创建范例**
+
+```mysql
+create view v_match
+as 
+select a.PLAYERNO,a.NAME,MATCHNO,WON,LOST,c.TEAMNO,c.DIVISION
+from 
+PLAYERS a,MATCHES b,TEAMS c
+where a.PLAYERNO=b.PLAYERNO and b.TEAMNO=c.TEAMNO;
+```
+
+定义视图时，组成视图的属性列需要**全部省略**或者**全部指定**。
+
+-   全省略：视图属性由子查询select目标列中的字段构成
+-   全指定：具体见如下情形
+    1.   某个目标列是<u>集函数</u>或者<u>列表达式</u>
+    2.   多表连接的时候出现了**同名列**作为视图字段
+    3.   需要在视图中为某个**列重命名**更合适的名字
+
+不建议以`select *`的方式创建视图，这样定义的视图，当<u>修改基表的结构时</u>（添加列不会影响，并且默认不会将添加的列放入视图中），**基表和视图之间的映像关系很容易被破坏（当然正常创建的也会被破坏，只是不会那么容易？）**，导致视图无法正常工作
+
+![image-20220412145526514](https://gitee.com/ababa-317/image/raw/master/images/image-20220412145526514.png)
+
+where语句可能会限制视图查询的输出，导致插入视图的数据在视图中看不到（“矛盾语句”可以插入，但是查询的时候看不到）
+
+可以通过with check option增加插入限制（添加后矛盾语句无法插入）
+
+### 视图规范
+
+-   视图命名建议统一前缀，比如==以v或view开头==，便于识别。
+
+-   SQL SECURITY使用默认的DEFINER，表示已视图定义者的权限去查询视图。
+
+-   视图定义者建议使用相关程序用户。
+
+-   视图不要关联太多的表，造成数据冗余。
+
+-   查询视图时要附带条件，不建议每次都查询出所有数据。
+
+-   视图迁移要注意在新环境有该视图的定义者用户。
+
+-   不要直接更新视图中的数据，视图只作查询。
 
 ## SQL控制语句
 
-
-
-
+>   1.   授予或访问数据库的某种特权
+>   2.   控制数据库操纵事务发生的事件以及效果
+>   3.   对数据库实行监控等等
+>
+>   其余在后续课程学习中完善
 
 # MySql语句规范
 
