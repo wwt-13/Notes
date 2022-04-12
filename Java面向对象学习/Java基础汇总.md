@@ -128,7 +128,7 @@ project --> ...
 
 > 这里先罗列一些Java修饰符的作用，具体细节会到Java面向对象中详细阐述
 
-### 访问修饰符
+#### 访问修饰符
 
 > ***用来定义类、方法、变量访问权限***
 
@@ -137,7 +137,7 @@ project --> ...
 - $default$：（默认）， 在==同一包==内可见，不使用任何修饰符。使用对象：类、接口、变量、方法。
 - $private$：在==同一类==内可见。使用对象：变量、方法。 **注意：不能修饰类（外部类）**
 
-### 非访问修饰符
+#### 非访问修饰符
 
 > 为了实现一些其他的功能，Java也提供了许多非访问修饰符
 
@@ -149,6 +149,8 @@ project --> ...
 ### Java语法糖
 
 > 注：这里所说的语法糖适用于==Java17==
+>
+> $Plus:$这里的语法糖是我的个人理解，就是罗列一下我个人觉得比较方便+奇特的Java语法。
 
 #### $var$
 
@@ -203,6 +205,23 @@ public class SwitchTest{
     }
 }
 ```
+
+#### $可变参数$
+
+>   Java5中提供了边长参数，允许在调用方法的时候传入不定长度的参数（**本质上还是基于数组实现的**）
+>
+>   ```java
+>   void outPut(int...x);
+>   ```
+
+*使用注意事项*
+
+1.   可变参数必须作为函数的最后一个参数（所以方法中最多只能传入一个可变参数）
+2.   Java中的可变参数，会被编译器转型为一个数组
+3.   长参数在编译为字节码后，在方法签名中就是以数组形态出现的，所以不能作为方法的重载
+4.   可变参数可以兼容数组，反之不能
+
+<u>个人感觉可变参数的唯一作用就是减少了一些代码量</u>（但是貌似不是很推荐使用？）
 
 ### 基本数据类型
 
@@ -425,7 +444,138 @@ String toUpperCase();//把字符串转换为大写字符串
 //其他的一些常用方法
 String trim();//去除字符串两边的空格
 String[] split(String str);//按照传入的指定字符串分割字符串
+byte[] getBytes(String charsetName);//使用指定的字符集将字符串编码成byte序列，并将结果存放在一个新的byte数组中(默认的话是使用平台的默认字符集)
 ```
+
+#### $字符串拓展-编码问题$
+
+##### $ASCII$
+
+共==128==个，使用==一个字节的低7位==来表示
+
+##### $ISO8859-1$
+
+在ASCII码的基础上涵盖了大多数西欧语言字符，仍然是单字节编码，它总共能表示256个字符
+
+##### $GBK$
+
+由于ASCII编码不支持中文，因此国人就定义了一套编码规则——GBK
+
+1.   字节小于等于127时，和==ASCII相同编码==
+2.   只要第一个字节==大于127==，就固定表示该字节和之后一个字节是一个汉字的开始（双字节代表汉字）
+
+##### $Unicode$
+
+因为世界上国家很多，如果每个国家都自己定义一套自己的编码，结果导致互相之间谁也不懂谁的编码，无法沟通交流，这是及时的出现了一个组织$ISO(国际标准化组织)$，该组织定义了一套编码方案来解决所有国家之间的沟通交流问题，这套编码方案就叫$Unicode$（更恰当的来说应该不是编码规则而是一套新的字符集）
+
+1.   每个字符必须使用==2个字节==来表示
+2.   对于==ASCII码表中的字符，编码不变==，只是将其长度扩展为16位
+3.   为每个字符分配一个唯一的ID（码点）
+
+缺点：传输ASCII表中的字符时完全可以使用一个字节表示，这就导致了传输数据比较浪费带宽，存储数据比较浪费硬盘
+
+##### $UTF-8$
+
+$UTF-8$的诞生就是为了解决上面$Unicode$的缺点。
+
+使用变长编码，使用1-4个字节进行传输和存储数据（具体的转换方式这里就不说了）。
+
+#### $深浅拷贝问题$
+
+>   任何编程语言中，都有深浅拷贝的概念
+>
+>   这里对Java中的深拷贝和浅拷贝做一个详细的解说。
+>
+>   前置条件：深浅拷贝都是对一个**已有对象**的操作。
+
+##### $概念理解$
+
+在Java中，出来*基本数据类型*（元类型）之外，还存在类的实例对象这个引用数据类型，一般使用`=`做赋值操作的时候，对于==基本数据类型==而言，拷贝的是它的**值**，而对于==引用数据类型==而言，拷贝的则是这个**对象的引**用（类比c中的指针赋值，它们依然指向同一个对象）。
+
+而浅拷贝和深拷贝就是在这个基础之上做的区分，如果在拷贝这个对象的时候，只对基本数据类型进行了拷贝，而对引用数据类型只是进行了引用的传递，而没有真实的创建一个新的对象，则认为是浅拷贝。反之，在对引用数据类型进行拷贝的时候，创建了一个新的对象，并且复制其内的成员变量，则认为是深拷贝。
+
+##### $Java中的深浅拷贝方法$
+
+>   主要讲解Object上的clone()方法
+
+在Java中，所有的类都继承自Object，而在Object上，存在一个clone()方法（被声明为**protected**，而我们所使用的方法都是Object的子类，所以都~~可以使用这个方法~~==必须重写clone才能使用这个方法==）
+
+***该方法源码***
+
+```java
+protected Object clone() throws CloneNotSupportedException{
+    //限制所有调用clone()方法的对象，都必须实现Cloneable接口，否则将抛出CloneNotSupportedException异常
+    if(!(this instanceof Cloneable)){
+        throw new CloneNotSupportedException("Class "+getClass().getName()+" doesn't implement Cloneable";
+    }
+    return internalClone();
+}
+//CLoneable接口
+public interface Cloneable{
+    //啥也没实现，只是用于指定该对象可以被拷贝的标记
+}
+```
+
+最终会调用internalClone()方法来完成具体的操作。
+
+internalClone()方法，实际上是一个native方法，可以clone()一个对象得到一个==新的对象实例==。
+
+<img src="https://gitee.com/ababa-317/image/raw/master/images/image-20220411002112304.png" alt="image-20220411002112304" style="zoom:80%;" />
+
+通过观察输出结果可以看出，`=`和`clone()`的不同之处，clone()确确实实创建了一个新的对象，而`=`则完全是只是对对象的引用（<font color="red">$Attention:$</font>不是浅拷贝！）
+
+>   ==但是此处的clone只是一次浅拷贝的操作==
+>
+>   可以看下面两幅图来理解一下利用`clone()`实现的浅拷贝和利用`=`实现的对象引用之间的之间的不同之处。
+>
+>   `=`实现的对象引用
+>
+>   <img src="C:\Users\12704\AppData\Roaming\Typora\typora-user-images\image-20220411165116042.png" alt="image-20220411165116042" style="zoom:67%;" />
+>
+>   `clone()`方法实现的浅拷贝（指上面实现的浅clone()方法）
+>
+>   ![](https://segmentfault.com/img/remote/1460000038523411)
+>
+>   注意，这里的浅拷贝和c/c++中的认识一致，基本数据类型是完全拷贝，但是引用数据类型同样还是对象引用。
+>
+>   <font color="red">$Attention:$</font>如果此时想要访问clone得到的对象的属性和方法的话，必须进行**类型转化**！！！
+
+现在浅拷贝的问题解决了，问题就集中到如何进行==深拷贝==（**在对引用数据类型进行拷贝的时候，创建了一个新的对象，并且复制其内的成员变量**）上了！
+
+![image-20201217111300466](https://segmentfault.com/img/remote/1460000038523414)
+
+==两种方法==
+
+1.   重写`clone()`
+
+     需要将类中定义的所有引用数据类型都去Cloneable接口实现clone()方法
+
+     ```java
+     @Override
+     protected Father clone() throws CloneNotSupportedException
+         //这里使用protected是为了防止子类直接调用父类的方法抛出异常
+         return (Father) super.clone();
+     }
+     @Override
+     protected Son clone() throws CloneNotSupportedException {
+         Son son= (Son) super.clone();//待返回克隆的对象
+         son.name=new String(name);
+         son.father=father.clone();
+         return son;
+     }
+     ```
+
+     比较繁琐，但是因为`clone()`是Object类的native方法的缘故使得该方法的速度极快
+
+     这种方法可以实现深拷贝，但是还有一个问题，如果引用的层数太多了怎么办，难道要给每个引用对象重写`clone()`吗🤔（不得累死）？
+
+     <img src="https://segmentfault.com/img/remote/1460000038523415" alt="image-20201217105458651" style="zoom:80%;" />
+
+     此时就需要借助一下==序列化==
+
+2.   序列化
+
+     >   暂时超出理解范围，等我学学Redits再来看看。
 
 ### 类型转换（通用）
 
@@ -554,6 +704,15 @@ System.out.print();//和上面相比少了默认的换行
 System.out.printf();//格式化输出，类比C
 ```
 
+**注意**：null是可以被输出的！
+
+```java
+public static void main(String[] args) {
+    String s = null;
+    System.out.println(s);
+}//会输出null
+```
+
 ## Java面向对象
 
 > 面向对象编程，就是一种通过对象，把现实世界映射到计算机模型中去的编程思想。
@@ -566,7 +725,7 @@ System.out.printf();//格式化输出，类比C
 >
 > 如果没有显示定义的话会调用默认的无参构造函数，但是一旦声明了有参构造函数，就无法再调用默认的无参构造函数了，此时使用`new A()`，会产生报错
 >
-> this指针就是指向对象实例的指针（很多语言都有）
+> **this指针**就是指向对象实例的指针（很多语言都有）
 >
 > 并且this还可以用来代替本类得到构造函数
 >
@@ -619,6 +778,10 @@ public class A{
 
 
 
+### 转型、多态和契约设计
+
+
+
 ### static、final和常量设计
 
 
@@ -628,6 +791,22 @@ public class A{
 
 
 ### 抽象类和接口
+
+
+
+### 垃圾回收
+
+>   垃圾回收(Garbage Collection)是Java虚拟机(JVM)垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象占据的内存空间的一种机制
+>
+>   $Plus:$这个东西细讲的话可以引申出一大堆内容，所以这里只做简单叙述，以后有时间再来填坑。
+
+-   引用：如果Rederence类型的数据中存储的数值代表的是另外<u>**一块内存的起始地址**</u>，就称这块内存代表着一个引用。
+
+-   垃圾：无任何对象引用的对象。
+
+**首先声明**：不推荐显示调用fianlize方法
+
+`object.fianlize()`方法用于实例被垃圾回收器回收时触发的操作（只有当GC（垃圾回收器）确定不存在该对象的更多引用的时候，对象的垃圾回收器才会调用这个方法），同时`System.gc()`可以增加finalize的执行几率。
 
 ## Java常用类
 
@@ -646,6 +825,264 @@ public class A{
 
 
 ## Java异常处理
+
+>   计算机程序运行的时候，总是会出现各种各样的错误。
+>
+>   1.   有一些错误是**用户**造成的，比如，希望用户输入一个`int`类型的年龄，但是用户的输入是`abc`（输入类型出错）
+>   2.   程序想要读写某个文件的内容，但是用户已经把它删除了（文件内容不存在）
+>   3.   网络突然断了，无法连接远程服务器；内存耗尽，程序崩溃；.....（各种随机性的错误）
+>
+>   ---
+>
+>   所以说，一个“健壮”的程序，必须具备处理各种各样异常的能力（==CTS2也必须贯彻这一点！！==）
+>
+>   Java在语言层面内置了一套异常处理机制，使用异常来表示错误
+
+异常是一种`class`，它本身就带有类型信息。
+
+关于异常处理的两种常见方案：
+
+1.   不处理下层函数抛出的异常，继续将捕获到的异常抛出给上层
+2.   选择在本方法对异常进行处理。
+
+### Java中异常的体系结构
+
+>   Java把异常当作对象来进行处理，并定义了一个基类`java.lang.Throwable`作为所有异常的超类。
+>
+>   <img src="https://images2015.cnblogs.com/blog/690102/201607/690102-20160728164909622-1770558953.png" alt="img" style="zoom: 80%;" />
+>
+>   在Java API中已经内置了很多异常类，这些异常类分为两大类，==错误`Error`==和==异常`Exception`==
+>
+>   <font color="red">$Attention:$</font>错误不是异常，而是脱离程序员控制的问题。（比方说栈溢出）
+
+`Throwable`分成了两个不同的分支，**一个分支是`Error`，它表示不希望被程序捕获或者是程序无法处理的错误**。**另一个分支是`Exception`，它表示用户程序可能捕捉的异常情况或者说是程序可以处理的异常**。其中异常类`Exception`又分为运行时异常(`RuntimeException`)和非运行时异常。
+
+Java异常又可以分为不受检查异常（`Unchecked Exception`）和检查异常（`Checked Exception`）
+
+-   `Error`：错误类是由Java虚拟机生成并抛出的，大多数错误与代码编写者所执行的操作无关
+
+-   `Exception`：
+
+    在`Exception`分支中有一个重要的子类`RuntimeException(运行时异常)`，该类型的异常属于==程序的逻辑异常==，比如`ArrayIndexOutOfBoundsException(数组下标越界)`、`NullPointerException(空指针异常)`等等，这些异常属于`Unchecked Exception(不检查异常)`，它们往往由程序本身的逻辑错误导致，一般通过修改程序来进行处理。
+
+    而`RuntimeException`之外的异常被统称为`非运行时异常`，是程序逻辑中必须处理的异常，包括`IOException`、`ReflectiveOperationException`等等，这些异常必须在程序逻辑中捕获或者处理。
+
+==Java规定如下==
+
+>   1.   **必须捕获的异常**：包括`Exception`及其子类，但不包括`RuntimeException`及其子类，这种类型的异常称为Checked Exception
+>   2.   **不需要捕获的异常**：包括`Error`及其子类，`RuntimeException`及其子类
+>
+>   <font color="red">$Attention:$</font>编译器对`RuntimeException及其子类`不做强制捕获要求，但是程序逻辑是否需要包含对应的异常处理还要看情况而定。
+
+### 异常抛出+捕获
+
+>   异常捕获使用`try...catch...finally`语句，把可能发生异常的代码放到`try{...}`中，然后使用`catch`捕获对应的`Exception`及其子类
+
+方案1：**选择在上层处理异常**
+
+```java
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class ExceptionTest01 {
+    public static byte[] toByte(String s, String charsetName) {
+        try {
+            return s.getBytes(charsetName);
+        } catch (UnsupportedEncodingException e) {
+            //如果系统不支持GBK编码，会捕获到UnsupportedEncodingException
+            System.out.println(e);
+            return s.getBytes(StandardCharsets.UTF_8);
+        }
+        catch(...){
+            ...
+        }
+        ...//可以进行多重catch试图捕获多种异常
+    }
+
+    public static void main(String[] args) {
+        var scan = new Scanner(System.in);
+        String str = scan.nextLine();
+        String charsetName = scan.next();
+        System.out.println(Arrays.toString(toByte(str, charsetName)));
+    }
+}
+```
+
+方案2：**选择继续抛出异常**
+
+```java
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class ExceptionTest02 {
+    //选择把异常留给main函数进行处理
+    public static byte[] toByte(String s, String charsetName) throws UnsupportedEncodingException {
+        return s.getBytes(charsetName);
+    }
+
+    public static void main(String[] args) {
+        var scan = new Scanner(System.in);
+        String str = scan.nextLine();
+        String charsetName = scan.next();
+        try {
+            System.out.println(Arrays.toString(toByte(str, charsetName)));
+        } catch (UnsupportedEncodingException e) {
+            System.out.println(e);
+        }
+    }
+}
+```
+
+方法3：直接在main函数中抛出异常（这种处理一般用于只想测试代码的情况）
+
+$Plus$：打印异常的时候，推荐使用`e.printStackTrace()`，该方法能提供比`System.out.println(e)`==更加详细的异常信息==（会输出异常出现的位置，并且是层层递进的向上查询，下图是两种方法的对比）。
+
+![image-20220411135740565](https://gitee.com/ababa-317/image/raw/master/images/image-20220411135740565.png)
+
+==$Thinking:为什么需要这几种不同给异常处理形式呢？它们之间有什么区别？$==
+
+#### $Throw\&Catch\ Exception?$
+
+-   ==抛出异常==
+
+    要理解抛出异常，首先要明白什么是异常情形，它是阻止当前方法或作用域继续执行的问题。
+
+    其此需要区分**异常情形**和**普通问题**：
+
+    -   普通问题是指在<u>当前环境下</u>能够得到**足够的信息**，总能够处理这个错误（此时推荐的处理方案就是try+catch处理）
+
+    -   异常情形则指当前环境下无法获取足够的信息，所以需要从当前环境跳出，并把问题提交给上一级环境（此时推荐throw）
+
+        此时发生的事情如下：首先，是像创建普通的java对象一样将使用`new`在堆上<u>创建一个异常对象</u>；然后，*当前的执行路径（已经无法继续下去了）被终止*，并且从当前环境中弹出对**异常对象的引用**，其次异常处理机制接管程序，并寻找一个恰当的地方继续执行这个程序。
+
+    ```java
+    if(stu==null){
+        throw new NullPointerException();
+    }
+    ```
+
+-   **`捕获异常`**
+
+    在方法抛出异常之后，运行时系统将转为寻找合适的异常处理器（exception handler）。潜在的异常处理器是异常发生时依次存留在调用栈中的方法的集合。当异常处理器所能处理的异常类型与方法抛出的异常类型相符时（**catch中的参数为对应的exception**），即为合适的异常处理器。运行时系统从发生异常的方法开始，依次回查调用栈中的方法，直至找到含有合适异常处理器的方法并执行。当运行时系统遍历调用栈而未找到合适的异常处理器，则运行时系统终止。同时，意味着Java程序的终止
+
+----
+
+#### $Java异常处理关键字介绍$
+
+>   Java异常处理涉及到五个关键字，分别是：`try`、`catch`、`finally`、`throw`、`throws`
+
+1.   ==try==：用于**监听**。将要监听的代码（可能抛出异常的代码块）放在try语句块之内，当try语句块内发生异常时，就抛出异常。
+
+2.   ==catch==：用于**捕获异常**（try语句中抛出的）。
+
+     $Plus$:注意使用多catch语句的时候，子类必须放在其超类的前面（否则永远捕获不到）
+
+     匹配原则：如果抛出的异常对象属于`catch`子句的异常类，或者属于该异常类的子类，则认为生成的异常对象与`catch`块捕获的异常类型相匹配（导致上面）
+
+3.   ==finally==：`finally`**<u>语句块总是会被执行</u>**。==它主要用于回收在try块里打开的物理资源==（如数据库连接、网络连接和磁盘文件等等）。<u>只有`finally`语句块执行完毕后，才会回来执行try或者catch中的return语句或者throw语句</u>，所以如果`finally`语句块中使用了return或者throw等终止方法的语句（***不推荐***），就不会跳回执行，直接停止
+
+4.   ==throw==：用于抛出异常。
+
+     $Plus:$一般会将抛出异常和声明异常结合
+
+     ```java
+     throw new NullPointerException();
+     ```
+
+5.   ==throws==：用在方法签名中，用于声明该方法可能抛出的异常。
+
+     如果某个方法可能会抛出某种异常又不想处理，那么可以使用throws将可能产生的异常传递给上层方法处理。
+
+---
+
+#### $同逻辑异常捕获$
+
+>   如果异常A和异常B之间的处理逻辑相同，但是又不存在继承关系，那么按照之前所学就得编写多条`catch`语句。
+>
+>   其实可以直接使用`|`将它们合并到一起。
+
+```java
+public static void main(String[] args){
+    try{
+        process();
+    }
+    catch(IOException|NumberFormatException e){
+        System.out.println(".....");
+    }
+    //永远在最外层的放置一个catch Exception，防止意料之外的异常产生。
+    catch(Exception e){
+        .....
+    }
+}
+```
+
+#### $抛出异常规范$
+
+>   如果一个方法捕获了某个异常后，又在`catch`语句中抛出了新的异常，就相当于将抛出的异常类型进行了隐式转换，这会导致一些问题的产生。
+
+如下面这段代码
+
+```java
+public class ExceptionTest03 {
+    public static void main(String[] args) {
+        try {
+            String str = null;
+            process1(str);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void process1(String s) {
+        try {
+            process2(s);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void process2(String s) {
+        if (s == null) {
+            throw new NullPointerException();
+        }
+    }
+}
+```
+
+真正错误抛出的地点是`process2`，但是异常栈信息到`process1`就断了。
+
+![image-20220411160301616](https://gitee.com/ababa-317/image/raw/master/images/image-20220411160301616.png)
+
+为了能追踪到完整的异常栈，在构造异常的时候，把原始的`Exception`实例传进去，新的`Exception`就可以持有原始`Exception`信息。对上述代码改进如下
+
+```java
+throw new IllegalArgumentException(e);//此时即可打印出完整的异常栈
+```
+
+<img src="https://gitee.com/ababa-317/image/raw/master/images/image-20220411160533853.png" alt="image-20220411160533853" style="zoom:80%;" />
+
+<font color="red">$Attention:$</font>捕获到异常并再次抛出时，一定要留住==原始异常==，否则很难定位第一案发现场！
+
+### 自定义异常
+
+>   Java中预定义的异常类型如下图所示，当我们在代码中需要抛出异常的时候，尽量使用JDK中已经定义了的异常类型，比方说，参数检查不合法，应该抛出：`IllegalArgumentException`
+
+![image-20220411161010060](https://gitee.com/ababa-317/image/raw/master/images/image-20220411161010060.png)
+
+在一个大型项目中，可以自定义新的异常类型，此时，==保持一个合理的异常继承体系是非常重要的==。
+
+1.   自定义一个`BaseException`作为**根异常**，然后相继派生出各种业务类型的异常
+
+2.   `BaseException`需要从一个合适的`Exception`派生（一般选择`RuntimeException`）
+
+3.   需要在`BaseException`中重载多个构造函数
+
+     <font color="green">$Suggestion:$</font>无参构造+给父类的message属性赋值的构造函数
 
 ## Java数据结构
 
@@ -668,9 +1105,14 @@ public class A{
 ### 命名风格
 
 - 类名：大驼峰式命名（UserId）
-- 方法名、参数名、成员变量名、局部变量名：统一采用小驼峰式命名（userid）
+- 方法名、参数名、成员变量名、局部变量名：统一采用小驼峰式命名（userId）
 - 常量名：全部大写，且单词之间使用下划线隔开（USET_ID）
 - 抽象类：同意使用Abstract/Base开头
 - 异常类：使用Exception结尾
 - 测试类：以它要测试的类的名称开始，以Test结尾
 - 包名：统一采用小写格式
+
+### 注释规范
+
+-   方法内部的注释可以采用行注释
+-   对方法的注释必须采用==javadoc==的形式（就是跨行注释的形式）
