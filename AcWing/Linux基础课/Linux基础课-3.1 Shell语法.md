@@ -929,6 +929,13 @@ find start_directory test
 
 pattern：正则相关内容，注意字符匹配符号和Java中支持的不太一样，建议采用[a-z1-9]这样的形式（貌似不支持\\\\w这种）
 
+常用指令
+
+```shell
+# 当前wen'jian'ji
+grep -r -n "word" .
+```
+
 #### 配合find指令使用
 
 - `find . -regex "\\./[a-z]+.*.txt" -exec grep -l "test" {} \;`在当前路径下查找所有包含test字符串的以至少一个小写字母开头的txt文件并输出相应文件名
