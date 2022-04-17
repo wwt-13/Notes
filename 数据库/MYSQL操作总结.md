@@ -2,6 +2,13 @@
 
 # MYSQL操作总结
 
+## 杂
+
+### 关于大小写支持
+
+-   数据库名+表名都不支持大写（自动转换为小写）
+-   字段名支持大写
+
 ## 数据库、表操作和数据更新
 
 > 这里讲的是数据库和表的创建和删除等一系列操作（不包括关系模型的细节操作）
@@ -17,7 +24,7 @@
 - 使用数据库
 
   ```mysql
-  use db_name;# 使用该数据库进行操作(操作该数据库下的表)
+  use db_name;# 使用该数据库进行操作(操作环境更换为该数据库下的表)
   ```
 
 - 数据库创建
@@ -124,7 +131,7 @@
   # change比modify更加全面,可以修改字段名
   ```
   
-- 更新字段的值
+- 更新字段的值（不建议使用，建议update全部用于元组操作）
 
   ```mysql
   update table_name set col_name=new_value where condition;# 需要记忆
@@ -157,14 +164,14 @@
 >            select ......;# 数据查询语句
 >            ```
 >
->   -   ==Delete== 删除一条或多条元组（删除表中满足where语句条件的***元组***）
+>   -   ==Delete== 删除一条或多条**元组**（删除表中满足where语句条件的***元组***）
 >
 >       ```mysql
 >       delete from tb_name
 >       where conditions;
 >       ```
 >
->   -   ==Update== 更新**现有**一条或多条元组中的值
+>   -   ==Update== 更新**现有**一条或多条**元组**中的值（注意update用于更新的是元组的值）
 >
 >       ```mysql
 >       update tb_name
@@ -210,7 +217,7 @@ alter table student add index idx_score(score) # 对score列创建了一个名�
 
 ### 唯一索引
 
-> 设计关系数据表的时候，看上去唯一的列，例如身份证号、邮箱地址，但是因为他们具备业务含义（身份证号和邮箱都有可能会修改），所以不宜作为主键
+> 设计关系数据表的时候，看上去唯一的列，例如身份证号、邮箱地址，但是因为他们具备业务含义（身份证号和邮箱都**有可能会修改**），所以不宜作为主键
 >
 > 但是这些列根据业务要求，又同时具备了唯一性约束，这种时候，就可以给这些列添加一个唯一索引
 >
@@ -224,7 +231,7 @@ alter table students add constraint uni_name unique(name);
 
 ---
 
-> 无论是否创建索引，对于用户和应用程序来说，使用关系数据库不会有任何区别。这里的意思是说，当我们在数据库中查询时，如果有相应的索引可用，数据库系统就会自动使用索引来提高查询效率，如果没有索引，查询也能正常执行，只是速度会变慢。因此，索引可以在使用数据库的过程中逐步优化。
+> 无论是否创建索引，对于用户和应用程序来说，使用关系数据库不会有任何区别。这里的意思是说，当我们在数据库中查询时，如果有相应的索引可用，数据库系统就会自动使用索引来提高查询效率，如果没有索引，查询也能正常执行，只是速度会变慢。因此，***索引可以在使用数据库的过程中逐步优化***。
 
 ## 约束
 
@@ -285,7 +292,7 @@ alter table students add constraint uni_name unique(name);
 
 - auto_increment: 自增长约束
 
-  ==自增列必须是键，但是不一定非是主键，但是只能存在一个自增列==
+  ==自增列必须是键，但是不一定非是主键，并且只能存在一个自增列==
 
   ```mysql
   create table test(
@@ -426,7 +433,7 @@ creata table tmp(
    values
    ('1999-1-2'),
    (curdate()),
-   (date(now()));
+   (date(now()));# now()返回的数据是datatime类型,使用data(now())来获取对应的data段数据
    # 日期格式转换
    select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
    ```
@@ -621,9 +628,11 @@ where grade is null;
 
 - 可以按照一个或者多个属性进行排序（排序优先级逐步递减）
 
-  ASC（ascend：上升）：升序（空值最先显示）
+  ==ASC==（ascend：上升）：升序（空值最先显示）
 
-  DESC（descend：下降）：降序（空值最后显示） 
+  ==DESC==（descend：下降）：降序（空值最后显示） 
+  
+  注意上面这两个要放在列名的后面
   
   ```mysql
   select Sno,Grade
@@ -659,7 +668,7 @@ where grade is null;
 
 - 未对查询结果分组时，集函数将作用于**整个查询结果**
 
-  对查询结果分组后，集函数将**分别作用于每个组** 
+  对查询结果分组后，集函数将**分别作用于每个组**
 
 - GROUP BY子句的作用对象是查询的中间结果表
 
@@ -796,13 +805,13 @@ where Sno in (
 - 子查询还可以插入from子句中作为临时表使用，但是此时需要对临时表进行更名操作（废话）
 
   ```mysql
-  select is.sno,sname,cno
+  select tmp.sno,sname,cno
   from sc,(
   	select sno,sname
       from student
       where sdept='is'
-  )as is
-  where sc.sno=is.sno;
+  )as tmp
+  where sc.sno=tmp.sno;
   ```
 
 相关子查询和不相关子查询
@@ -947,13 +956,17 @@ where Sno in (
     $$
     例子：查询至少选修了学生95002选修的全部课程的学生号码
   
+    关系代数实现
+    $$
+    \Pi_{Sno,C\#}\div \Pi_{C\#}{\sigma_{Sno='95002'}{SC}}
+    $$
     对于任意课程y，学生95002选修了，则学生x也选修了
-  
+    
     得到关系式如下
     $$
     \forall y (p\rightarrow q) = \neg(\exist(y)(\neg (p\rightarrow q)))=\neg\exist(y)(p\and \neg q)
     $$
-  
+    
     ```mysql
     select Sno
     from Student
@@ -971,7 +984,7 @@ where Sno in (
         )
     );
     ```
-  
+    
     
 
 ### 集合查询
@@ -1000,6 +1013,8 @@ mysql只支持并操作Union，其他交（intersect）、差（except）都可�
 
 ### 视图创建以及使用方法
 
+**全语法汇总：**
+
 ```mysql
 CREATE
     [OR REPLACE] # 表示替换已有视图，如果该视图不存在，则无效
@@ -1008,7 +1023,18 @@ CREATE
     [SQL SECURITY { DEFINER | INVOKER }] # SQL安全性
     VIEW view_name [(column_list)]
     AS select_statement # select语句，表示从基表或其他视图中选择列
-    [WITH [CASCADED | LOCAL] CHECK OPTION] # 表示在视图更新的时候保证约束
+    [WITH [CASCADED | LOCAL] CHECK OPTION]; # 表示在视图更新的时候保证约束
+    # cascade是默认值,表示更新视图的时候,要满足视图和表的相关条件(推荐)
+    # local表示更新视图的时候,满足视图定义的一个条件即可
+```
+
+**创建视图的基本格式：**
+
+```mysql
+create view view_name
+[(column_list)]
+as select_statement
+with check option;
 ```
 
 **视图创建范例**
