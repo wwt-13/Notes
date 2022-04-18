@@ -1,5 +1,21 @@
 [toc]
 
+# 填坑
+
+<a href="#test">局部变量和成员变量</a>
+
+<a href="#垃圾回收">垃圾回收</a>
+
+<a href="#方法/静态区">方法/静态区</a>
+
+<a href="#常量池">常量池</a>
+
+<a href="#初始化">初始化</a>
+
+<a href="#栈的优势">栈的优势</a> 
+
+ <a href="#序列化">序列化</a> 
+
 # Java基础汇总
 
 ## Java概述
@@ -152,7 +168,7 @@ project --> ...
 >
 > $Plus:$这里的语法糖是我的个人理解，就是罗列一下我个人觉得比较方便+奇特的Java语法。
 
-#### $var$
+#### var
 
 > 自动变量推断关键字，省时省力，等价于C++中的auto关键字
 
@@ -161,7 +177,7 @@ StringBuilder sb=new StringBuilder();
 var sb=new StringBuilder();
 ```
 
-#### $foreach$
+#### foreach
 
 > 实际上就是增强版的for循环，foreach 语句用于循环访问集合以获取所需信息，但**不应用于更改集合内容**以避免产生不可预知的副作用，可以用于遍历对象集合（可以用foreach实现的一定可以通过for循环直接实现）
 >
@@ -177,7 +193,7 @@ for(int i:array){
 }
 ```
 
-#### $switch$
+#### switch
 
 > 注意，这里说的是从Java14起开始支持的**新版Switch语句**
 
@@ -206,7 +222,7 @@ public class SwitchTest{
 }
 ```
 
-#### $可变参数$
+#### 可变参数
 
 >   Java5中提供了边长参数，允许在调用方法的时候传入不定长度的参数（**本质上还是基于数组实现的**）
 >
@@ -236,12 +252,12 @@ public class SwitchTest{
 
 ![](https://gitee.com/ababa-317/image/raw/master/images/20220328002500.png)
 
-#### $Attention$
+#### Attention
 
 1. 使用float类型时，数据需要加上后缀`f`
 2. 使用long类型时，数据需要加上后缀`l`
 
-#### $类型转换$
+#### 类型转换
 
 - 普通数据类型：直接采用强制类型zhuan'huan
 
@@ -268,7 +284,39 @@ public class SwitchTest{
 > System.out.println(i.getClass())
 > ```
 
-#### $数组$
+#### 引用数据类型的内存分配
+
+##### 声明
+
+>   引用数据类型的声明并不为对应实例分配内存空间，而只是分配一个==栈上的引用空间==
+>
+>   ```java
+>   String str;
+>   classTest test;
+>   ```
+>
+>   ![image-20220417205701160](https://gitee.com/ababa-317/image/raw/master/images/image-20220417205701160.png)
+
+#### 局部变量和成员变量
+
+>   局部变量：这里只类中定义的方法中的局部变量
+>
+>   成员变量：类的成员变量
+>
+>   <span name="test">==该部分还需填坑（大修改，这里只是一时兴起创建的）==</span>
+
+1.   定义的位置不同
+2.   在内存中的位置不同
+     -   成员变量存储在堆内存的对象中
+     -   局部变量存储在**栈内存**的方法中
+3.   声明周期不同
+     -   成员变量随着对象的出现而出现在堆中，随着对象的消失（被gc回收）而从堆中消失
+     -   局部变量随着方法的运行而出现在栈中，随着方法的弹栈而消失
+4.   初始化不同
+     -   成员变量因为在堆内存中，所有成员变量具有默认的初始化值
+     -   局部变量没有默认的初始化值，必须手动的给其赋值才可以使用
+
+#### 数组
 
 > 在Java中内置了各种强大的容器的情况下，$Why\ we\ still\ need\ to\ learn\ 数组？$
 >
@@ -296,7 +344,7 @@ int[] array2=new int[]{1,2,3};
 
 基本方法：`array.length`用于获取数组的长度
 
-##### $数组拓展：Arrays类$
+##### 数组拓展：Arrays类
 
 > JDK所提供的$java.util.Arrays$类，包含了常用的数组操作——排序sort、查找binarySearch、填充fill、打印toString、转列表asList、哈希hash等等
 
@@ -356,7 +404,7 @@ int[] array2=new int[]{1,2,3};
    System.out.println(Arrays.binarySearch(a,312));
    ```
 
-#### $String$
+#### String
 
 > 作为Java中使用最频繁的引用类型，关于String的性能问题却常常被忽略，深入了解其特性，高效的使用字符串，可以提升系统的整体性能
 >
@@ -364,7 +412,7 @@ int[] array2=new int[]{1,2,3};
 >
 > ![](https://gitee.com/ababa-317/image/raw/master/images/20220329161529.png)
 
-##### $String的不可变性$
+##### String的不可变性
 
 **Java中String类型的基本定义**
 
@@ -385,7 +433,7 @@ public final class String
 
 总结：String类是一种不可变对象
 
-##### $字符串基本$
+#####  字符串基本
 
 > 关于字符串的一些最常用的方法.
 
@@ -397,7 +445,7 @@ test.lastIndexOf('0');//10
 test.charAt(0);//0查看index=0处的字符串，相当于数组的arr[index](注意java字符串不具备下标查看的功能)
 ```
 
-##### $字符串判断$
+##### 字符串判断
 
 ```java
 boolean equals(Object obj);//比较字符串的内容是否相同
@@ -406,7 +454,7 @@ boolean startsWith(String str);//是否以str开头
 boolean endsWith(String str);//....结尾
 ```
 
-##### $字符串转换$
+##### 字符串转换
 
 ```java
 char[] toCharArray();//把字符串转换为字符数组
@@ -414,7 +462,7 @@ String toLowerCase();//把字符串转换为小写字符串
 String toUpperCase();//把字符串转换为大写字符串
 ```
 
-##### $字符串拼接$
+##### 字符串拼接
 
 - 字符串常量的拼接
 
@@ -438,7 +486,7 @@ String toUpperCase();//把字符串转换为大写字符串
 
   $正确使用方法$：使用`StringBuilder`的`append`方法替代`+`
 
-##### $字符串-杂$
+##### 字符串-杂
 
 ```java
 //其他的一些常用方法
@@ -447,24 +495,24 @@ String[] split(String str);//按照传入的指定字符串分割字符串
 byte[] getBytes(String charsetName);//使用指定的字符集将字符串编码成byte序列，并将结果存放在一个新的byte数组中(默认的话是使用平台的默认字符集)
 ```
 
-#### $字符串拓展-编码问题$
+#### 字符串拓展-编码问题
 
-##### $ASCII$
+##### ASCII
 
 共==128==个，使用==一个字节的低7位==来表示
 
-##### $ISO8859-1$
+##### ISO8859-1
 
 在ASCII码的基础上涵盖了大多数西欧语言字符，仍然是单字节编码，它总共能表示256个字符
 
-##### $GBK$
+##### GBK
 
 由于ASCII编码不支持中文，因此国人就定义了一套编码规则——GBK
 
 1.   字节小于等于127时，和==ASCII相同编码==
 2.   只要第一个字节==大于127==，就固定表示该字节和之后一个字节是一个汉字的开始（双字节代表汉字）
 
-##### $Unicode$
+##### Unicode
 
 因为世界上国家很多，如果每个国家都自己定义一套自己的编码，结果导致互相之间谁也不懂谁的编码，无法沟通交流，这是及时的出现了一个组织$ISO(国际标准化组织)$，该组织定义了一套编码方案来解决所有国家之间的沟通交流问题，这套编码方案就叫$Unicode$（更恰当的来说应该不是编码规则而是一套新的字符集）
 
@@ -474,13 +522,13 @@ byte[] getBytes(String charsetName);//使用指定的字符集将字符串编码
 
 缺点：传输ASCII表中的字符时完全可以使用一个字节表示，这就导致了传输数据比较浪费带宽，存储数据比较浪费硬盘
 
-##### $UTF-8$
+##### UTF-8
 
 $UTF-8$的诞生就是为了解决上面$Unicode$的缺点。
 
 使用变长编码，使用1-4个字节进行传输和存储数据（具体的转换方式这里就不说了）。
 
-#### $深浅拷贝问题$
+#### 深浅拷贝问题
 
 >   任何编程语言中，都有深浅拷贝的概念
 >
@@ -488,13 +536,13 @@ $UTF-8$的诞生就是为了解决上面$Unicode$的缺点。
 >
 >   前置条件：深浅拷贝都是对一个**已有对象**的操作。
 
-##### $概念理解$
+##### 概念理解
 
 在Java中，出来*基本数据类型*（元类型）之外，还存在类的实例对象这个引用数据类型，一般使用`=`做赋值操作的时候，对于==基本数据类型==而言，拷贝的是它的**值**，而对于==引用数据类型==而言，拷贝的则是这个**对象的引**用（类比c中的指针赋值，它们依然指向同一个对象）。
 
 而浅拷贝和深拷贝就是在这个基础之上做的区分，如果在拷贝这个对象的时候，只对基本数据类型进行了拷贝，而对引用数据类型只是进行了引用的传递，而没有真实的创建一个新的对象，则认为是浅拷贝。反之，在对引用数据类型进行拷贝的时候，创建了一个新的对象，并且复制其内的成员变量，则认为是深拷贝。
 
-##### $Java中的深浅拷贝方法$
+##### Java中的深浅拷贝方法
 
 >   主要讲解Object上的clone()方法
 
@@ -575,7 +623,7 @@ internalClone()方法，实际上是一个native方法，可以clone()一个对�
 
 2.   序列化
 
-     >   暂时超出理解范围，等我学学Redits再来看看。
+     >   <span name="序列化">暂时</span>超出理解范围，等我学学Redits再来看看。
 
 ### 类型转换（通用）
 
@@ -607,7 +655,7 @@ int n2=Integer.parseInt("0xff",16);//按照指定的机制转换字符串
 
 > 基本IO就是指Java中输入为stdin，输出为stdout的IO，不涉及文件操作
 
-#### $input$
+#### input
 
 > 需要使用到的Java类，**Scanner**，该类由正则构造，所以支持正则判断输入输出
 >
@@ -688,12 +736,12 @@ $Thinking$:如何实现完善的循环输入？要求终止字符串为`exit/Exi
 public static void main(String[] args){
     var scan=new Scanner(System.in);
     while(!s.hasNext("exit|Exit")){//等价于定义了特殊终止符exit、Exit
-        System.out.println("Your input word is "+scan.next());
+        System.out .println("Your input word is "+scan.next());
     }
 }
 ```
 
-#### $output$
+#### output
 
 > 相比于较为复杂的输入，Java中的输出就显得简单很多，常用的只有三个函数
 
@@ -719,7 +767,7 @@ public static void main(String[] args) {
 >
 > 具体概念定义不多解释。
 >
-> $Plus:$**类的成员变量**编译器会给默认值，可以直接使用。
+> $Plus:$**类的成员变量**编译器会给默认值，可以直接使用。 
 
 ### 构造函数和this指针
 
@@ -727,7 +775,7 @@ public static void main(String[] args) {
 >
 > 如果没有显示定义的话会调用默认的无参构造函数，但是一旦声明了有参构造函数，就无法再调用默认的无参构造函数了，此时使用`new A()`，会产生报错
 >
-> **this指针**就是指向对象实例的指针（很多语言都有）
+> **this指针**就是指向**对象实例**的指针（很多语言都有，注意是实例不是对象！！）
 >
 > 并且this还可以用来代替本类得到构造函数
 >
@@ -799,7 +847,7 @@ public class A{
 >
 >   $Plus:$继承是面向对象编程中非常强大的一种机制，它首先可以复用代码。当我们让`Son`从`Father`继承时，`Son`就获得了`Father`的所有功能，我们只需要为`Son`编写新增的功能即可
 
-#### $Java中继承的特点$
+#### Java中继承的特点
 
 1.   子类可以继承父类中的所有属性和方法（除了==私有属性+私有方法+构造函数==）
 
@@ -817,7 +865,7 @@ public class A{
 
 ---
 
-#### $继承构造函数$
+#### 继承构造函数
 
 >   对于父类的构造函数，子类不会继承，但是在子类的构造函数中，如果不显式声明的话，构造函数的第一句话会默认调用父类的**无参构造函数**（此时如果父类不存在无参构造函数的话，jvm会报错）。
 
@@ -830,17 +878,17 @@ public class Son extends Father{
 }
 ```
 
-#### $阻止继承$
+#### 阻止继承
 
 
 
-#### $关于Object超类$
+#### 关于Object超类
 
 
 
 ### 转型、多态和契约设计
 
-#### $转型$
+#### 转型
 
 >   变量之间可以互相转换，那么当然<u>*类与类之间*</u>也可以互相转化了（**仅限有继承关系的类**）。
 >
@@ -857,7 +905,7 @@ public class Son extends Father{
     Man obj2=(Man)obj1;
     ```
 
-##### $instanceof方法$
+##### instanceof方法
 
 $Plus:$为了避免向下转型（父转子）出错，Java还提供了`instanceof`操作符，用于判断一个实例是不是某种类型
 
@@ -884,7 +932,7 @@ if(p instanceof Student s){
 }
 ```
 
-#### $多态$
+#### 多态
 
 >   ==针对某个类型的方法调用，其真正执行的方法取决于运行时期实际类型的方法。==
 >
@@ -936,7 +984,7 @@ class Father {
 1.   可以以统一的接口来操纵某一类中不同的对象的动态行为
 2.   用于实现对象之间的**<u>*解耦合*</u>**
 
-#### $抽象类介绍$
+#### 抽象类介绍
 
 >   了解了转型和多态后，就可以按照该思想来理解Java中定义的抽象。
 >
@@ -968,7 +1016,7 @@ class Father {
 
 ---
 
-#### $接口介绍$
+#### 接口介绍
 
 >   学废了抽象类后，再来理解接口就很简单了，直接给出Java中接口的定义。
 >
@@ -988,18 +1036,18 @@ class Father {
 
 ---
 
-#### $interface\ vs\ abstract\ class$
+#### interface vs abstract class
 
->   关于抽象类、接口的区别！！
+>   关于抽象类、接口的区别！
 
-##### $语法层次上的区别$
+##### 语法层次上的区别
 
 1.   抽象类可以提供成员方法的实现细节，而接口中只能存在`public abstract `方法；
 2.   抽象类中的成员变量可以是各种类型的，而接口中的成员变量只能是`public static final`类型的；
 3.   ==接口==中不能含有**静态代码块**以及**静态方法**，而抽象类可以有静态代码块和静态方法；
 4.   一个类只能继承一个抽象类，而一个类却可以实现多个接口。
 
-##### ==$设计层次上的区别$==
+##### ==设计层次上的区别==
 
 1.   ==抽象类是一种对事物的抽象==，即对类抽象。而==接口则是对行为的抽象==。
 
@@ -1063,15 +1111,23 @@ class AlarmDoor extends Door implements Alarm {
 }
 ```
 
-#### $Java中的契约思想$
+#### Java中的契约思想
 
 
 
 ### static、final和常量设计
 
+#### Java单例模式
 
+>   东西太多了，先贴几个链接，到时候学了多线程后再来细看
+>
+>   https://www.cnblogs.com/gaohanghang/p/13575765.html
+>
+>   https://www.cnblogs.com/binbingg/p/14144790.html
+>
+>   https://www.zhihu.com/question/60307849
 
-### Java访问权限
+#### Java访问权限
 
 
 
@@ -1079,7 +1135,7 @@ class AlarmDoor extends Door implements Alarm {
 
 >   垃圾回收(Garbage Collection)是Java虚拟机(JVM)垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象占据的内存空间的一种机制
 >
->   $Plus:$这个东西细讲的话可以引申出一大堆内容，所以这里只做简单叙述，以后有时间再来填坑。
+>   $Plus:$这个东西细讲的话可以引申出一大堆内容，所以这里只做简单叙述，以后有时间再来<span name="垃圾回收">填坑</span>。
 
 -   引用：如果Rederence类型的数据中存储的数值代表的是另外<u>**一块内存的起始地址**</u>，就称这块内存代表着一个引用。
 
@@ -1089,13 +1145,374 @@ class AlarmDoor extends Door implements Alarm {
 
 `object.fianlize()`方法用于实例被垃圾回收器回收时触发的操作（只有当GC（垃圾回收器）确定不存在该对象的更多引用的时候，对象的垃圾回收器才会调用这个方法），同时`System.gc()`可以增加finalize的执行几率。
 
+#### 关于匿名对象的使用
+
+>   使用情景，如果某个对象只会进行一次函数调用，那么我们就可以将其声明为匿名对象（这样的话该对象就会被java内存管理当作垃圾回收）
+>
+>   我们经常将一个匿名对象作为一个**实参**传递给一个函数调用。
+>
+>   ```java
+>   new A();
+>   ```
+
+### Java类初始化顺序
+
+>   对于静态变量、静态初始化块、变量、初始化块、构造器
+>
+>   它们的初始化顺序依次是：（静态变量、静态初始化块）>（变量、初始化块）>构造器
+
+-   静态代码块：使用**static**声明，jvm加载类的时候执行，仅执行一次
+-   构造代码块：类中直接用`{}`定义，每一次创建对象的时候执行
+-   **执行顺序**优先级：静态块、main()、构造块、构造方法
+
+---
+
+#### 构造函数
+
+```java
+public A(){
+    //构造函数
+}
+```
+
+1.   ==对象==一实例化，就会调用对应的构造函数，也就是说，**<u>不实例化对象，构造函数不运行</u>**
+2.   一个对象实例化，构造函数只运行一次，而普通方法可以被该对象调用多次。
+
+#### 构造代码块
+
+```java
+{
+    //构造代码块
+}
+```
+
+1.   构造代码块的作用是*给对象进行初始化*
+
+2.   *对象一被实例化就会运行构造代码块，并且优于构造函数运行*。
+
+     注意：只有对象被实例化的时候才会运行构造代码块，**类不能调用构造代码块**，并且构造代码块要限于构造函数执行
+
+3.   ==构造代码块和构造函数的区别==：**<u>构造代码块是给所有对象进行统一初始化，而构造函数是给对应的对象初始化</u>**，也就是说对于不同的对象而言，它们可以运行不同的构造函数，但是不论实例化哪个对象，都会先执行同一个构造代码块。
+
+     >   构造代码块定义的是不同对象共性的初始化内容
+
+#### 静态代码块
+
+```java
+static{
+    //静态代码块
+}
+```
+
+1.   静态代码块随着类的加载而执行，只执行一次，并且优于主函数。
+
+2.   静态代码块可以类比构造代码块，就是**给类进行初始化**的。
+
+3.   静态代码块中的变量是局部变量，和普通函数中的局部变量性质相同（经过下图测试证实）。
+
+     <img src="C:\Users\12704\AppData\Roaming\Typora\typora-user-images\image-20220417094029060.png" alt="image-20220417094029060" style="zoom:67%;" />
+
+4.   静态代码块可以有多个
+
+#### 实例测试代码
+
+1.   独立类
+
+     ```java
+     public class InitialOrderSingleTest {
+         /*静态代码块*/
+         static {
+             System.out.println("类的静态代码块");
+         }
+     
+         /*代码块*/ {
+             System.out.println("类的代码块");
+         }
+     
+         /*构造函数*/
+         public InitialOrderSingleTest() {
+             System.out.println("类的构造函数");
+         }
+     
+         public static void main(String[] args) {
+             InitialOrderSingleTest test = new InitialOrderSingleTest();
+             InitialOrderSingleTest test1 = new InitialOrderSingleTest();
+         }
+     }
+     Output:
+     类的静态代码块
+     类的代码块
+     类的构造函数
+     类的代码块
+     类的构造函数
+     ```
+
+     >   对于一个类而言，按照如下顺序执行
+     >
+     >   1.   执行静态代码块
+     >   2.   执行构造代码块
+     >   3.   执行构造函数
+     >
+     >   对于静态变量、静态初始化块、变量、初始化块、构造函数
+     >
+     >   它们的初始化顺序依次是（静态变量|静态初始化块）>（变量|初始化块）>构造函数
+
+2.   独立类（全）
+
+     ```java
+     public class InitialOrderSingleAllTest {
+         /*静态变量*/
+         public static String staticField = "静态变量";
+         /*普通变量*/
+         public String field = "普通变量";
+     
+         /*静态初始化块*/
+         static {
+             System.out.println(staticField);
+             System.out.println("静态初始化块");
+         }
+     
+         /*初始化块*/ {
+             System.out.println(field);
+             System.out.println("初始化块");
+         }
+     
+         /*构造函数*/
+         public InitialOrderSingleAllTest() {
+             System.out.println("构造函数");
+         }
+     
+         public static void main(String[] args) {
+             new InitialOrderSingleAllTest();
+         }
+     }
+     Output:
+     静态变量
+     静态初始化块
+     普通变量
+     初始化块
+     构造函数
+     ```
+
+3.   关于继承
+
+     ```java
+     //Father
+     public class InitialOrderExtendFatherTest {
+         public static String staticFieldFather = "Father的静态成员变量";
+         public String fieldFather = "Father的普通成员变量";
+     
+         static {
+             System.out.println(staticFieldFather);
+             System.out.println("Father的静态代码块");
+         }
+     
+         {
+             System.out.println(fieldFather);
+             System.out.println("Father的构造代码块");
+         }
+     
+         public InitialOrderExtendFatherTest() {
+             System.out.println("Father的构造函数");
+         }
+     
+     }
+     //Son
+     public class InitialOrderExtendSonTest extends InitialOrderExtendFatherTest {
+         public static String staticFieldSon = "Son的静态成员变量";
+         public String fieldSon = "Son的普通成员变量";
+     
+         static {
+             System.out.println(staticFieldSon);
+             System.out.println("Son的静态代码块");
+         }
+     
+         {
+             System.out.println(fieldSon);
+             System.out.println("Son的构造代码块");
+         }
+     
+         public InitialOrderExtendSonTest() {
+             // 目前还是不太理解super显式调用的问题
+             System.out.println("Son的构造函数");
+         }
+     
+         public static void main(String[] args) {
+             new InitialOrderExtendSonTest();
+         }
+     }
+     Output:
+     Father的静态成员变量
+     Father的静态代码块
+     Son的静态成员变量
+     Son的静态代码块
+     Father的普通成员变量
+     Father的构造代码块
+     Father的构造函数
+     Son的普通成员变量
+     Son的构造代码块
+     Son的构造函数
+     ```
+
+     >   涉及到继承时，按照如下顺序执行
+     >
+     >   同级成员之间的初始化顺序按照定义顺序进行
+     >
+     >   1.   执行父类的静态代码块，并初始化父类的静态成员变量
+     >   2.   执行子类的静态代码块，并初始化子类的静态成员变量
+     >   3.   （执行父类的构造代码块|初始化父类的普通成员变量），执行父类的构造函数
+     >   4.   （执行子类的构造代码块|初始化子类的普通成员变量），执行子类的构造函数
+     >
+     >   ![img](https://images2015.cnblogs.com/blog/690102/201705/690102-20170523100400163-1438483040.png)
+
+4.   特殊情况：<span name="初始化">不触发初始化实例分析</span>
+
+     实例1：<u>比较神奇，暂时无法理解</u>
+
+     ```java
+     class SuperClass {
+         static {
+             System.out.println("SuperClass init");
+         }
+     
+         public static int value = 123;
+     }
+     
+     class SubClass extends SuperClass {
+         static {
+             System.out.println("SubClass init");
+         }
+     }
+     
+     public class InitialSpecial {
+         public static void main(String[] args) {
+             System.out.println(SubClass.value);
+         }
+     }
+     Output:
+     SuperClass init
+     123
+     ```
+
+     实例2：关于常量的调用
+
+     ```java
+     class ConstClass {
+     
+         static {
+             System.out.println("ConstClass init!");
+         }
+     
+         public static final String HELLOWORLD = "hello world";
+     }
+     
+     public class InitialConstantTest {
+         public static void main(String[] args) {
+             System.out.println(ConstClass.HELLOWORLD);
+         }
+     }
+     Output:
+     hello world
+     ```
+
+     这里没有初始化ConstClass类，是因为在编译的时候，常量（static final 修饰的）会存入***调用类***的常量池【这里说的是main函数所在的类的常量池】，调用的时候本质上没有引用到定义常量的类，而是直接访问了自己的常量池
+
+总结分析：
+
+1.   访问SubClass.main()方法，于是装载器就会为你寻找已经编译的SubClass类的代码（也就是SubClass.class文件）。在<u>装载的过程中，装载器注意到它有一个基类（也就是extends所要表示的意思）</u>，于是它再装载基类。==不管你创不创建基类对象，这个过程总会发生==。如果基类还有基类，那么第二个基类也会被装载，依此类推
+2.   执行根基类的static初始化，然后是下一个派生类的static初始化，依此类推。这个顺序非常重要，**因为派生类的“static初始化”有可能要依赖基类成员的正确初始化**
+3.   当所有必要的类都已经装载结束，开始执行main()方法体，并用new SubClass()创建对象
+4.   类SubClass存在父类，则调用父类的构造函数，你可以使用super来指定调用哪个构造函数。基类的构造过程以及构造顺序，同派生类的相同。首先基类中各个变量按照字面顺序进行初始化，然后执行基类的构造函数的其余部分
+5.   对子类成员数据按照它们***声明的顺序***初始化，执行子类构造函数的其余部分
+
+---
+
+实战测试一下：对于作业给出的代码进行分析
+
+```java
+class A {
+    int value;
+    static A a1 = new A(1);
+    public A(int i) {
+        System.out.println("initialize A"+i);
+        value = i;
+    }
+
+    public A(A a) {
+        System.out.println("copy from A"+a.value);
+        value = a.value;
+    }
+    static A a2 = new A(2);
+
+}
+
+class B {
+    A a8;
+    // A a7 = new A(a6);
+    A a6 = new A(6);
+    static A a3 = new A(3);
+    static A a4;
+    static {
+        a4 = new A(4);
+    }
+    static A a5 = new A(5);
+
+    public B(int i) {
+        System.out.println("initialize B"+i);
+        a8 = new A(8);
+    }
+    A a7 = new A(a6);
+}
+
+public class Initialization {
+    static B b1 = new B(1);
+    static B b2;
+    public static void main(String[] args) {
+        System.out.println("main begins");
+        A a9 = new A(9);
+        b2 = new B(2);
+        System.out.println("main ends");
+    }
+}
+```
+
+分析：
+
+1.   首先初始化静态代码块和静态成员变量
+
+     ```markdown
+     initialize A1
+     initialize A2
+     initialize A3
+     initialize A4
+     initialize A5
+     initialize A6 // 外部静态变量初始化的时候如果对某个对象进行了初始化，那么就要调用其构造代码块和构造函数
+     copy from A6
+     initialize B1
+     initialize A8
+     ```
+
+2.   然后初始化构造代码块、普通成员变量构造函数（实例化的时候调用）
+
+     ```markdown
+     main begins
+     initialize A9
+     initialize A6
+     copy from A6
+     initialize B2
+     initialize A8
+     main ends
+     ```
+
+     
+
 ## Java常用类
 
 ### 数字相关
 
 ### 字符串相关
 
-#### $RegExp$
+#### RegExp
 
 ### 时间相关
 
@@ -1225,7 +1642,7 @@ $Plus$：打印异常的时候，推荐使用`e.printStackTrace()`，该方法�
 
 ==$Thinking:为什么需要这几种不同给异常处理形式呢？它们之间有什么区别？$==
 
-#### $Throw\&Catch\ Exception?$
+#### Throw\&Catch Exception?
 
 -   ==抛出异常==
 
@@ -1251,7 +1668,7 @@ $Plus$：打印异常的时候，推荐使用`e.printStackTrace()`，该方法�
 
 ----
 
-#### $Java异常处理关键字介绍$
+#### Java异常处理关键字介绍
 
 >   Java异常处理涉及到五个关键字，分别是：`try`、`catch`、`finally`、`throw`、`throws`
 
@@ -1279,7 +1696,7 @@ $Plus$：打印异常的时候，推荐使用`e.printStackTrace()`，该方法�
 
 ---
 
-#### $同逻辑异常捕获$
+#### 同逻辑异常捕获
 
 >   如果异常A和异常B之间的处理逻辑相同，但是又不存在继承关系，那么按照之前所学就得编写多条`catch`语句。
 >
@@ -1300,7 +1717,7 @@ public static void main(String[] args){
 }
 ```
 
-#### $抛出异常规范$
+#### 抛出异常规范
 
 >   如果一个方法捕获了某个异常后，又在`catch`语句中抛出了新的异常，就相当于将抛出的异常类型进行了隐式转换，这会导致一些问题的产生。
 
@@ -1373,9 +1790,133 @@ throw new IllegalArgumentException(e);//此时即可打印出完整的异常栈
 
 ## JVM内存分布
 
-> 镇楼图在上
+> 镇楼图在上（这幅图比较复杂，主要借助这张图了解一下内存分配的各种细节）
 >
 > <img src="https://gitee.com/ababa-317/image/raw/master/images/20220401152336.png" style="zoom:80%;" />
+>
+> Java的内存分配与管理是Java的核心技术之一，这里主要分析一下Java中类和对象在内存中的表现形式
+>
+> **基础概念**——Java在内存分配时涉及到的几个区域
+>
+> **栈区（stack）、堆区（heap）、方法区/静态区（Method Area）、常量池**
+
+### 各大区简介
+
+#### 栈区（stack）
+
+>   用于存放基本类型数据和*对象的引用变量*的数据（类比指针），但是方法本身不存放在栈中，而是存放在堆中
+
+当在一段代码块<u>定义一个变量</u>时，Java就在栈中为这个变量分配内存空间，当该变量<u>退出该作用域</u>后，Java会**自动释放**掉为该变量所分配的内存空间，该内存空间可以立即被另作他用。==栈中的数据大小和生命周期是可以确定的==，当没有引用指向数据时，这个数据就会消失。
+
+每个方法（Method）执行时，都会创建一个方法栈区，**用于存储局部变量表、操作数栈、动态链接、方法出口信息等**
+
+栈中所存储的**变量和引用**都是**局部的（即：定义在方法体中的变量或者引用，包括final修饰的局部变量）**
+
+---
+
+Note：该部分目前了解即可（还没学线程）
+
+每个线程包含一个栈区，栈中只保存基本数据类型的变量和引用数据类型的变量，每个栈中的数据(基本数据类型和对象的引用)都是私有的，其它栈是无法进行访问的。栈分为3个部分：基本类型变量区、执行环境上下文、操作指令区(存放操作指令)
+
+----
+
+<u>*栈的优势*</u>：存取速度比堆要快，仅次于寄存器，==栈数据可以共享==（<span name="栈的优势">暂时</span>没看懂，咋共享？）
+
+<u>*栈的缺点*</u>：存在栈中的==数据大小与生存期必须是确定的==，缺乏灵活性
+
+#### 堆区（heap）
+
+>   堆内存用于存放new创建的**对象**和**数组**，在堆中分配的内存，由Java虚拟机的自动垃圾回收器gc来进行管理
+
+==堆内存是被所有线程共享的一块内存区域==，在虚拟机启动时创建。
+
+在堆中产生了一个数组或对象后，需要在栈中定义一个特殊的变量（也可以不定义，像**匿名对象**这种只需要使用一次的对象就可以不定义引用而直接作为临时对象调用，之后会被gc回收），让栈中这个变量的取值等于数组或对象在堆内存中的首地址，栈中的这个变量就成了*数组或对象*的**引用变量**。引用变量就相当于是为数组或对象起的一个名称，以后就可以在程序中使用栈中的引用变量来访问堆中的数组或对象。
+
+引用变量是普通的变量，定义时在栈中分配，**引用变量在程序运行到其作用域之外后被释放**。而数组和对象本身在堆中分配，即使程序运行到使用 new 产生数组或者对象的语句所在的代码块之外，<u>*数组和对象本身占据的内存不会被释放*</u>，数组和对象在没有引用变量指向它的时候，才变为垃圾，不能在被使用，但仍然占据内存空间不放，在随后的一个==不确定的时间==被垃圾回收器收走（释放掉），这也是Java比较占内存的原因
+
+堆的优点：可以动态地分配内存大小，生存期也不必事先告诉编译器，因为它是在运行时动态分配内存的，Java的垃圾收集器会自动收走这些不再使用的数据
+
+堆的缺点：由于在运行时动态分配内存，存取速度较慢
+
+#### 方法/静态区（method area）
+
+>   方法区用于存放对象中用static定义的静态成员。
+>
+>   **它存储已被Java虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等,它跟堆一样，被所有的线程共享**
+
+这里具体存放的东西有点多，先放个链接在这里https://www.joshua317.com/article/189，以后<span name="方法/静态区">填坑</span>
+
+#### 常量池
+
+<span name="常量池">常量池</span>
+
+### 实例分析Java内存分配的具体过程
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        //实例化一个Cat对象
+        Cat cat = new Cat();
+        //给成员变量赋值
+        cat.name = "招财";
+        cat.age = 2;
+        cat.weight = 2.02;
+        //打印
+        System.out.println("小猫的名字："+cat.name + " 小猫的年龄："+cat.age);
+        //调用成员方法
+        cat.say();
+    }
+}
+class Cat {
+    /**
+     * 成员变量 name
+     */
+    String name;
+    /**
+     * 成员变量 age
+     */
+    int age;
+    /**
+     * 成员变量 weight
+     */
+    double weight;
+
+    public void say()
+    {
+        System.out.println("喵喵~~");
+    }
+}
+```
+
+1.   程序的执行过程中，首先`Main`类的成员属性和成员方法会被加载到方法区
+
+     ![](https://www.joshua317.com/uploads/article/20211109/FasWjRvJsFtvSgmaRAr31Eyn7Ki7zsWZnzMblVCL.png)
+
+2.   随后程序执行`Main`类的`main()`方法，`main()`方法体会被压入栈区
+
+     ![](https://www.joshua317.com/uploads/article/20211109/xq91rIVRmOQ72nOhONtrgc20YUyTgAiJJlyWfyum.png)
+
+3.   程序执行到`Cat cat=new Cat();`的时候，首先会将Cat类的成员属性和成员方法加载到方法区，用于存放 Cat 实例对象，并给成员属性及成员方法分配对应的地址空间，比如下图的0x000001~0x000004即为对象分配的堆内存地址，但此时成员属性都是默认值,比如int类型默认值为0，String类型默认值为null，==成员方法地址值为方法区对应成员方法体的内存地址值==；然后在栈内存中会给变量cat分配一个栈地址`34b23231`，用来存放Cat实例对象的引用地址的值`74a14482`
+
+     ![](https://www.joshua317.com/uploads/article/20211109/85EHwQyULtpe0I4LnvJ9tuKv6K4u06GNYJY0IBEM.png)
+
+4.   接下来对cat实例进行赋值
+
+     ```java
+     cat.name ="招财";//非new形式，会将字符串存入常量池
+     cat.age=2;
+     cat.weight=2.02;
+     ```
+
+     先在栈区找到引用变量cat，然后根据地址值找到 new Cat() 对象的内存地址，并对里面的属性进行赋值操作。由于成员属性name的类型为String，为引用数据类型，所以此时会在常量池开辟一块地址空间`2x00000000`，存放`招财`这个值，而age的类型为int，weight的类型为double，都为基本数据类型，所以值直接存放堆中
+
+     ![](https://www.joshua317.com/uploads/article/20211109/tRteW9wYhJ71dyNVC9H5XJbWwULkr6pFaNi8qF1n.png)
+
+5.   当程序执行到 `cat.say() ;`方法时，会先到栈区找到cat这个引用变量（这个变量存的是对象的引用地址），然后根据该地址值在堆内存中找到 new Cat() 对象里面的`say()`方法进行调用，在调用`say()`方法时，会在栈区开辟一块空间进行运行
+
+     ![](https://www.joshua317.com/uploads/article/20211109/paF2z0TJ2ipT21B5yydePnIxMQD9rIO80vyref0S.png)
+
+6.   在方法体`void say()`被调用完成后，就会立刻马上从栈内弹出（出站 )，最后，在main()函数完成后，main()函数也会出栈
 
 ## Java规范
 

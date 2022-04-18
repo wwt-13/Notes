@@ -891,16 +891,26 @@ find start_directory test
    - `find . -name "*.txt" -exec "rm" {} \;`删除所有txt格式的文件
    - `find . -regex "\\./[a-z]+.*.txt" -exec rm {} \;`找到当前目录下所有小写字母开头的txt文件并删除
 
-2. `-type`：指定搜索的文件类型，一般而言只需要知道`d:目录`、`f:普通文件`即可
+3. `-type`：指定搜索的文件类型，一般而言只需要知道`d:目录`、`f:普通文件`即可
 
-2. `empty`：查找到路径下所有空文件和文件夹
+    ```shell
+    find . -name "IdeaProjects" -type d # 查找指定文件夹
+    ```
 
-3. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
+4. `empty`：查找到路径下所有空文件和文件夹
+
+5. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
 
    比方说我想要搜索当前目录下的`ab1.txt`
 
    ```shell
    find -regex "./[a-b]{2}.txt" -print
+   ```
+
+6. 结合`grep`指令过滤错误信息（貌似失效了不知道咋回事）
+
+   ```shell
+   find . -name "IdeaProjects" -type d | grep -v "Permission denied"
    ```
 
 
