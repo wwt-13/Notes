@@ -77,6 +77,10 @@ public class Hello{
 
      > “static方法就是没有**this**的方法。在static方法内部不能调用非静态方法，反过来是可以的。而且可以在没有创建任何对象的前提下，**仅仅通过类本身来调用static方法**。这实际上正是static方法的主要用途。”
 
+     <font color="red">$Thinking:$</font>为什么`main`方法一定要定义成`static`?
+
+     >   假设没有static关键字,那意味着需要用生成一个实例后才可以调用这个main方法,而main方法是程序入口点，你没有进入main方法,自然无法生成一个实例,既然没有实例，那就无法调用main函数，岂不矛盾? 所以main函数被设置为static.
+
   3. `void`修饰的是该方法返回的变量类型（这个相信有编程基础的都懂）
 
   4. `main`，main方法在Java公共类中的一个非常特殊的方法，运行Java文件时，main方法是Java程序的**唯一公开接口**（程序**由此开始运行**）。
@@ -159,7 +163,7 @@ project --> ...
 
 - $static$：static 关键字用来声明独立于对象的静态变量，无论一个类实例化多少对象，它的静态变量只有一份拷贝
 - $final$：final 表示"最后的、最终的"含义，变量一旦赋值后，不能被重新赋值。被 final 修饰的实例变量必须显式指定初始值
-- $abstract$：抽象类不能用来实例化对象，声明抽象类的唯一目的是为了将来对该类进行扩充
+- $abstract$：抽象类不能用来实例化对象（**但是可以创建对抽象类的引用**），声明抽象类的唯一目的是为了将来对该类进行扩充
 - $synchronized和volatile$：主要用于线程的编程
 
 ### Java语法糖
@@ -1129,7 +1133,124 @@ class AlarmDoor extends Door implements Alarm {
 
 #### Java访问权限
 
+### Java内部类(nested class)
 
+>   在Java程序中，通常情况下我们把不同的类组织在不同的包下面，对于一个包下面的类来说，它们是在*同一层次，没有父子关系*
+>
+>   但是还有一种类，它被定义在另外一个类的内部，被称为内部类（$Nested \ Class$），Java的内部类分为好几种，在通常情况下用的不多。
+
+#### Inner Class
+
+基本定义：如果一个类被定义在另外一个类的内部，那么这个类就是`Inner Class`
+
+```java
+class Outer{
+    class Inner{
+        // 定义的内部类
+    }
+}
+```
+
+内部类与普通类的最大不同之处就在于——==Inner Class的实例不能单独存在，它不许依附于一个Outer Class的实例==
+
+```java
+public class Outer {
+    public class Inner {
+        void hello() {
+            System.out.println("Hello Inner");
+        }
+    }
+    public static void main(String[] args) {
+        new Outer().new Inner().hello();
+        // 必须先创建一个Outer实例，然后才能创建Inner实例
+    }
+}
+```
+
+这是因为Inner Class除了有一个`this`指向它自己，还隐含地持有一个Outer Class实例，可以用==`Outer.this`==访问这个实例。所以，实例化一个Inner Class不能脱离Outer实例
+
+```java
+public class Outer {
+    public void hello() {
+        System.out.println("Hello Outer");
+    }
+    public class Inner {
+        void hello() {
+            Outer.this.hello();
+            System.out.println("Hello Inner");
+        }
+    }
+    public static void main(String[] args) {
+        new Outer().new Inner().hello();
+    }
+}
+```
+
+>   **Inner Class的特权**
+>
+>   Inner Class和普通Class相比，除了能引用Outer实例外，还有一个额外的“特权”，就是==可以修改Outer Class的`private`字段==，因为Inner Class的作用域在Outer Class内部，所以能访问Outer Class的`private`字段和方法
+
+观察Java编译器编译后的`.class`文件可以发现，`Outer`类被编译为`Outer.class`，而`Inner`类被编译为`Outer$Inner.class`
+
+![image-20220419190327119](https://gitee.com/ababa-317/image/raw/master/images/image-20220419190327119.png)
+
+#### Anonymous Class
+
+>   另外一种定义内部类的方法不需要在Outer Class中明确的定义这个Class，而是在方法的内部，通过匿名类（Anonymous Class来定义）
+
+*示例代码：*
+
+```java
+public class Anonymous {
+    public void hello() {
+        new AnonymousTest() {
+            @Override
+            public void f() {
+                System.out.println("Hello Anonymous");
+            }
+        }.f();
+    }
+    public static void main(String[] args) {
+        new Anonymous().hello();
+    }
+}
+```
+
+匿名类和Inner Class一样，可以访问Outer Class的`private`字段和方法。之所以我们要定义匿名类，**是因为在这里我们通常不关心类名**，比直接定义Inner Class可以少写很多代码（所以匿名类比Inner Class更常用）
+
+观察Java编译器编译后的`.class`文件可以发现，`Outer`类被编译为`Outer.class`，而匿名类被编译为`Outer$1.class`。如果有多个匿名类，Java编译器会将每个匿名类依次命名为`Outer$1`、`Outer$2`、`Outer$3`……
+
+![image-20220419191610935](https://gitee.com/ababa-317/image/raw/master/images/image-20220419191610935.png)
+
+当然，除了接口，匿名类也完全可以继承自普通类
+
+#### Static Nested Class
+
+>   静态内部类，和Inner Class及其类似
+
+*实例代码：*
+
+```java
+public class StaticNestedClass {
+    private static String name = "test";
+    private String name1 = "123";
+    static class StaticInnerClass {
+        void hello() {
+            System.out.println("Hello" + StaticNestedClass.name);
+            System.out.println(name);
+            // 静态类无法引用非静态变量和方法
+        }
+    }
+    public static void main(String[] args) {
+        // 不依赖于内部类，直接就能运行
+        new StaticInnerClass().hello();
+    }
+}
+```
+
+用`static`修饰的内部类和Inner Class有很大的不同，它==不再依附于`Outer`的实例，而是一个完全独立的类，因此无法引用`Outer.this`==，但它可以访问`Outer`的`private`**静态字段和静态方法**。如果把`StaticNested`移到`Outer`之外，就失去了访问`private`的权限（从下方可以看出，独立了但没完全独立）
+
+![image-20220419192830869](https://gitee.com/ababa-317/image/raw/master/images/image-20220419192830869.png)
 
 ### 垃圾回收
 
@@ -1504,11 +1625,41 @@ public class Initialization {
      main ends
      ```
 
-     
+
+## Java底层
+
+### Object学习
+
+
 
 ## Java常用类
 
 ### 数字相关
+
+#### Random
+
+>   Java中要生成指定范围的随机数有两种方法
+>
+>   1.   调用Math类的random方法`Math.random()`（该方法局限性太大，只能生成[0-1]范围内的double类型随机数）
+>   2.   更加专业的==`Random`==类，基本能够涵盖日常使用的所有随机数
+
+`Random` 类位于 java.util 包中，该类常用的有如下两个构造方法。
+
+-   `Random()`：该构造方法使用一个和当前系统时间对应的数字作为种子数，然后使用这个种子数构造 Random 对象（==一般都使用该方法构造==）
+-   `Random(long seed)`：使用单个 long 类型的参数创建一个新的随机数生成器。
+
+##### Random类的常用方法
+
+|               方法                |                             说明                             |            使用实例            |
+| :-------------------------------: | :----------------------------------------------------------: | :----------------------------: |
+|      `boolean nextBoolean()`      |  生成一个随机的 boolean 值，生成 true 和 false 的值概率相等  |     `random.nextBoolean()`     |
+| `double nextDouble(origin,bound)` | 生成数值介于 [0,1.0)，含 0 而不包含 1.0,可以设置origin和bound来指定生成的随机数范围 | `new Random().nextDouble(1,2)` |
+|    `int nextlnt(origin,bound)`    | 生成值介于 int 的区间，也就是 -231~231-1。如果<br/>需要生成指定区间的 int 值，则需要进行一定的数学变换（范围设置同上） | `new Random().nextInt(1,233)`  |
+|     `void setSeed(long seed)`     | 重新设置 Random 对象中的种子数。设置完种子数以后的 Random 对象<br/>和相同种子数使用 new 关键字创建出的 Random 对象相同 |              `无`              |
+|                ``                 |                                                              |               ``               |
+|                ``                 |                                                              |               ``               |
+
+
 
 ### 字符串相关
 
@@ -1545,7 +1696,7 @@ public class Initialization {
 
 ### Java中异常的体系结构
 
->   Java把异常当作对象来进行处理，并定义了一个基类`java.lang.Throwable`作为所有异常的超类。
+>   Java把异常当作对象来进行处理，并定义了一个基类`java.lang.Throwable`作为所有异常的超类
 >
 >   <img src="https://images2015.cnblogs.com/blog/690102/201607/690102-20160728164909622-1770558953.png" alt="img" style="zoom: 80%;" />
 >
@@ -1782,7 +1933,18 @@ throw new IllegalArgumentException(e);//此时即可打印出完整的异常栈
 
      <font color="green">$Suggestion:$</font>无参构造+给父类的message属性赋值的构造函数
 
+### 常用异常类
+
+1.   算术异常类：`ArithmeticExecption`
+2.   空指针异常类：`NullPointerException`
+3.   方法不存在异常类：`NoSuchMethodException`
+4.   属性不存在异常类：`NoSuchFieldException`
+5.   不支持的方法异常类：`java.lang.UnsupportedOperationException`
+6.   参数出错异常类：`IllegalArgumentException`
+
 ## Java数据结构
+
+
 
 ## Java文件IO
 

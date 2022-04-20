@@ -1080,6 +1080,76 @@ where语句可能会限制视图查询的输出，导致插入视图的数据在
 
 -   不要直接更新视图中的数据，视图只作查询。
 
+## 数据库的查询优化问题
+
+>   SQL语句对于不同的执行方案对性能的差距巨大
+>
+>   $Plus:$主要掌握这类问题的计算方法和分析方法
+
+`例题分析`
+
+求：选修了课程c2的学生姓名
+
+```mysql
+select student.Sname
+from student,cs
+where student.sno=sc.sno 
+and sc.cno='c2';
+```
+
+问：此查询的IO和CPU处理代价是多少？
+
+假设：
+
+-   外存：student1000条，sc10000条，选修2号课程的学生50条
+-   内存：一个内存块可以装10个student或者100个sc，内存中一次可以存取5块student元组，1块sc元组和若干块连接元组
+
+-   读写速度：20块/秒
+
+$$
+Q1=\Pi_{Sname}(\sigma_{student.Sno=sc.Sno\and sc.Cno='c2'}(student\times sc))
+$$
+
+1.   $student \times sc$
+
+     读取总块数
+
+     = 读student块表数+读sc表的次数\*每遍块数
+
+     = $1000/10+(1000/10/5)\times(10000/100)$
+
+     = $2100$
+
+     是否可以有第二种方法
+
+     读取总块数
+
+     = 读sc表的块数+读student的次数*每遍块数
+
+     = $10000/100+(1000/10)*(10000/100/1)$
+
+     = $100+100*100$
+
+     = $10100$
+
+     读写时间=$2100/20$=105s
+
+2.   中间结果处理
+
+     中间表大小=$1000*10000=10^7$(一千万条元组)
+
+     写中间结果的时间=$10^7/10/20=50000s$
+
+3.   $\sigma$
+
+     同样需要遍历整个中间表
+
+     耗费时间=$50000s$
+
+4.   $\Pi$
+
+5.   总时间？
+
 ## SQL控制语句
 
 >   1.   授予或访问数据库的某种特权
@@ -1087,6 +1157,27 @@ where语句可能会限制视图查询的输出，导致插入视图的数据在
 >   3.   对数据库实行监控等等
 >
 >   其余在后续课程学习中完善
+
+## 数据库完整性约束
+
+```mysql
+create trigger fruittrig # 创建触发器
+after insert on sells # trigger time,before/after指定了触发器执行的时间(在时间发生之前/后
+# 三类触发器:insert,update,delete
+# 如果需要执行多条触发语句:可以使用begin...end
+# mysql中定义了new和old,来知道触发器发生的表中,触发了触发器的哪一行数据,来引用触发器中发生变化的记录内容
+referencing new as newtuple
+for each row
+when(
+	newtuple.fname not in
+    (select fname from fruits)
+)
+insert into fruits(fname)
+values
+(newtuple.fname);
+```
+
+
 
 # MySql语句规范
 

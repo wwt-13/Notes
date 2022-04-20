@@ -20,7 +20,7 @@
 ```java
 package p2;
 import p3.C;
-import p3.D;
+import p3.D;// 不导入的话,只能访问public方法和public变量
 
 public class RightTest1 extends D{
     public static void main(String[] args) {
@@ -45,6 +45,10 @@ public class RightTest1 extends D{
 PLUS：
 - static用来修饰内存只有一份
 - final用于修饰不可修改（不可继承）
+
+子类访问权限必须大于父类
+
+“儿子从父亲那儿继承一个东西，不能把那个东西变成自己的，不让自己的父亲再用。那肯定是不合理的嘛。”
 
 ## 嵌套类
 

@@ -33,7 +33,7 @@
 ```java
 package p1.p3;
 import p1.p2.Test;
-//也可以采用import p1.p2.*，直接导入所有文件（当然此目录下不能有文件夹）
+//也可以采用import p1.p2.*，直接导入所有文件（当然此目录下不能有文件夹,应该说文件夹下的文件无法递归导入）
 public class PackageTest {
     public static void main(String[] args) {
         System.out.println(Test.a);

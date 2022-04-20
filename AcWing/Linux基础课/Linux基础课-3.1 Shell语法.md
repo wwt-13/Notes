@@ -1092,6 +1092,8 @@ flags标记的各种形式
 
 - `sed -n '2,3s/test/Tests/p' a.txt`：指定替换2-3行的内容
 
+- `echo $PATH | sed -n 's/:/\n/gp'`
+
 #### 删除
 
 > 命令基本格式：[address]d

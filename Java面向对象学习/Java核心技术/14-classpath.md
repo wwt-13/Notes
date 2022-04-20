@@ -29,7 +29,9 @@
 
 ## 编译和运行规则
 
-- 编译一个类，需要java文件的全路径，包括扩展名
+>   注意Linux下执行指令的不同点http://zgserver.com/linuxclasspathjar.html
+
+- 编译一个类，需要java文件的全路径，包括扩展名.java
 
 - 运行一个类，需要写类名全称（非文件路径），无需写扩展名
 
@@ -45,11 +47,11 @@
 
 具体运行举例
 
-|            类名（全称）             | 文件名 |    文件全路径    |                编译指令                |             运行指令             |
-| :---------------------------------: | :----: | :--------------: | :------------------------------------: | :------------------------------: |
-|                A.B.C                | C.java | d:/m1/A/B/C.java |      `javac -cp d:/m1 A.B.C.java`      |      `java -cp d:/m1 A.B.C`      |
-|        D.E.F（引用了A.B.C）         | F.java | d:/m2/D/E/F.java |      `javac -cp d:/m1 D.E.F.java`      |   `java -cp d:/m1;d:/m2 D.E.F`   |
-| G.H（引用了D.E.F，间接引用了A.B.C） | H.java |  d:/m3/G/H.java  | `javac -cp d:/m1;d:/m2;d:/m3 G.H.java` | `java -cp d:/m2;d:/m2;d:/m3 G.H` |
+|            类名（全称）             | 文件名 |    文件全路径    |                编译指令                |             运行指令             |                Linux                |
+| :---------------------------------: | :----: | :--------------: | :------------------------------------: | :------------------------------: | :---------------------------------: |
+|                A.B.C                | C.java | d:/m1/A/B/C.java |      `javac -cp d:/m1 A.B.C.java`      |      `java -cp d:/m1 A.B.C`      |   `javac -cp "." ./m1/A/B/C.java`   |
+|        D.E.F（引用了A.B.C）         | F.java | d:/m2/D/E/F.java |      `javac -cp d:/m1 D.E.F.java`      |   `java -cp d:/m1;d:/m2 D.E.F`   | `javac -cp ".;m1" ./m2/D/E/F.java`  |
+| G.H（引用了D.E.F，间接引用了A.B.C） | H.java |  d:/m3/G/H.java  | `javac -cp d:/m1;d:/m2;d:/m3 G.H.java` | `java -cp d:/m2;d:/m2;d:/m3 G.H` | `javac -cp ".;m1;m2" ./m3/G/H.java` |
 
 实践之后，基本理解了classpath的使用方式
 
