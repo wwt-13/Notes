@@ -9,6 +9,33 @@
 -   数据库名+表名都不支持大写（自动转换为小写）
 -   字段名支持大写
 
+### MySQL注释
+
+```mysql
+#这是一个注释
+-- 这也是一个注释，但是必须空一格
+```
+
+### MySQL输出格式
+
+>   有时候，由于数据库字段过多或者数据集过大，查询操作会导致数据无法显示在一行而出现无法对齐的问题，此时可以使用`\G`使得查询结果垂直显示
+>
+>   $Plus:$更多更好的解决方案可以看这里https://www.itranslater.com/qa/details/2117995727778481152
+
+```mysql
+select * from test \G;
+```
+
+### 优化MySQL体验
+
+[mycli](https://zhuanlan.zhihu.com/p/349104648)
+
+### 关于MySQL的各种报错解决
+
+-   `1418`:函数创建失败报错，该报错产生的原因是MySQL默认会关闭创建函数的功能，可以通过`show variables like "%func%";`语句来查看函数功能是否开启，如果未开启的话可以使用`set global log_bin_trust_function_creators=1;`进行开启（该命令的目的是设置临时环境变量）。
+
+    ![image-20220423103924940](https://gitee.com/ababa-317/image/raw/master/images/image-20220423103924940.png)
+
 ## 数据库、表操作和数据更新
 
 > 这里讲的是数据库和表的创建和删除等一系列操作（不包括关系模型的细节操作）
@@ -288,7 +315,7 @@ alter table students add constraint uni_name unique(name);
 
 - check: 检查约束，域完整性
 
-  类似于自定义约束，具体使用方法如下
+  类似于自定义约束，具体使用方法见<a href="#check">此处</a>
 
 - auto_increment: 自增长约束
 
@@ -345,6 +372,10 @@ creata table tmp(
     check(col1>3000) # 添加检查约束
 );
 ```
+
+### <span name="check">check约束拓展</span>
+
+>   支持正则表达式
 
 ## 字段
 
@@ -1158,7 +1189,486 @@ $$
 >
 >   其余在后续课程学习中完善
 
+## SQL存储过程
+
+>   基本定义：**存储过程**（Stored Procedure）是在大型数据库系统中，*一组为了完成特定功能的SQL 语句集*，存储在数据库中，<u>经过第一次编译后调用不需要再次编译（因此执行速度优越）</u>，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。存储过程是数据库中的一个重要对象
+
+---
+
+==一些和存储过程无关但是比较重要的tip==
+
+### delimiter命令
+
+>   默认情况下，所有sql语句都是以分号“;”结尾
+>
+>   这样的话对于存储过程就会产生一个问题（整体执行和语句执行的问题）
+>
+>   <u>见下方语句</u>
+
+```mysql
+# 当然下面的语句改成小写也无所谓
+CREATE PROCEDURE `proc_if`(IN type int)
+BEGIN
+    DECLARE c varchar(500);
+    IF type = 0 THEN
+        set c = 'param is 0';
+    ELSEIF type = 1 THEN
+        set c = 'param is 1';
+    ELSE
+        set c = 'param is others, not 0 or 1';
+    END IF;
+    select c;
+END;
+```
+
+对于上面的存储过程，它们应该是一个整体，应该一起执行，而不是遇到`;`就执行。
+
+默认情况下，不可能等到用户把这些语句全部输入完之后，再执行整段语句。
+
+此时就需要使用==`delimiter`==语句，定义**定界符**（默认定界符是`;`）
+
+<font color="red">$Attention:$</font>delimiter的作用域是会话级别的，如果设置`delimiter $`那么当前的会话都会变成以`$`结束
+
+所以此时可以将上面的存储过程改写如下
+
+```mysql
+delimiter $
+CREATE PROCEDURE `proc_if`(IN type int)
+BEGIN
+    DECLARE c varchar(500);
+    IF type = 0 THEN
+        set c = 'param is 0';
+    ELSEIF type = 1 THEN
+        set c = 'param is 1';
+    ELSE
+        set c = 'param is others, not 0 or 1';
+    END IF;
+    select c;
+END;$
+# 恢复默认定界符
+delimiter ;
+```
+
+### 自定义变量
+
+>   用户自定义变量是一个==用来存储内容的临时容器==，在连接MySQL的整个过程中都存在，可以使用下面的`set`和`select`来定义它们
+>
+>   基本格式：`set @var:=something`
+
+```mysql
+# 定义
+set @tmp:=1;
+set @min_actor:=select * from table_name;
+set @last_weeka:=current_date-interval 1 week;
+# 使用
+select ... where col<=@last_week;
+```
+
+---
+
+### 存储过程的特点
+
+1.   能够完成比较复杂的判断和运算
+2.   **可编程性强**、比较灵活（类比函数和方法）
+3.   SQL编程的代码可以==重复使用==
+4.   执行速度快（不需要再次编译）、
+5.   减少网络之间的数据传输，节省开销（这个应该指的是云端数据库）
+6.   和触发器类似，都是一组SQL语句集合，但是存储过程时==主动调用==，而触发器则是==被动调用==（需要出发条件），并且能够实现的功能比触发器更加强大。
+
+<font color="red">$Attention:$</font>由于存储过程是预编译的，所以**无法在数据库脚本中进行定义**（自相矛盾，因为数据库脚本每次运行都要编译）
+
+### 创建存储过程
+
+**简单实例**
+
+```mysql
+create procedure pro_name()
+begin
+	......
+	......
+end;
+# 非常类似与创建函数
+-----------------------------
+# 简单存储过程创建
+create procedure show_tables()
+begin
+	select * from users;
+	select * from orders;
+end;
+# 调用存储过程
+call show_tables();
+```
+
+### 存储过程的变量
+
+>   通过一个简单的例子来学习一下存储过程中变量的**声明**和**赋值**
+
+```mysql
+# 此处省略delimiter定义
+create procedure test()
+begin
+	# 使用declare语句来声明一个变量
+	declare username varchar(20) default "wwt";
+	# 使用set语句来给变量赋值
+	set username="hello,world";
+	# 使用select into语句将users表中id=1的名称赋值给username
+	# select into语句用于变量赋值
+	# 元组的赋值需要使用游标
+	select name into username from users where id=1;
+	# 返回变量，类似return
+	select username;
+end;
+```
+
+1.   变量的声明使用`declare`,一句declare只声明一个变量，变量必须先声明后使用
+
+     <font color="red">注意</font>：`declare`无法声明`not null`，并且未初始化的变量值均为`null`，并且`declare`声明必须在存储过程的最初完成`if`等块中无法使用`declare`语句
+
+2.   变量具有**数据类型**和**长度**，与<u>mysql的SQL数据类型保持一致</u>，因此甚至还能制定默认值、字符集和排序规则等
+
+3.   变量可以通过`set`来赋值，也可以通过`select into`的方式赋值
+
+4.   返回变量需要使用`select`语句，如：select 变量名
+
+#### 作用域
+
+>   存储过程中的作用域仅限与`begin...end`块之间
+>
+>   如果需要在多个块之间传值的话，需要使用全局变量（这个非常简单）
+
+比较简单，通过一个实例来进行说明即可
+
+```mysql
+create procedure test3()
+begin
+  # 全局变量
+  declare userscount int default 0; -- 用户表中的数量
+  declare ordercount int default 0; -- 订单表中的数量
+  begin
+    select count(*) into userscount from users;
+    select count(*) into ordercount from orders;
+    select userscount,ordercount; -- 返回用户表中的数量、订单表中的数量
+  end;
+  begin
+  	# 局部变量
+    declare maxmoney int default 0; -- 最大金额
+    declare minmoney int default 0; -- 最小金额
+    select max(money) into maxmoney from orders;
+    select min(money) into minmoney from orders;
+    select usercount,ordercount,maxmoney,minmoney; -- 返回最金额、最小金额
+   end;
+end;
+```
+
+### 存储过程参数模式
+
+>   三种模式：in、out、inout
+>
+>   -   in（默认）：该参数可以作为**输入**，也就是该参数需要调用方传入值
+>   -   out：该参数可以作为**输出**，也就是该参数可以作为返回值（需要*改变传入值*的时候使用）
+>   -   inout：该参数既可以作为输入又可以作为输出，也就是该参数既需要传入值，又可以返回值
+
+<u>**使用实例**</u>
+
+```mysql
+# in实例
+create procedure test(in user_id int)
+begin
+	# set user_id=100; 该语句不会对传入值进行改变
+	select user_id;
+end;
+set @tmp:=1000;
+call test(@tmp);
+# out实例
+create procedure test1(out user_id int)
+begin
+	set user_id=1000000; # 修改值
+end;
+call test1(@tmp); # 传入值必须是定义的变量
+# inout就是同时集成了上面两者的功能
+```
+
+### 存储过程条件语句
+
+>   条件判断语句`if() then...else...end if`
+>
+>   多条件判断`if() then... elseif() then... ... else ... end if;`
+
+<u>实例演示</u>
+
+```mysql
+create procedure test(in user_id int)
+begin
+	declare username varchar(32) default '';
+	if(user_id%2=0)
+	then
+		select name into username from users where id=user_id;
+		select username;
+	else
+		select user_id;
+	end if;
+end;
+```
+
+### 存储过程循环语句
+
+>   while语句基本结构`while(表达式) do ... end while;`
+>
+>   Plus：mysql中其实还有一些集中循环语句，~~但是这里掌握`while`即可~~（不够还得了解其他两种用法）
+
+#### while
+
+<u>while实例演示</u>
+
+```mysql
+create procedure test()
+begin
+	declare i int default 0;
+	while(i<0) do
+		select i;
+		set i=i+1;
+		insert into test1(id) values (i);
+	end while;
+end;	
+```
+
+#### repeat
+
+>   基本循环格式`repeat ... until(表达式) end repeat`
+>
+>   和while的主要区别就是它在语句执行之后检查是否满足循环条件（这点可以用于==游标==的循环）
+
+*实例演示*
+
+```mysql
+create procedure proc()
+begin
+	declare i int default 0;
+	repeat
+		insert into t(field) values(i);
+		set i=i+1;
+		until(i>=5)
+	end repeat;
+end;
+```
+
+#### loop、leave、iterate语句
+
+>   loop语句使得某些语句重复执行，但是注意**loop语句本身没有停止循环的语句，必须是遇到leave语句等等才能停止循环**
+>
+>   leave语句就是用于跳出循环的（需要搭配label标签使用）
+>
+>   iteate也是用于跳出本次循环的，它的作用可以类比continue（同样需要搭配label使用）
+>
+>   但是在正式开始学习这些之前，还需要了解一样东西——`label循环标签`
+
+#### label循环标签
+
+>   $什么是label？$
+>
+>   label并不是一种特定的语句，它约定了一种<u>*标志*</u>，而`leave、iterate`语句就需要用到这种标志
+>
+>   比方说下面的几个例子
+
+```mysql
+add_num:loop
+set @count=@count+1;# 该循环会死循环
+end loop add_num;
+```
+
+在这里，add_num就是对于loop循环的标志，类似于给该loop循环的变量名（注意：二者都是==可选的！==）
+
+下面这个例子可以看到定义label的真正作用
+
+```mysql
+add_num: loop
+	set @count=@count+1;
+	if(@count>100) then
+		leave add_num;# 定义label的真正作用，用于给leave等语句提供标记
+end loop; # 此处的add_num就可有可无
+```
+
+实例：输出start-end之间的所有偶数
+
+```mysql
+create procedure tmp(in start int,in end int)
+begin
+	declare i int default(0);
+	set i=start-1;
+	loop_label:loop # 注意loop后面不能加';'
+		set i=i+1;
+		if(i>end) then
+			leave loop_label;
+		elseif(i%2=0) then
+			iterate loop_label;
+		else
+			select i;
+	end loop;
+end;
+```
+
+### 存储过程之临时表（未完成）
+
+
+
+### ==存储过程之游标的使用==
+
+>   $What\ is\ cursor(游标)?$
+>
+>   游标类似于==指针==，是一种能从包含多条数据记录的结果集中每次提取**一条记录**的机制
+>
+>   游标可以遍历所有行，但是他*<u>一次只能指向一行</u>*
+>
+>   **游标的作用就是用于对查询数据库所返回的记录进行遍历，以便进行相应的操作**
+
+<u>游标基本用法</u>
+
+1.   声明游标`declare cursor_name cursor for table_name;`（这里的table可以是你查询出来的任意集合）
+2.   打开定义的游标`open cursor_name`
+3.   使用游标获取一行数据`fetch cursor_name into col1,col2,....`
+4.   依据获取的数据执行数据更新、删改操作
+5.   释放游标`close cursor_name;`
+
+<u>示例演示1</u>
+
+```mysql
+create procedure test()
+begin
+	declare stopflag int default 0;
+	declare username varchar(20);
+	declare username_cur cursor for select name from users where id%2=0;
+	# 如果游标未找到结果的话(全部遍历一遍)，将stopflag置为1(常用于遍历过程)
+	declare continue handler for not found set stopflag=1;
+	# 打开游标
+	open username_cur;
+	while(stopflag=0) do
+		update users set name=concat(username,'_cur') where name=username;
+		fetch username_cur into username;
+	end while;
+	# 关闭游标
+	close username_cur;
+end;
+```
+
+<u>实例演示2</u>
+
+```mysql
+create function check_user_cursor( 
+    name_t varchar(20),
+    password_t varchar( 30 ),
+    password_new varchar( 30 ),
+    process int unsigned) RETURNS smallint
+begin
+	declare stopflag int default 0;# 设置循环标志
+	declare fe_uname varchar(20);
+	declare fe_password varchar(30);
+	declare tmp cursor for select uname,password from account;# 声明游标管理的数据
+	declare continue handler for not found set stopflag=1; # 用于判断游标循环结束
+	open tmp; # 打开游标
+	loop_label: loop
+		fetch tmp into fe_uname,fe_password;
+		if(stopflag=1) then
+			leave loop_label;
+		end if;
+		case process 
+			when 1 then
+				if(name_t=fe_uname and password_t=fe_password) then
+					return true; # 此时查询到对应的用户记录
+				end if; # 一定要记得退出块
+			when 2 then
+				if(name_t=fe_uname and password_t=fe_password) then
+					update account as a set a.password=password_new
+					where a.password=fe_password and a.uname=fe_uname; # 更新为new_password
+					return true;
+				end if;
+		end case;
+	end loop;
+	close tmp;
+	return false;
+end
+```
+
+==**关于游标使用的注意事项**==
+
+1.   `FETCH INTO`的变量名绝对不能是你定义==CURSOR时SQL语句查出来的列名或者列别名==，也就说你定义的变量名既不能是表中已经存在的列名，也不能是你定义游标时用过的别名，==只要一个条件不符合，FETCH INTO就把全部的变量赋NULL值==（所以定义游标变量的时候加个前缀是好习惯）
+
+### 存储过程流程控制
+
+>   使用case分支语句，和if...then类似
+
+*基本语法结构*
+
+```mysql
+case ...
+when ... then ...
+when ... then ...
+else ... # if语句同款else
+end case;
+```
+
+**实例演示**
+
+```mysql
+create procedure testcase(userid int)
+begin
+	declare my_status int default 0;
+	select status into my_status from users where id=userid;
+	
+	case my_status
+		when 1 then update users set score=10 where id=userid;
+		when 2 then update users set score=20 where id=userid;
+		when 3 then update users set score=30 where id=userid;
+		else update users set score=0 where id=userid;
+	end case;
+end;
+```
+
+
+
+### 存储过程整体操作语句
+
+1.   删除某个存储过程`drop procedure if exists procedure_name`
+
+2.   查看存储过程创建代码`show create procedure procedure_name`
+
+3.   查看存储过程`show procedure status like 'proc_name'\G;`
+
+     -   mysql：可以查看但是出现乱码
+     -   mycli：无法查看（直接卡死）
+     -   tableplus：可以查看，查看所有`show procedure status`
+
+     ![image-20220422134607212](https://gitee.com/ababa-317/image/raw/master/images/image-20220422134607212.png)
+
+4.   查看所有存储过程的名字`select name from mysql.proc where db='xx' and type='procedure'`
+
+     查看所有函数也是同理`select name from mysql.proc where db='xx' and type='function'`
+
+Plus：存储过程可修改，但是我个人认为那样还不如直接删了重建
+
 ## 数据库完整性约束
+
+## SQL时间类型使用
+
+>   MySQL中支持的几种时间类型（常用的是`date、time、datetime、timestamp`）
+>
+>   ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
+
+## MySQL函数介绍
+
+### 字符串类
+
+1.   `concat(str1,str2,str3...)`需要一个或者多个字符串参数，并将它们拼接成一个字符串
+
+     ```mysql
+     select concat('MySQL','CONCAT');
+     # 空一行防止遮挡
+     ```
+
+2.   `concat_ws(sep,str1,str2....)`和上面类似，但是第一个参数是字符串连接的分隔符
+
+---
+
+*触发器创建示例*
 
 ```mysql
 create trigger fruittrig # 创建触发器
@@ -1176,6 +1686,8 @@ insert into fruits(fname)
 values
 (newtuple.fname);
 ```
+
+---
 
 
 
