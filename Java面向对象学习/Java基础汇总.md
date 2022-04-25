@@ -16,6 +16,10 @@
 
  <a href="#序列化">序列化</a> 
 
+<a href="#泛型重写">泛型重写</a>
+
+
+
 # Java基础汇总
 
 ## Java概述
@@ -886,7 +890,7 @@ public class Son extends Father{
 
 
 
-#### 关于Object超类
+### 关于Object超类
 
 
 
@@ -1625,10 +1629,7 @@ public class Initialization {
      main ends
      ```
 
-
 ## Java底层
-
-### Object学习
 
 
 
@@ -1905,7 +1906,7 @@ public class ExceptionTest03 {
 
 真正错误抛出的地点是`process2`，但是异常栈信息到`process1`就断了。
 
-![image-20220411160301616](https://gitee.com/ababa-317/image/raw/master/images/image-20220411160301616.png)
+<img src="http://gitee.com/ababa-317/image/raw/master/images/image-20220411160301616.png">
 
 为了能追踪到完整的异常栈，在构造异常的时候，把原始的`Exception`实例传进去，新的`Exception`就可以持有原始`Exception`信息。对上述代码改进如下
 
@@ -1942,9 +1943,628 @@ throw new IllegalArgumentException(e);//此时即可打印出完整的异常栈
 5.   不支持的方法异常类：`java.lang.UnsupportedOperationException`
 6.   参数出错异常类：`IllegalArgumentException`
 
-## Java数据结构
 
 
+## Java集合
+
+>   Java集合主要由两大体系构成，分别是`Collection`体系和`Map`体系，它们分别是这两大体系的==顶层接口==（均位于`java.util`包下）
+>
+>   *Plus：*Java的集合设计非常久远，中间经历过大规模改进，我们要注意到有一小部分集合类/接口是遗留类/接口，不应该继续使用
+>
+>   -   `Enumeration<E>`：已被`Iterator<E>`取代
+>
+>   -   `Hashtable`：一种线程安全的`Map`实现
+>   -   `Vector`：一种线程安全的`List`实现
+>   -   `Stack`：基于`Vector`实现的`LIFO`的栈
+>
+>   ==框架图==
+>
+>   ![img](https://segmentfault.com/img/remote/1460000023520840)
+
+对于框架图的基本说明
+
+1.   **Collection是上层集合接口**，是一个**高度抽象**出来的集合，它包含了集合的基本操作和属性。Collection包含了List和Set两大分支
+     -   **List是一个有序的队列**，每一个元素都有它的索引。第一个元素的索引值是0。List的实现类有LinkedList, ArrayList, ~~Vector, Stack~~
+     -   **Set是一个不允许有重复元素的集合**，Set的实现类有HastSet和TreeSet。HashSet依赖于HashMap，它实际上是通过HashMap实现的；TreeSet依赖于TreeMap，它实际上是通过TreeMap实现的
+2.   **Map是一个映射接口，即Key-Value键值对**，Map中的每一个元素包含“一个key”和“key对应的value”。AbstractMap是个抽象类，它实现了Map接口中的大部分API。而HashMap，TreeMap，WeakHashMap都是继承于AbstractMap
+3.   **Iterator是遍历集合的工具**，即我们通常通过Iterator迭代器来遍历集合。我们说Collection依赖于Iterator，是因为Collection的实现类都要实现iterator()函数，返回一个Iterator对象。**ListIterator是专门为遍历List而存在的**
+
+==各个接口、类之间的关系图==（自己根据Java源代码绘制的，处于**未完成状态**）
+
+```mermaid
+classDiagram
+class Iterator{
+	<<interface>>
+}
+class Collection{
+	<<interface>>
+}
+class Map{
+	<<interface>>
+}
+class List{
+	<<interface>>
+}
+class Set{
+	<<interface>>
+}
+class AbstractCollection{
+	<<abstract>>
+}
+class AbstractList{
+	<<abstract>>
+}
+class AbstractSequentialList{
+	<<abstract>>
+}
+class ArrayList{
+	
+}
+class LinkedList{
+	
+}
+class AbstractSet{
+	<<abstract>>
+}
+class AbstractMap
+class HashSet{
+	
+}
+class TreeSet{
+	
+}
+class HashMap{
+	
+}
+class TreeMap{
+	
+}
+%% Collection接口继承于Iterator接口
+Iterator<|--Collection
+%% Map接口依赖于Collection接口(Collection<V> values())
+Collection <.. Map
+Collection<|--List
+Collection<|--Set
+%% 抽象类AbstractCollection实现了Collection
+Collection<|..AbstractCollection
+%% AbstractList继承了AbstractCollection并且实现了List接口
+AbstractCollection<|--AbstractList
+List<|..AbstractList
+%% 抽象类AbstractSequentialList继承了AbstractList抽象类,他是LinkedList的父类
+AbstractList<|--AbstractSequentialList
+%% ArrayList继承于AbstractList并且实现了List接口
+AbstractList<|--ArrayList
+List<|..ArrayList
+%% LinkedList继承于AbstractSequentialList并且实现了List
+AbstractSequentialList<|--LinkedList
+List<|..LinkedList
+%% AbstractSet抽象类继承于AbstractCollection类并且实现了Set接口
+AbstractCollection<|--AbstractSet
+Set<..AbstractSet
+%% HashSet继承于AbstractSet抽象类并且实现了Set接口
+AbstractSet<|--HashSet
+Set<..HashSet
+```
+
+### Java泛型（Generics）
+
+>   *因为之后的各种Java数据结构都广泛的应用到了泛型，所以这里提前说明一下*
+>
+>   **泛型，顾名思义，就是泛化的参数类型**
+
+#### Why we need Generics?
+
+<u>举一个自定义的ArrayList类来理解实现泛型的必要性</u>
+
+```java
+public class ArrayList{
+    private Object[] array;
+    private int size;
+    public void add(Object e) {...}
+    public void remove(int index) {...}
+    public Object get(int index) {...}
+}
+```
+
+如果用上述`ArrayList`存储`String`类型，会有这么几个缺点
+
+-   如果要获取到String类型，需要强制类型转型
+-   代码冗长
+-   如果存放了不同类型的话，更加容易出现误转型的情况
+
+```java
+ArrayList list=new ArrayList();
+list.add('Hello');//向上转型很方便(隐式)
+String first=(String)list.a=get(0);//向下需要强转
+```
+
+愚蠢的解决方法，为所有class单独编写对应的ArrayList来解决可能出现的误转型情况
+
+==明智的解决方法，使用泛型，将ArrayList变成一种模板`ArrayList<T>`==
+
+#### 泛型的基本使用
+
+>   非常简单，就是指ArrayList等Java数据结构中的泛型使用，直接略过
+
+#### 自定义泛型
+
+>   编写泛型类比普通类要复杂。通常来说，泛型类一般用在集合类中，例如`ArrayList<T>`，我们很少需要编写泛型类
+
+比方说可以编写一个C++中的`Pair`
+
+```java
+public class Pair<T>{
+    private T first;
+    private T last;
+    public Pair(T first,T last){
+        this.first=first;
+        this.last=last;
+    }
+    public T getFirst() {
+        return first;
+    }
+    public T getLast() {
+        return last;
+    }
+}
+```
+
+但是对于静态方法，必须使用不同的符号与非静态方法进行区分（*动动脑筋思考下就能理解*）
+
+所以对`Pair`添加静态的`create()`方法如下
+
+```java
+public class Pair<T>{
+    private T first;
+    private T last;
+    public Pair(T first,T last){
+        this.first=first;
+        this.last=last;
+    }
+    public T getFirst() {
+        return first;
+    }
+    public T getLast() {
+        return last;
+    }
+    public static Pair<K> create(K first, K last) {
+        return new Pair<K>(first, last);
+    }
+}
+```
+
+如果要使用多个泛型类型也非常简单
+
+```java
+public class Pair<T, K> {
+    private T first;
+    private K last;
+    public Pair(T first, K last) {
+        this.first = first;
+        this.last = last;
+    }
+    public T getFirst() { ... }
+    public K getLast() { ... }
+}
+```
+
+#### Java实现泛型的基本原理
+
+>   泛型是一种类似”模板代码“的技术，不同语言的泛型实现方式不一定相同。
+>
+>   Java语言的泛型实现方式是==擦拭法==（Type Erasure）
+>
+>   所谓擦拭法是指，*虚拟机对泛型其实一无所知，所有的工作都是编译器做的*
+
+例如，我们编写了一个泛型类`Pair<T>`，以下是编译器看到的代码
+
+```java
+public class Pair<T> {
+    private T first;
+    private T last;
+    public Pair(T first, T last) {
+        this.first = first;
+        this.last = last;
+    }
+    public T getFirst() {
+        return first;
+    }
+    public T getLast() {
+        return last;
+    }
+}
+```
+
+Java使用擦拭法实现泛型
+
+-   编译器把类型`<T>`视为`Object`
+-   编译器根据`<T>`实现安全的强制转型
+
+虚拟机在执行的时候，根本不知道泛型，它执行的代码都是经过编译器处理的内容
+
+```java
+Pair p = new Pair("Hello", "world");
+String first = (String) p.getFirst();
+String last = (String) p.getLast();
+```
+
+所以，Java的泛型是由编译器在编译时实行的，~~编译器内部永远把所有类型`T`视为`Object`处理~~（这里不准确，应该是**无限定的类型变量**被视为原始类型`Object`处理，而**限定类型变量**则会利用第一个边界的类型变量替换，限定类型在后面会提到），但是，在需要转型的时候，编译器会根据`T`的类型自动为我们实行安全地强制转型
+
+---
+
+**原始类型**：就是擦除去了泛型信息，最后在字节码中的类型变量的真正类型，无论何时定义一个泛型，相应的原始类型都会被自动提供，类型变量擦除，并使用其**限定类型**（*无限定的变量用Object*）替换
+
+---
+
+了解了Java泛型的实现方式——擦拭法，我们就知道了Java泛型的**局限**
+
+1.   **T无法是基本类型**，因为其无法向上转化为Object（Object类型无法持有基本类型）
+
+2.   ==无法取得泛型的具体class==（也就是说，T为不同类型，但是获得到的class都是相同的）
+
+     这同时也导致了无法判断带泛型的类型
+
+     ```java
+     Pair<Integer> p = new Pair<>(123, 456);
+     // Compile error:
+     if (p instanceof Pair<String>) {
+     }
+     ```
+
+3.   无法实例化`T`类型
+
+     下面的代码处于泛型类中
+
+     ```java
+     first=new T();
+     last=new T();
+     ```
+
+     运行时（泛型擦除后）
+
+     ```java
+     first=new Object();
+     last=new Object();
+     ```
+
+     这个理论上没啥问题，但是其实你的真正意图是想要创建`new Integer()`的，这与我们的本意不符，所以编译器会报错（“无法实例化”）
+
+     如果想要在泛型类中实例化`T`类型的话，必须借助额外的`Class<T>`参数
+
+     ```java
+     public class Pair<T>{
+         private T first;
+         private T last;
+         public Pair(Class<T> tmp){
+             first=tmp.newInstance();
+             last=tmp.newInstance();//利用反射的机制来进行实例化(虽然目前还没学反射)
+         }
+     }
+     //并且使用的时候也需要传入Class<T>
+     Pair<String> pair=new Pair<String>(String.class);
+     ```
+
+     ==总之建议就是不要在泛型类中进行`T`类型的初始化==
+
+4.   不恰当的重写方法（这个其实应该不算局限但是凑数也放上来的）
+
+     下面这段代码，会出现无法通过编译的情况
+
+     ```java
+     public class Pair<T> {
+         public boolean equals(T t) {
+             return this == t;
+         }
+     }
+     ```
+
+     个人理解是因为T的类型不定，如果没有限定类型的话就是重写，如果限定了类型就是重载？？（<span name="泛型重写">暂时不太理解</span>）
+
+#### extends通配符
+
+已知`Pair<Integer>`不是`Pair<Number>`的子类
+
+现有如下代码
+
+```java
+public class Pair<T>{
+    private T first;
+    private T last;
+    public Pair(T first,T last){
+        this.first=first;
+        this.last=last;
+    }
+    ......
+}
+public class PairHelper {
+    static int add(Pair<Number> p) {
+        Number first = p.getFirst();
+        Number last = p.getLast();
+        return first.intValue() + last.intValue();
+    }
+}
+int sum=PairHelper.add(new Pair<Number>(1,2);//得到结果3
+```
+
+其实上面实际传入的是`new Pair<Number>(Integer,Integer)`
+
+但是如果直接使用`new Pair<Integer>(2,3)`会报错，因为不允许`Pair<Integer>()不是Pair<Number>`的子类
+
+这是就需要利用通配符`extends`来进行通用匹配
+
+将上面的代码修改如下
+
+```java
+public class PairHelper {
+    static int add(Pair<? extends Number> p) {
+        Number first = p.getFirst();
+        Number last = p.getLast();
+        return first.intValue() + last.intValue();
+    }
+}
+```
+
+`Pair<? extends Number>`代表可以接受所有Number的子类以及Number本身
+
+这种使用`<? extends Number>`的泛型定义称之为==上界通配符==（Upper Bounds Wildcards），即把泛型类型`T`的上界限定在`Number`而不是默认的`Object`
+
+##### extends通配符的作用
+
+>   ==限制类型权限为只读==（该作用暂时还没完全理解）
+
+```java
+class Pair<T> extends Object {
+    private T first;
+    private T last;
+    public T getFirst() {
+        return first;
+    }
+    public void setFirst(T first) {
+        this.first = first;
+    }
+    public T getLast() {
+        return last;
+    }
+    public void setLast(T last) {
+        this.last = last;
+    }
+}
+public class test{
+    static void tempTest(Pair<? extends Number> tmp) {
+        //tmp.setFirst(new Double(3));
+        System.out.println(tmp.getFirst());
+    }
+}
+```
+
+如上，利用`? extends Number`的限制，使得tmp类变为只读，除了可以传入`null`（为什么具备该功效，需要了解了`super`通配符之后才能理解）
+
+#### super通配符
+
+>   前面讲了如何接受子类型，但是如果想要接受父类型的话怎么办呢？
+>
+>   此时就需要使用`super`通配符
+
+```java
+void set(Pair<? super Integer> p,Integer first,Integer last){
+    p.setFirst(first);
+    p.setLast(last);
+}
+//该方法能够正常编译
+```
+
+同上，该通配符使得对应函数变为==“只写”==（可以输出，但是你无法使用变量来获取）
+
+```java
+void get(Pair<? super Integer> p){
+    System.out.println(p.getFirst());//可以输出
+    //Integer t=p.getFirst();无法通过编译
+}
+```
+
+唯一可以接收`getFirst()`方法返回值的是`Object`类型（因为它是所有类型的父类，所有类型都可以向上转型为`Object`）
+
+#### extends&super分析
+
+>   二者的区别
+>
+>   -   `<? extends T>`允许调用读方法`T get()`获取`T`的引用，但不允许调用写方法`set(T)`传入`T`的引用（传入`null`除外）；
+>
+>   -   `<? super T>`允许调用写方法`set(T)`传入`T`的引用，但不允许调用读方法`T get()`获取`T`的引用（获取`Object`除外）
+
+记住以上结论以后，可以来看一下Java标准库中的`Collections`类定义的`copy()`方法
+
+```java
+public class Collections {
+    // 把src的每个元素复制到dest中:
+    // static后面的T和将参数中的T修改为K的作用一致
+    public static <T> void copy(List<? super T> dest, List<? extends T> src) {
+        // 作用是将src中的每个元素一次存放到dest中
+        // 可以看出,对于元素来源src,我们可以安全的获取类型T的引用,而对于元素目的地dest,我们可以安全的传入类型T的引用
+        for (int i=0; i<src.size(); i++) {
+            T t = src.get(i);
+            dest.add(t);
+        }
+    }
+}
+```
+
+##### PECS原则
+
+>   何时使用`extends`，何时使用`super`？为了便于记忆，我们可以用PECS原则：$Producer\ Extends\ Consumer\ Super$
+>
+>   如果需要返回`T`，它是生产者（Producer），要使用`extends`通配符；如果需要写入`T`，它是消费者（Consumer），要使用`super`通配符
+
+#### 无限定通配符<?>
+
+1.   因为`<?>`通配符既没有`extends`，也没有`super`，因此：
+
+     -   不允许调用`set(T)`方法并传入引用（`null`除外）；
+     -   不允许调用`T get()`方法并获取`T`引用（只能获取`Object`引用）
+
+     换句话说，既不能读，也不能写，那只能做一些`null`判断
+
+2.   `<?>`通配符有一个独特的特点，就是：`Pair<?>`是所有`Pair<T>`的超类
+
+记住这两点即可，其实无限定通配符在平时很少会使用
+
+---
+
+### Collection接口
+
+>   Collection中定义的方法如下
+>
+>   ![img](https://segmentfault.com/img/remote/1460000023520843)
+
+*常用方法如下*（==所有实现了Collection的类都通用==）
+
+1.   `int size()`：返回集合中的元素个数
+
+2.   `boolean add(E)`：添加一个元素到集合
+
+3.   `boolean addAll(Collection<? extends E>)`：将指定集合中的所有元素添加到集合中
+
+4.   `boolean contains(Collection<?>)`：检测集合中是否包含指定的元素
+
+5.   `Object[] toArray()`：返回一个表示集合的数据
+
+6.   `Iterator<E> iterator()`：返回一个Iterator接口（通常使用该接口来遍历集合）
+
+     `ListIterator`是List接口所特有的，在List接口中，通过`ListIterator()`返回一个`ListIterator`对象
+
+### List接口
+
+>   List集合代表一个有序集合，集合中每个元素都有其对应的顺序索引。List集合允许使用重复元素，可以通过索引（`get(int index)`）来访问指定位置的集合元素
+
+#### ArrayList
+
+>    ArrayList是一个动态数组，也是最最常用的集合。它允许任何符合规则的元素插入甚至包括*null*
+
+每一个ArrayList都有一个默认初始容量`DEFAULT_CAPACITY`
+
+```java
+private static final int DEFAULT_CAPACITY = 10;
+```
+
+该容量定义了数组的初始大小，随着容器中的元素不断增加，容器的大小也会随着增加。在每次向容器中增加元素的同时都会进行容量检查，当快溢出时，就会进行扩容操作（*非常耗时*，具体原理为**创建更大的新数组+复制旧数组元素到新数组，用新数组取代旧数组**）
+
+所以**如果我们明确所插入元素的多少，最好指定一个初始容量值，避免过多的进行扩容操作而浪费时间、效率**（但是实际上，add插入n个元素的时间复杂度*均摊下来*也只是O(n)）
+
+```java
+// 初始化长度为100的ArrayList
+ArrayList<Integer> tmp=new ArrayList<Integer>(100);
+```
+
+`size、isEmpty、get、set、iterator`和 `listIterator` 操作都以固定时间运行，add 操作以分摊的固定时间O(n)运行
+
+**ArrayList擅长于随机访问，同时ArrayList是非同步的**
+
+##### ArrayList构造函数
+
+>   ArrayList支持三种构造方法
+
+1.   无参构造方法`ArrayList()`（非常简单，不赘述）
+
+2.   Collection构造方法`public ArrayList(Collection<? extends E>)`
+
+     *对于Collection<? extends E>的理解*
+
+     `?`代表任意类，而`E`则是ArrayList指定的元素类型，比方说你初始化一个ArrayList`ArrayList<Integet>()`，此时的`E`就是`Integer`
+
+     所以说该参数的意思就是你必须传入一个实现了`Collection`接口的并且元素类型是本ArrayList类型子类的引用（向上转型）
+
+     ```java
+     //ArrayList构造函数实现源码
+     public ArrayList(Collection<? extends E> c) {
+         Object[] a = c.toArray();//获取c的Object数组,并且toArray()进行的是拷贝构造
+         if ((size = a.length) != 0) {//设置size同时判断是否为空
+             if (c.getClass() == ArrayList.class) {
+                 elementData = a;//elementData就是ArrayList存储元素数据的地方
+             } else {
+                 elementData = Arrays.copyOf(a, size, Object[].class);
+             }
+         } else {
+             // replace with empty array.
+             elementData = EMPTY_ELEMENTDATA;
+             //EMPTY_ELEMENTDATA就是空数组
+             //private static final Object[] EMPTY_ELEMENTDATA = {};
+         }
+     }
+     ```
+
+3.   指定大小构造函数`public ArrayList(int)`，使用指定的大小来初始化内部的数组
+
+##### ArrayList中的toArray方法
+
+>   分为两种toArray方法，一种有参，一种无参
+
+1.   ==无参==
+
+     ```java
+     public Object[] toArray() {
+         return Arrays.copyOf(elementData, size);
+     }//就是简单的拷贝返回
+     ```
+
+2.   ==有参==
+
+     大致意思就是将ArrayList中的内容拷贝到a数组中（并且数据类型和a保持一致）
+
+     ```java
+     public <T> T[] toArray(T[] a) {
+         if (a.length < size)
+             // Make a new array of a's runtime type, but my contents:
+             return (T[]) Arrays.copyOf(elementData, size, a.getClass());
+         System.arraycopy(elementData, 0, a, 0, size);
+         if (a.length > size)
+             a[size] = null;
+         return a;
+     }
+     ```
+
+     *基本使用方法*
+
+     ```java
+     ArrayList<Integer> tmp=new ArrayList<Integer>();
+     tmp.add(123);
+     Integer[] arr=new Integer[5];
+     tmp.toArray(arr);
+     System.out.println(Arrays.toString(arr));
+     //输出[123,null,null,null,null]
+     ```
+
+##### ArrayList常用方法
+
+>   个人建议：别死记，需要用的时候直接看源代码即可
+
+这里随便放点
+
+Add方法用于添加一个元素到当前列表的末尾
+AddRange方法用于添加一批元素到当前列表的末尾
+Remove方法用于删除一个元素，通过元素本身的引用来删除
+RemoveAt方法用于删除一个元素，通过索引值来删除
+RemoveRange用于删除一批元素，通过指定开始的索引和删除的数量来删除
+Insert用于添加一个元素到指定位置，列表后面的元素依次往后移动
+InsertRange用于从指定位置开始添加一批元素，列表后面的元素依次往后移动
+
+Clear方法用于清除现有所有的元素
+Contains方法用来查找某个对象在不在列表之中
+
+>   比较妙的方法`TrimSize`（可以用于释放内存）
+>
+>   这个方法用于将ArrayList固定到实际元素的大小，当动态数组元素确定不在添加的时候，可以调用这个方法来释放空余的内存
+
+##### 对于ArrayList的使用建议
+
+-   内部的Object类型的影响
+
+    对于一般的引用类型来说，这部分的影响不是很大，但是对于值类型来说，往ArrayList里面添加和修改元素，都会引起*装箱和拆箱*的操作，频繁的操作可能会影响一部分效率
+    但是恰恰对于大多数人，多数的应用都是使用值类型的数组。
+    消除这个影响是没有办法的，除非你不用它，否则就要承担一部分的效率损失，不过这部分的损失不会很大
+
+-   数组扩容影响：这一点在之前提过了
+
+-   频繁的调用IndexOf、Contains等方法（Sort、BinarySearch等方法经过优化，不在此列）引起的效率损失（这些方法都是全遍历，时间效率为`O(n)`）
 
 ## Java文件IO
 

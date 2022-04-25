@@ -54,7 +54,7 @@ class enumTest{
 
 >   各类关系汇总
 >
->   ==泛化（继承）、实现、组合、聚合、关联、依赖==
+>   ==泛化（继承）、实现、依赖、组合、聚合、关联==
 
 ### 泛化/继承（Generalization/Inheritance）
 
@@ -113,7 +113,7 @@ Flyable <|.. Bird
 
 ### 依赖（Dependency）
 
->   依赖关系，即`“use-a”`关系，依赖关系就是一个类使用到了另外一个类B，这种使用关系是==具有偶然性、临时性的、非常弱的==，但是类B的变化会影响到类A。
+>   依赖关系，即`“use-a”`关系，依赖关系就是一个类使用到了另外一个类B（“弱引用”），这种使用关系是==具有偶然性、临时性的、非常弱的==，但是类B的变化会影响到类A。
 >
 >   在代码层面，体现为***类B作为参数被类A在某个method方法中使用等等***
 >
@@ -185,15 +185,13 @@ Customer ..> Address
 >
 >   在代码层面，和关联关系是一致的，只能从语义级别上来区分
 >
->   <font color="red">聚合关系中作为成员变量的类一般使用set方法赋值</font>
+>   <font color="red">聚合关系中作为成员变量的类一般使用set方法赋值（因为它们的生命周期不是同时开始的）</font>
 
 ```mermaid
 classDiagram
 Family o-- Children
 Company o-- Empolyee
 ```
-
-
 
 #### 组合（Composition）
 
@@ -207,6 +205,12 @@ Company o-- Empolyee
 classDiagram
 Person *-- Brain
 ```
+
+
+
+
+
+
 
 
 
