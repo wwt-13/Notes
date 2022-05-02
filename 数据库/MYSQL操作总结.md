@@ -1259,7 +1259,7 @@ delimiter ;
 # 定义
 set @tmp:=1;
 set @min_actor:=select * from table_name;
-set @last_weeka:=current_date-interval 1 week;
+set @last_week:=current_date-interval 1 week;
 # 使用
 select ... where col<=@last_week;
 ```
