@@ -73,7 +73,7 @@
 
 ## thrift基本操作
 
-> 各种操作的细节可以去[thrift官网网址](https://thrift.apache.org/)
+> 各种操作的细节可以去[thrift官网网址](https://thrift.apache.org/)  
 
 首先创建game、match_system、thrift文件夹
 

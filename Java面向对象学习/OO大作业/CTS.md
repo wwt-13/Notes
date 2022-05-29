@@ -102,3 +102,17 @@ class Train{
 
 
 
+
+
+
+
+## 报错顺序
+
+1.   命令不存在
+     -   直接不存在
+     -   不同权限级下的命令不存在
+2.   参数数量和类型是否正确
+     -   基本情况
+     -   特殊情况
+         1.   addLine对于线路负载的异常处理，个人理解是非整数为`Arguments illegal`，0或负数为`Capacity illegal`
+         1.   addTrain首先是对不同列车的处理，参数个数不正确直接`Arguments illegal`，然后是对票价和张数的类型判断，类型不正确直接`Arguments illegal`，类型正确不符合逻辑再抛出对应报错

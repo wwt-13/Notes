@@ -1,3 +1,5 @@
+[toc]
+
 # Linux基础课-4.1 ssh
 
 > 输入`homework 4 getinfo`即可看到AcWing为我们新分配的ssh配套服务器
@@ -221,3 +223,4 @@ thrift：多服务器之间信息交互
 前端不难，只要使用一些比较友好的框架就行（boothstrap框架等等）
 
 数据库、安全方面：有Django来进行负责
+
