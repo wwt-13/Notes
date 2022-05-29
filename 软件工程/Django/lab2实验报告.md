@@ -14,25 +14,25 @@
 
 > 首页其实就是注册页（原本想放登录页的但是写好就懒的改了emmm）
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220327210933.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220327210933.png)
 
 最上方的是**导航栏**，所有页面都有，是直接通过`{% extends 'navbar.html' %}`实现的，在不同的状态下会跳转到不同的页面，未登录状态下（`request.session.has_key('id')=False`），点击PROFILE（个人主页）、POST（文章提交页）会默认跳转回HOME页
 
 如果现在稍微注个册的话，比如随便输入点东西（错误示例，跳转到了Error页面）
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220327211702.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220327211702.png)
 
 ## PROFILE
 
 > 好了现在假设现在的时间线是注册成功（格式无误）的时间线，那么此时就会默认跳转到你的个人主页PROFILE
 
-![image-20220327211857166](https://gitee.com/ababa-317/image/raw/master/images/image-20220327211857166.png)
+![image-20220327211857166](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220327211857166.png)
 
 首先是个人信息的一个展示，然后是你自己提交的所有文章列举。
 
 假设现在去POST界面提交了几篇文章......
 
-![image-20220327212311740](https://gitee.com/ababa-317/image/raw/master/images/image-20220327212311740.png)
+![image-20220327212311740](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220327212311740.png)
 
 界面就变成了上面这样，点击view可以前往相应的文章页面查看具体文章.
 
@@ -40,13 +40,13 @@
 
 > 文章页面，实现比较简单，就是随便把文章的具体内容展示了一下
 
-![image-20220327212156551](https://gitee.com/ababa-317/image/raw/master/images/image-20220327212156551.png)
+![image-20220327212156551](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220327212156551.png)
 
 ## LOGIN
 
 > 登录页面具体实现思路和HOME界面差不太多
 
-![image-20220327212622706](https://gitee.com/ababa-317/image/raw/master/images/image-20220327212622706.png)
+![image-20220327212622706](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220327212622706.png)
 
 ## LOGOUT
 
@@ -56,7 +56,7 @@
 
 > 可能会和最终实现的项目有些出入（因为这是还没开始写的时候花的一个大体框架图）
 
-![image-20220327213031698](https://gitee.com/ababa-317/image/raw/master/images/image-20220327213031698.png)
+![image-20220327213031698](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220327213031698.png)
 
 具体实现还是以代码为准啦~~
 

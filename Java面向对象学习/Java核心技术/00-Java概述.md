@@ -22,5 +22,5 @@
 >
 > 自己开发一个新的Java程序，只需要安装JDK
 >
-> ![](https://gitee.com/ababa-317/image/raw/master/images/20220130084432.png)
+> ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220130084432.png)
 

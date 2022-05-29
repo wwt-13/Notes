@@ -6,7 +6,7 @@
 
 - ***在/home/20xxxxxx/learnGit目录下创建一个名为README.txt的文件。这时使用 git status > Untracked.txt*** 
 
-  ![](https://gitee.com/ababa-317/image/raw/master/images/20220314133108.png)
+  ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314133108.png)
 
   此时显示`nothing added to commit but untracked files present`
 
@@ -14,7 +14,7 @@
 
 - ***在 README.txt 文件中随便写点什么，然后使用刚刚学到的 add 命令，再使用 git status > Stage.txt 。***
 
-  ![](https://gitee.com/ababa-317/image/raw/master/images/20220314133358.png)
+  ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314133358.png)
 
   此时显示`changes to be committed`，代表暂存区中有修改等待被提交，此时可以使用`git rm --cached <file>`来撤销暂存区中的文件（注意该指令不会回退工作区的内容，如果要将工作区的内容同时回退可以使用指令`git restore --staged filename`）
 
@@ -30,7 +30,7 @@
 
 - ***使用 cat Modified.txt ，观察它和第一次 add 之前的 status 一样吗，思考一 下为什么？ (对于Thinking 0.1，只有这一小问需要写到课后的实验报告中)***
 
-  ![](https://gitee.com/ababa-317/image/raw/master/images/20220314133959.png)
+  ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314133959.png)
 
   很明显不一样，因为此时工作区中的文件和暂存区中不一致，所以会显示modified，此时git给出了两种选择，一种是使用git add，将修改后的文件提交到暂存区，第二种是使用git resotre撤销工作区的修改（实际上是使用暂存区中的文件覆盖工作区中的内容，如果暂存区中不存在该文件，则使用版本区文件覆盖工作区文件。）
 
@@ -119,7 +119,7 @@
 
    - `git reset --hard 版本号`：可以回退到任意版本，版本号可以通过`git reflog`查看
 
-     ![](https://gitee.com/ababa-317/image/raw/master/images/20220308001247.png)
+     ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220308001247.png)
 
 2. `git reflog`：查看HEAD指针的**移动历史**（包括被回滚的版本）
 
@@ -145,7 +145,7 @@
 
 > 以上所有例子均已[project_test](https://git.acwing.com/a_little_buaaer/project_test)为例（我在gitLab上创建的远程仓库）
 >
-> ![](https://gitee.com/ababa-317/image/raw/master/images/20220314141338.png)
+> ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314141338.png)
 >
 > 此时可见远程仓库处有**三个分支**
 
@@ -157,19 +157,19 @@
 
 1. clone master分支位于的仓库
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220314143756.png)
+   ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314143756.png)
 
    使用git branch查看当前的所有分支，就目前为止的情况来看，貌似克隆master对应的分支（之后该结论被推翻）
    
 2. 使用git checkout dev
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220314144110.png)
+   ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314144110.png)
 
    发现仓库创建了一个dev分支，并且该分支下的内容和远程分支dev中的完全一致，但是此时还不能证明远程分支是在第一次clone的时候被clone的，有没有可能是checkout dev的时候从云端传输的呢？这些问题还需要进一步验证。
    
 3. 重做操作1，并且断网后进行操作2
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220314144646.png)
+   ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220314144646.png)
 
    发现和操作2的现象完全一致！！！
 

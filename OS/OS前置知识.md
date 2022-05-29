@@ -10,7 +10,7 @@
 
 #### 指令类型
 
-<img src="https://gitee.com/ababa-317/image/raw/master/images/20220228130553.png" style="zoom:50%;" />
+<img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220228130553.png" style="zoom:50%;" />
 
 
 
@@ -26,7 +26,7 @@
 
   - 基址寻址：`sw $1 4($2)`等一系列内存操作指令
 
-    <img src="https://gitee.com/ababa-317/image/raw/master/images/20220228134640.png" style="zoom:50%;" />
+    <img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220228134640.png" style="zoom:50%;" />
 
   - 相对寻址：`beq $1 $2 label`
 
@@ -53,7 +53,7 @@
 > 4. MEM：操作内存阶段
 > 5. WB：将数据写回寄存器
 >
-> ![](https://gitee.com/ababa-317/image/raw/master/images/20220228142017.png)
+> ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220228142017.png)
 
 ##### 流水冒险问题
 
@@ -71,7 +71,7 @@
 
 ### C语言程序设计、编译与运行
 
-> ![](https://gitee.com/ababa-317/image/raw/master/images/f85f8ebec64ee440ed4929546592d3f.png)
+> ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/f85f8ebec64ee440ed4929546592d3f.png)
 >
 > ![img](https://coekjan.github.io/img/CP-Src2Exe.svg)
 >

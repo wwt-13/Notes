@@ -15,7 +15,7 @@
 
   文件结构
 
-  <img src="https://gitee.com/ababa-317/image/raw/master/images/20220303163426.png" style="zoom:50%;" />
+  <img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220303163426.png" style="zoom:50%;" />
 
 ```java
 package p2;

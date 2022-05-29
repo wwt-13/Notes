@@ -29,7 +29,7 @@
 
 4. `cp`:文件复制+粘贴+(重命名)命令，文件复制具体操作如下图所示
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220120151414.png)
+   ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220120151414.png)
 
    - `cp a b -r`:将整个a目录复制到b目录下面
 
@@ -944,7 +944,7 @@ find start_directory test
 
 > 返回的都是所查找到文件的路径，如下图
 >
-> ![](https://gitee.com/ababa-317/image/raw/master/images/20220310192335.png)
+> ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220310192335.png)
 
 1. `-name filename`在当前目录下查找名为filename的文件
 
@@ -1022,7 +1022,7 @@ pattern：正则相关内容，注意字符匹配符号和Java中支持的不太
 
   再执行上述查找指令的输出结果
 
-  ![](https://gitee.com/ababa-317/image/raw/master/images/image-20220311190341822.png)
+  ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220311190341822.png)
 
 ### OS新增内容：tree
 
@@ -1046,7 +1046,7 @@ pattern：正则相关内容，注意字符匹配符号和Java中支持的不太
 >
 > - 第2-4位为用户(作者)本身权限，第5-7位为同组权限，第8-10位为其他用户的权限
 >
-> ![image-20220311191553110](https://gitee.com/ababa-317/image/raw/master/images/image-20220311191553110.png)
+> ![image-20220311191553110](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220311191553110.png)
 >
 > **常用**：`chmod +x file.sh`，这样file脚本就能直接使用`./file.sh`运行了。
 

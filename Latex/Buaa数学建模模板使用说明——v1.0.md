@@ -31,7 +31,7 @@
 
 - 模板的首页格式已基本确定，不建议修改
 
-  ![image-20220408195639433](https://gitee.com/ababa-317/image/raw/master/images/image-20220408195639433.png)
+  ![image-20220408195639433](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220408195639433.png)
 
 - 二度解决中文宋体不支持加粗的问题，更换渲染引擎未XeLaTeX
 
@@ -171,7 +171,7 @@ Plus：左对齐公式和右对齐公式（和上面的原理一致，只是需�
 
 这么一大坨Latex代码只能生成下面这个玩意.......😱😱😱
 
-![image-20220408195455221](https://gitee.com/ababa-317/image/raw/master/images/image-20220408195455221.png)
+![image-20220408195455221](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220408195455221.png)
 
 ## 基本列表语法
 
@@ -187,7 +187,7 @@ Plus：左对齐公式和右对齐公式（和上面的原理一致，只是需�
 \end{itemize}
 ```
 
-![image-20220408131519087](https://gitee.com/ababa-317/image/raw/master/images/image-20220408131519087.png)
+![image-20220408131519087](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220408131519087.png)
 
 ### 有序列表
 
@@ -200,7 +200,7 @@ Plus：左对齐公式和右对齐公式（和上面的原理一致，只是需�
 \end{enumerate}
 ```
 
-![image-20220408131454756](https://gitee.com/ababa-317/image/raw/master/images/image-20220408131454756.png)
+![image-20220408131454756](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220408131454756.png)
 
 ## 文件引用语法
 
@@ -212,7 +212,7 @@ Plus：左对齐公式和右对齐公式（和上面的原理一致，只是需�
 
 > 比较遗憾的是，如果要在文中别处进行引用图片的话，必须使用`\caption{pig_title}`这样的格式，如果采用下面的自定义图片标题会出现乱码
 >
-> ![image-20220408130435386](https://gitee.com/ababa-317/image/raw/master/images/image-20220408130435386.png)
+> ![image-20220408130435386](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220408130435386.png)
 
 ```latex
 Figure \ref{figs.pag1} is ababababababa.

@@ -19,7 +19,7 @@
 
   光标置于类大括号内，快捷键`alt+insert`，选择生成getter和settter即可
 
-  <img src="https://gitee.com/ababa-317/image/raw/master/images/20220226225736.png" style="zoom:50%;" />
+  <img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220226225736.png" style="zoom:50%;" />
 
 - this负责指向本类中的成员变量（与C++同理）
 

@@ -21,13 +21,13 @@
 
 类与对象特性举例
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220203100322.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220203100322.png)
 
 感受一下继承和IDEA的文件结构
 
 文件结构
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220203101243.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220203101243.png)
 
 **Father**
 

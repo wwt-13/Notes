@@ -55,4 +55,4 @@ return response
 
 Django框架的基本处理流程
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220324111612.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220324111612.png)

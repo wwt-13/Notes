@@ -37,7 +37,7 @@
 2. JRE：java程序的运行环境，包含了**JVM**和java程序运行所需的核心类库（*如果要运行一个已有的java程序，那么安装JRE即可*）
 3. JDK：java程序开发工具包，包含了JRE和开发者所需的各种工具（自己开发一个java程序，需要安装JDK）
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220130084432.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220130084432.png)
 
 ## 第一个Java程序
 
@@ -258,7 +258,7 @@ public class SwitchTest{
 
 关于Java基本数据类型的**占用空间**
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220328002500.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220328002500.png)
 
 #### Attention
 
@@ -303,7 +303,7 @@ public class SwitchTest{
 >   classTest test;
 >   ```
 >
->   ![image-20220417205701160](https://gitee.com/ababa-317/image/raw/master/images/image-20220417205701160.png)
+>   ![image-20220417205701160](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220417205701160.png)
 
 #### 局部变量和成员变量
 
@@ -368,7 +368,7 @@ int[] array2=new int[]{1,2,3};
 
    输出结果
 
-   ![image-20220328011011934](https://gitee.com/ababa-317/image/raw/master/images/image-20220328011011934.png)
+   ![image-20220328011011934](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220328011011934.png)
 
    数组之间的比较需要采用Arrays的equals方法，不能直接采用对象自带的。
 
@@ -418,7 +418,7 @@ int[] array2=new int[]{1,2,3};
 >
 > <u>关于String中常用的方法</u>
 >
-> ![](https://gitee.com/ababa-317/image/raw/master/images/20220329161529.png)
+> ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220329161529.png)
 
 ##### String的不可变性
 
@@ -437,7 +437,7 @@ public final class String
 
 3. String类变量一旦声明就不可变；如果赋值，改变的只是指向的地址，原来的字符串依旧存在并且产生垃圾
 
-   ![](https://gitee.com/ababa-317/image/raw/master/images/20220329161404.png)
+   ![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220329161404.png)
 
 总结：String类是一种不可变对象
 
@@ -576,7 +576,7 @@ public interface Cloneable{
 
 internalClone()方法，实际上是一个native方法，可以clone()一个对象得到一个==新的对象实例==。
 
-<img src="https://gitee.com/ababa-317/image/raw/master/images/image-20220411002112304.png" alt="image-20220411002112304" style="zoom:80%;" />
+<img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220411002112304.png" alt="image-20220411002112304" style="zoom:80%;" />
 
 通过观察输出结果可以看出，`=`和`clone()`的不同之处，clone()确确实实创建了一个新的对象，而`=`则完全是只是对对象的引用（<font color="red">$Attention:$</font>不是浅拷贝！）
 
@@ -830,7 +830,7 @@ public class A{
 
 - 可以通过IDE快速生成(IDEA：alt+insert即可)
 
-  <img src="https://gitee.com/ababa-317/image/raw/master/images/20220226225736.png" style="zoom:50%;" />
+  <img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220226225736.png" style="zoom:50%;" />
 
 ### 类的继承
 
@@ -983,7 +983,7 @@ class Father {
 -   子类的方法重写了父类的方法
 -   子类定义的变量，父类无法访问（哪怕<u>该父类由子类转化而来</u>，该性质可以参考下图）
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220227155916.png)
+![](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220227155916.png)
 
 ==总结==：多态的特性就是，运行期才能动态决定调用的子类方法。
 
@@ -1196,7 +1196,7 @@ public class Outer {
 
 观察Java编译器编译后的`.class`文件可以发现，`Outer`类被编译为`Outer.class`，而`Inner`类被编译为`Outer$Inner.class`
 
-![image-20220419190327119](https://gitee.com/ababa-317/image/raw/master/images/image-20220419190327119.png)
+![image-20220419190327119](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220419190327119.png)
 
 #### Anonymous Class
 
@@ -1224,7 +1224,7 @@ public class Anonymous {
 
 观察Java编译器编译后的`.class`文件可以发现，`Outer`类被编译为`Outer.class`，而匿名类被编译为`Outer$1.class`。如果有多个匿名类，Java编译器会将每个匿名类依次命名为`Outer$1`、`Outer$2`、`Outer$3`……
 
-![image-20220419191610935](https://gitee.com/ababa-317/image/raw/master/images/image-20220419191610935.png)
+![image-20220419191610935](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220419191610935.png)
 
 当然，除了接口，匿名类也完全可以继承自普通类
 
@@ -1254,7 +1254,7 @@ public class StaticNestedClass {
 
 用`static`修饰的内部类和Inner Class有很大的不同，它==不再依附于`Outer`的实例，而是一个完全独立的类，因此无法引用`Outer.this`==，但它可以访问`Outer`的`private`**静态字段和静态方法**。如果把`StaticNested`移到`Outer`之外，就失去了访问`private`的权限（从下方可以看出，独立了但没完全独立）
 
-![image-20220419192830869](https://gitee.com/ababa-317/image/raw/master/images/image-20220419192830869.png)
+![image-20220419192830869](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220419192830869.png)
 
 ### 垃圾回收
 
@@ -1790,7 +1790,7 @@ public class ExceptionTest02 {
 
 $Plus$：打印异常的时候，推荐使用`e.printStackTrace()`，该方法能提供比`System.out.println(e)`==更加详细的异常信息==（会输出异常出现的位置，并且是层层递进的向上查询，下图是两种方法的对比）。
 
-![image-20220411135740565](https://gitee.com/ababa-317/image/raw/master/images/image-20220411135740565.png)
+![image-20220411135740565](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220411135740565.png)
 
 ==$Thinking:为什么需要这几种不同给异常处理形式呢？它们之间有什么区别？$==
 
@@ -1914,7 +1914,7 @@ public class ExceptionTest03 {
 throw new IllegalArgumentException(e);//此时即可打印出完整的异常栈
 ```
 
-<img src="https://gitee.com/ababa-317/image/raw/master/images/image-20220411160533853.png" alt="image-20220411160533853" style="zoom:80%;" />
+<img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220411160533853.png" alt="image-20220411160533853" style="zoom:80%;" />
 
 <font color="red">$Attention:$</font>捕获到异常并再次抛出时，一定要留住==原始异常==，否则很难定位第一案发现场！
 
@@ -1922,7 +1922,7 @@ throw new IllegalArgumentException(e);//此时即可打印出完整的异常栈
 
 >   Java中预定义的异常类型如下图所示，当我们在代码中需要抛出异常的时候，尽量使用JDK中已经定义了的异常类型，比方说，参数检查不合法，应该抛出：`IllegalArgumentException`
 
-![image-20220411161010060](https://gitee.com/ababa-317/image/raw/master/images/image-20220411161010060.png)
+![image-20220411161010060](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220411161010060.png)
 
 在一个大型项目中，可以自定义新的异常类型，此时，==保持一个合理的异常继承体系是非常重要的==。
 
@@ -2576,7 +2576,7 @@ Contains方法用来查找某个对象在不在列表之中
 
 > 镇楼图在上（这幅图比较复杂，主要借助这张图了解一下内存分配的各种细节）
 >
-> <img src="https://gitee.com/ababa-317/image/raw/master/images/20220401152336.png" style="zoom:80%;" />
+> <img src="https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/20220401152336.png" style="zoom:80%;" />
 >
 > Java的内存分配与管理是Java的核心技术之一，这里主要分析一下Java中类和对象在内存中的表现形式
 >

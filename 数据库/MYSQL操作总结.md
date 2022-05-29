@@ -34,7 +34,7 @@ select * from test \G;
 
 -   `1418`:函数创建失败报错，该报错产生的原因是MySQL默认会关闭创建函数的功能，可以通过`show variables like "%func%";`语句来查看函数功能是否开启，如果未开启的话可以使用`set global log_bin_trust_function_creators=1;`进行开启（该命令的目的是设置临时环境变量）。
 
-    ![image-20220423103924940](https://gitee.com/ababa-317/image/raw/master/images/image-20220423103924940.png)
+    ![image-20220423103924940](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220423103924940.png)
 
 ## 数据库、表操作和数据更新
 
@@ -330,7 +330,7 @@ alter table students add constraint uni_name unique(name);
   );# 可以创建成功!
   ```
 
-  ![image-20220404141310760](https://gitee.com/ababa-317/image/raw/master/images/image-20220404141310760.png)
+  ![image-20220404141310760](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404141310760.png)
 
   关于mysql中主键(primary key)、外键(foreign key)、键(key)和索引(index)的区别
 
@@ -469,7 +469,7 @@ creata table tmp(
    select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
    ```
 
-   ![image-20220404150710634](https://gitee.com/ababa-317/image/raw/master/images/image-20220404150710634.png)
+   ![image-20220404150710634](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404150710634.png)
 
    关于默认值设置：只有时间戳timestamp类型支持系统默认值设置，其他类型都不支持
 
@@ -740,7 +740,7 @@ where grade is null;
 
 问题1：多表查询的列重名问题
 
-![image-20220403183426311](https://gitee.com/ababa-317/image/raw/master/images/image-20220403183426311.png)
+![image-20220403183426311](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220403183426311.png)
 
 可以投影查询的设置列别名（或者还可以再修改表名使得形式更加简洁）来解决
 
@@ -752,7 +752,7 @@ s1.gender s1gender,s2.gender s2gender
 from mysqlearn as s1,mysqlearn1 as s2;# 虽然但是，还是相当麻烦.....
 ```
 
-![image-20220403184022237](https://gitee.com/ababa-317/image/raw/master/images/image-20220403184022237.png)
+![image-20220403184022237](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220403184022237.png)
 
 #### 等值连接
 
@@ -1089,7 +1089,7 @@ where a.PLAYERNO=b.PLAYERNO and b.TEAMNO=c.TEAMNO;
 
 不建议以`select *`的方式创建视图，这样定义的视图，当<u>修改基表的结构时</u>（添加列不会影响，并且默认不会将添加的列放入视图中），**基表和视图之间的映像关系很容易被破坏（当然正常创建的也会被破坏，只是不会那么容易？）**，导致视图无法正常工作
 
-![image-20220412145526514](https://gitee.com/ababa-317/image/raw/master/images/image-20220412145526514.png)
+![image-20220412145526514](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220412145526514.png)
 
 where语句可能会限制视图查询的输出，导致插入视图的数据在视图中看不到（“矛盾语句”可以插入，但是查询的时候看不到）
 
@@ -1637,7 +1637,7 @@ end;
      -   mycli：无法查看（直接卡死）
      -   tableplus：可以查看，查看所有`show procedure status`
 
-     ![image-20220422134607212](https://gitee.com/ababa-317/image/raw/master/images/image-20220422134607212.png)
+     ![image-20220422134607212](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220422134607212.png)
 
 4.   查看所有存储过程的名字`select name from mysql.proc where db='xx' and type='procedure'`
 
