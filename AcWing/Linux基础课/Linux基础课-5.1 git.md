@@ -6,10 +6,6 @@
 >
 > 系统学习！！！！
 
-参考os网站上不学git的下场
-
-![](https://gitee.com/ababa-317/image/raw/master/images/0-23.jpg)
-
 ## git宏观认识
 
 > 简单来说，<u>git就是一个很方便的用来管理各种代码版本的工具</u>，使用一个==树结构==来管理各种代码版本，从一个最原始的起点开始，**每一个节点都代表代码的不同版本**，而每一个节点可以延伸出多个不同的分支，还能快速实现不同分支之间相互合并的操作+回滚操作（回复到之前的节点/版本）
@@ -20,7 +16,7 @@
 >
 > 而团队开发项目的话，git的==分支合并==功能和==版本回退==功能就都非常重要了
 >
-> PLUS：注意git和github完全是两个不同的概念，git版本管理是完全位于本地的，只能说github内置了git来管理仓库。
+> *<font color="green">Ps:</font>注意git和github完全是两个不同的概念，git版本管理是完全位于本地的，只能说github内置了git来管理仓库。*
 
 ### What is git used for？
 
@@ -72,14 +68,13 @@ flowchart LR
 
 ## git具体操作
 
-> 以一个具体的实例来理解git的各种操作
-
 ### 创建账户
 
 > 创建完后会发现家目录下多了一个.gitconfig文件，里面存放的就是git的相关配置
 
 ```shell
-git config --global user.name wwt # 设置用户名
+# 我个人的git设置如下
+git config --global user.name wwt-13 # 设置用户名
 git config --global user.email 1270414897@qq.com # 设置邮箱
 ```
 
@@ -94,17 +89,7 @@ cd project
 git init
 ```
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220307204343.png)
-
-此时已经创建了一个空的仓库project了，而所有的信息都被隐藏到了一个==.git==文件夹里，我们可以进入仓库康康，比方说s使用cat指令看一下HEAD文件的内容（存放指针指向）
-
-```shell
-cat HEAD
-```
-
-![](https://gitee.com/ababa-317/image/raw/master/images/20220307204619.png)
-
-<u>大概意思就是此时HEAD指针指向了当前的master分支</u>
+此时已经创建了一个空的仓库project了，而所有的信息都被隐藏到了一个==.git==文件夹里
 
 ## git仓库基本操作流程
 
@@ -116,7 +101,7 @@ cat HEAD
 git status
 ```
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220307205158.png)
+![image-20220720163411211](/Users/apple/Documents/Notes/assets/image-20220720163411211.png)
 
 大致意思就是：当前目录（工作区）下有一个已修改的文件没有被存放到暂存区里
 
@@ -141,7 +126,7 @@ git add readme.md
 git status
 ```
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220307205430.png)
+![image-20220720163803029](/Users/apple/Documents/Notes/assets/image-20220720163803029.png)
 
 如果觉得差不多可以了，那么就准备提交项目版本1.0吧！
 
@@ -152,6 +137,35 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 **这就是最最基本的git操作**
 
 ---
+
+## git-标签
+
+> 像其他版本控制系统（VCS）一样，Git 可以给仓库历史中的某一个提交打上标签，以示重要。 比较有代表性的是人们会使用这个功能来**标记发布结点**（ `v1.0` 、 `v2.0` 等等）
+
+在Git中，有两种标签，轻量标签（lightweight）与附注标签（annotated，具有标签注释）
+
+创建附注标签非常简单，只需要在添加tag的时候加上`-a`即可
+
+```shell
+# 创建轻量标签
+git tag v1.3
+# -m后面跟随的是标签注释
+git tag -a v1.4 -m "My Project v1.4"
+```
+
+### 常用命令
+
+- 查看所有标签`git tag`
+- 查看某个具体标签`git show <tag name>`
+- 给某个过往版本打上标签`git tag -a v1.2 <commit id>`
+- 删除标签`git tag -d <tag name>`
+
+### 远程仓库命令
+
+> *<font color="red">Attention:</font>直接git push不会提交本地仓库的标签，需要执行额外的指令提交标签，并且相应的标签删除也是如此（当然他人拉去你的仓库是可以得到远程仓库的标签的）*
+
+- 提交本地仓库的所有标签`git push origin --tags`
+- 删除远程仓库的特定标签`git push origin --delete <tagname>`
 
 ## git仓库进阶操作
 
@@ -177,8 +191,6 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 
    - `git reset --hard 版本号`：可以回退到任意版本，版本号可以通过`git reflog`查看
 
-     ![](https://gitee.com/ababa-317/image/raw/master/images/20220308001247.png)
-
 8. `git reflog`：查看HEAD指针的**移动历史**（包括被回滚的版本）
 
 ## git仓库高级操作
@@ -191,39 +203,39 @@ git commit -m "commit project1.0" # -m后面放置对于你提交版本的说明
 
 >  一般来说，大家用的都是Github，但是最近几年github的网络实在是不太稳定，甚至会出现自己存储在云端的代码pull不下来的情况，所以本人采用的是一个部署在国内的Gitlab——[AC Git](git.acwing.com)（就是AcWing建的专属git，和我们学校的是一个原理）
 >
->  
+>  *<font color="green">Ps:</font>现在采用的是Github——2022.7.22*
 
-<u>云端仓库基本创建设置</u>：注意如果本地以及有一个现成的项目想要push到云端，最后一项切记不要勾选
+<u>云端仓库基本创建设置</u>：注意如果本地以及有一个现成的项目想要push到云端，最后一项切记不要勾选（就是不要在云端创建README.md）
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220308162120.png)
+![image-20220720170801466](/Users/apple/Documents/Notes/assets/image-20220720170801466.png)
 
 ### git云端操作
 
 > 鉴于之前在本地仓库已经完成了基本的操作，现在只需要将本地仓库和云端创建的仓库对应起来即可
 
 1. `cd到本地仓库文件夹`
+
 2. 使用远程仓库给你的指令（这一步的目的是将本地的仓库和远程仓库连接）：`git remote add origin git@git.acwing.com:a_little_buaaer/project_test.git`
+
 3. 上传本地文件夹：`git push -u origin master`（master是本地分支，注意只有第一次需要加上-u）
+
+   如果是新电脑上传的话需要先在GitHub添加ssh公钥后才能提交，具体操作见<a href="./Linux基础课-4.1 SSH.md">SSH公钥</a>
 
 这样就完成了本地和云端仓库的同步，可以通过云端的历史查看往期的各种版本
 
 ==云端==
 
-![image-20220308164118496](https://gitee.com/ababa-317/image/raw/master/images/image-20220308164118496.png)
+![image-20220720172049655](/Users/apple/Documents/Notes/assets/image-20220720172049655.png)
 
 ==本地==
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220308164054.png)
+![image-20220720172022141](/Users/apple/Documents/Notes/assets/image-20220720172022141.png)
 
 > 此时发现已经相互对应了起来，🐂🍺
 >
-> 而且在云端要到查看某个版本更加容易，所以云端可以作为浏览代码的各种版本的工具
+> 而且在云端要到查看某个版本更加容易，所以云端可以作为浏览代码的各种版本的工具，直接选择`浏览文件`即可
 
-选择`浏览文件`即可
-
-![](https://gitee.com/ababa-317/image/raw/master/images/20220308164257.png)
-
-PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为了提高权限
+*<font color="green">Ps:</font>如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为了提高权限*
 
 ---
 
@@ -232,9 +244,40 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 1. 使用ssh克隆（本质实际上就是scp文件传输）：`git clone git@git.acwing.com:a_little_buaaer/project_test.git`
 2. 使用http克隆（同上，不多说）
 
-可以发现，尽管文件是和云端仓库完全同步了，但是实际上还是存在不同（所有版本管理记录都丢失了，也就是说git reflog只能查看到最新的git clone分支，但是所有版本节点还是有的）
+可以发现，尽管文件是和云端仓库完全同步了，但是实际上还是存在不同（所有版本管理记录都丢失了，也就是说git reflog只能查看到最新的git clone分支，*所有版本节点还是有的，但是修改记录丢失*）
 
-![](https://gitee.com/ababa-317/image/raw/master/images/20220308170359.png)
+### 解决本地git clone速度慢的问题
+
+> 原理暂时不清楚，直接按照教程说的做好了
+
+1. 查询GitHub网页ip
+
+   ```shell
+   nslookup github.global.ssl.fastly.Net
+   nslookup github.com
+   ```
+
+   ![image-20220720174934029](/Users/apple/Documents/Notes/assets/image-20220720174934029.png)
+
+   ![image-20220720175003988](/Users/apple/Documents/Notes/assets/image-20220720175003988.png)
+
+2. 修改hosts文件
+
+   ```shell
+   sudo vim /etc/hosts
+   103.252.115.153 github.global.ssl.fastly.Net
+   20.205.243.166 github.com
+   ```
+
+3. 更新DNS缓存命令
+
+   ```shell
+   sudo dscacheutil -flushcache
+   ```
+
+-----
+
+> 以下部分为多人开发需要掌握的，以后再来复习
 
 ## git分支
 
@@ -312,7 +355,7 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
 >
 > 生成公钥：直接`cd .ssh`然后`ssh-keygen`即可
 
-然后直接使用`git clone`即可从云端克隆下所需项目（注意，一般只会clone下master分支）
+然后直接使用`git clone`即可从云端克隆下所需项目（注意，*一般只会clone下master分支*）
 
 那么如何另其他分支也和云端同步呢
 
@@ -398,17 +441,6 @@ PLUS：如果要删除本地仓库，请执行`rm project -rf`，加上`f`是为
    - `git checkout branch_name`
 
    以上两种方法应该是等效的
-
-### 标签 
-
-> 在git中，可以为你提交的版本创建标签，其作用和commit添加的说明信息类似，不过tag一般用于标注版本，比如`v1.0,v2.3`等等。
-
-1. `git tag`列出已有的标签
-2. `git tag -a v1.2 9fceb02`给过去的提交打上标签
-3. `git show v1.2`查看标签信息和对应的版本内容
-4. `git tag v1.2`给当前的commit打上标签
-5. `git tag -d v1.2`删除标签
-6. `git checkout -b branch_name v1.2`从v1.2处新建一个分支
 
 ## 关于解决git冲突的高级操作
 
