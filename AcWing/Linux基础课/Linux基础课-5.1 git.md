@@ -275,6 +275,8 @@ git tag -a v1.4 -m "My Project v1.4"
    sudo dscacheutil -flushcache
    ```
 
+> 只能说是貌似解决，因为速度好像也没提升多少🤣
+
 -----
 
 > 以下部分为多人开发需要掌握的，以后再来复习
