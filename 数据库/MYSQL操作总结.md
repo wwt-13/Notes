@@ -9,6 +9,15 @@
 -   数据库名+表名都不支持大写（自动转换为小写）
 -   字段名支持大写
 
+### MySQL不允许的语法格式
+
+```mysql
+create table test if not exists(
+	id int primary key,
+    num int not null,# 此行不可以用‘,’进行结尾
+)
+```
+
 ### MySQL注释
 
 ```mysql
@@ -35,6 +44,15 @@ select * from test \G;
 -   `1418`:函数创建失败报错，该报错产生的原因是MySQL默认会关闭创建函数的功能，可以通过`show variables like "%func%";`语句来查看函数功能是否开启，如果未开启的话可以使用`set global log_bin_trust_function_creators=1;`进行开启（该命令的目的是设置临时环境变量）。
 
     ![image-20220423103924940](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220423103924940.png)
+
+## SQL分类
+
+- 数据查询语言（DQL）： 其语句也称为“数据检索语句”，用以从表中获得数据，确定数据怎样在应用程序给出。`Database Query Language`
+- 数据操作语言（DML）： 其语句包括动词 *INSERT、UPDATE 和 DELETE*。它们分别用于添加、修改和删除。`Database Manage Language`
+- 事务控制语言（TCL）： 它的语句能确保被 DML 语句影响的表的所有行及时得以更新。包括COMMIT（提交）命令、SAVEPOINT（保存点）命令、ROLLBACK（回滚）命令。`Transaction Control Language`
+- 数据控制语言（DCL）： 它的语句通过 GRANT 或 REVOKE 实现权限控制，确定单个用户和用户组对数据库对象的访问。某些 RDBMS 可用 GRANT 或 REVOKE 控制对表单个列的访问。`Database Control Language`
+- 数据定义语言（DDL）： 其语句包括动词 *CREATE、ALTER 和 DROP*。在数据库中创建新表或修改、删除表（CREATE TABLE 或 DROP TABLE）、为表加入索引等。`Database Define Languaga`
+- 指针控制语言（CCL）： 它的语句，像 DECLARE CURSOR、FETCH INTO 和 UPDATE WHERE CURRENT 用于对一个或多个表单独行的操作。`Cursor Control Language`
 
 ## 数据库、表操作和数据更新
 
@@ -121,6 +139,8 @@ select * from test \G;
 >
 >   <u>change语句</u>：modify的基础上添加修改列名
 >
+>   *<font color="red">Attention:</font>修改数据类型的时候无法对完整性约束条件进行修改，完整性约束条件必须单独修改定义。*
+>
 >   $Plus:$修改原有列定义可能会破坏已有数据。
 
 - 添加字段
@@ -132,7 +152,7 @@ select * from test \G;
   添加完整性约束条件
 
   ```mysql
-  alter table review add index(col0);
+  alter table review add [约束名] index(col0);# 给col0字段添加index
   ```
 
 - 删除字段
@@ -145,10 +165,12 @@ select * from test \G;
 
   ```mysql
   # 方法1:直接删除
-  alter table tb_name drop intrgrity_constraints col_name;
+  alter table tb_name drop intrgrity_constraints_name col_name;
   # 方法2:先查看约束名再进行删除(更加稳妥)
   show create table tb_name;# 查看约束名和约束key
-  alter table tb_name drop in_co_key in_co_name;
+  alter table tb_name drop in_co_key in_co_name;# 不太明白怎么删除
+  # 感觉下面这种方法更好
+  alter table tb_name drop constraint key_name;
   ```
 
 - 修改字段结构+重命名
@@ -156,6 +178,7 @@ select * from test \G;
   ```mysql
   alter table tb_name change column1 column2 varchar(100) not null;
   # change比modify更加全面,可以修改字段名
+  alter table tb_name modify col1 .....;
   ```
   
 - 更新字段的值（不建议使用，建议update全部用于元组操作）
@@ -166,7 +189,7 @@ select * from test \G;
 
 ### 数据更新
 
->   对表中的元组进行操作
+>   对表中的*元组*进行操作
 >
 >   三种常见数据更新类型
 >
@@ -189,6 +212,10 @@ select * from test \G;
 >            ```mysql
 >            insert into tb_name(col1,col2...)
 >            select ......;# 数据查询语句
+>            # 可以依据此对表进行扩容
+>            insert into tb_name(col1,col2,...)
+>            select col1,col2,....
+>            from tb_name;
 >            ```
 >
 >   -   ==Delete== 删除一条或多条**元组**（删除表中满足where语句条件的***元组***）
@@ -217,7 +244,7 @@ select * from test \G;
      group by sdept;
      ```
 
-2.   数据更新操作（修改多个元组的值，不指定where的话，**默认作用范围为所有元组**）
+2.   **数据更新操作**（修改多个元组的值，不指定where的话，**默认作用范围为所有元组**）
 
      ```mysql
      update student
@@ -244,9 +271,9 @@ alter table student add index idx_score(score) # 对score列创建了一个名�
 
 ### 唯一索引
 
-> 设计关系数据表的时候，看上去唯一的列，例如身份证号、邮箱地址，但是因为他们具备业务含义（身份证号和邮箱都**有可能会修改**），所以不宜作为主键
+> 设计关系数据表的时候，看上去唯一的列，例如身份证号、邮箱地址，但是因为他们具备业务含义（身份证号和邮箱都**有可能会修改**），所以不宜作为主键（主键原则：唯一且不会进行修改）
 >
-> 但是这些列根据业务要求，又同时具备了唯一性约束，这种时候，就可以给这些列添加一个唯一索引
+> *但是这些列根据业务要求，又同时具备了唯一性约束*，这种时候，就可以给这些列添加一个唯一索引
 >
 > 注意：MySql对于唯一索引不区分大小写
 
@@ -256,17 +283,19 @@ alter table students add unique index uni_name(name);
 alter table students add constraint uni_name unique(name);
 ```
 
+![image-20220721092420443](/Users/apple/Documents/Notes/assets/image-20220721092420443.png)
+
 ---
 
 > 无论是否创建索引，对于用户和应用程序来说，使用关系数据库不会有任何区别。这里的意思是说，当我们在数据库中查询时，如果有相应的索引可用，数据库系统就会自动使用索引来提高查询效率，如果没有索引，查询也能正常执行，只是速度会变慢。因此，***索引可以在使用数据库的过程中逐步优化***。
 
 ## 约束
 
-> 约束，是一种限制，它是对表的行和列的数据做出约束，确保表中数据的完整性和唯一性
+> 约束，*是一种限制*，它是对表的行和列的数据做出约束，确保表中数据的完整性和唯一性
 >
-> 三种完整性：域、实体、参照完整性（其实还有一个用户完整性，但是这里不提及）
+> 三种完整性：域、实体、参照完整性（其实还有一个用户完整性，但是这里不提及，因为这完全是用户自定义的）
 >
-> 域完整性：就是对于数据表中字段的约束
+> 域完整性：就是对于数据表中*字段的约束*（unique,not null,default,unsigned等等）
 >
 > 实体完整性：通过主键约束和候选键约束实现
 >
@@ -274,19 +303,19 @@ alter table students add constraint uni_name unique(name);
 
 **分类如下**
 
-- default：默认约束，域完整性
+- *default*：默认约束，域完整性
 
   指定某列的**默认值**，插入数据时，如果此列赋值，则使用default指定的值来填充
 
-- not null: 非空约束，域完整性
+- *not null*: 非空约束，域完整性
 
   指定某列的值不为空，在插入数据的时候必须非空 '' 不等于 null, 0不等于 null
 
-- unique: 唯一约束，实体完整性
+- *unique*: 唯一约束，实体完整性
 
-- primary key: 主键约束，实体完整性
+- *primary key*: 主键约束，实体完整性
 
-- foreign key: 外键约束，参照完整性
+- *foreign key*: 外键约束，参照完整性
 
   通过建立外键，设置表与表之间的约束性，限制数据的录入
 
@@ -313,11 +342,11 @@ alter table students add constraint uni_name unique(name);
   - on update cascase：更新主表中的数据时，从表中的数据随之更新
   - on delete set null：删除主表中的数据时，从表中的数据置空
 
-- check: 检查约束，域完整性
+- *check*: 检查约束，域完整性
 
   类似于自定义约束，具体使用方法见<a href="#check">此处</a>
 
-- auto_increment: 自增长约束
+- *auto_increment*: 自增长约束
 
   ==自增列必须是键，但是不一定非是主键，并且只能存在一个自增列==
 
@@ -348,9 +377,11 @@ alter table students add constraint uni_name unique(name);
 
   **foreign key** 也有两个作用，一是约束作用（constraint），规范数据的引用完整性，但同时也在这个key上建立了一个index
 
-- unsigned: 无符号约束
+- *unsigned*: 无符号约束
 
-- zerofill: 零填充约束
+- *zerofill*: 零填充约束
+
+  ![image-20220721093714599](/Users/apple/Documents/Notes/assets/image-20220721093714599.png)
 
 ==所有约束的实现如下==
 
@@ -407,25 +438,9 @@ creata table tmp(
 
    比较常用的就是char型和varchar型
 
+   char(10)和varchar(10)的区别，char(10)代表开辟用于存储的空间就是固定的用于存放10个==字符==，而varchar(10)则是可以变动的，只是在数据库初始化的时候会预存10个字符的空间来适应它（可扩容）
+
    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_02](http://s5.51cto.com/wyfs02/M00/8A/B0/wKiom1g3mqOxypGaAACjNfEmuW8532.png)
-
-   SQL内建函数（需要实践一下）
-
-   UCASE() - 将某个字段转换为大写 
-
-   LCASE() - 将某个字段转换为小写
-
-   MID() - 从某个文本字段提取字符，MySql 中使用 
-
-   SubString(字段，1，end) - 从某个文本字段提取字符 
-
-   LEN() - 返回某个文本字段的长度 
-
-   ROUND() - 对某个数值字段进行指定小数位数的四舍五入
-
-   ```mysql
-   
-   ```
 
 3. 日期时间型：$DATE,TIME,DATETIME,TIMESTAMP$
 
@@ -433,50 +448,34 @@ creata table tmp(
 
    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
 
-   **内建函数**
-
-   NOW() 返回当前的日期和时间 
-
-   CURDATE() 返回当前的日期 
-
-   CURTIME() 返回当前的时间 
-
-   DATE() 提取日期或日期/时间表达式的日期部分 
-
-   EXTRACT() 返回日期/时间按的单独部分 
-
-   DATE_ADD() 给日期添加指定的时间间隔 
-
-   DATE_SUB() 从日期减去指定的时间间隔 
-
-   DATEDIFF() 返回两个日期之间的天数 
-
-   DATE_FORMAT()用不同的格式显示日期/时间
-
    **基本使用**
 
    ```mysql
-   create table people(
+create table people(
    	id int auto_increment primary key,
-       birth_date date not null default '1999-1-1',
+    birth_date date not null default '1999-1-1',
    );
-   insert into people(birth_date)
+insert into people(birth_date)
    values
-   ('1999-1-2'),
+('1999-1-2'),
    (curdate()),
-   (date(now()));# now()返回的数据是datatime类型,使用data(now())来获取对应的data段数据
+(date(now()));# now()返回的数据是datatime类型,使用data(now())来获取对应的data段数据
    # 日期格式转换
-   select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
+select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
    ```
 
    ![image-20220404150710634](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404150710634.png)
 
    关于默认值设置：只有时间戳timestamp类型支持系统默认值设置，其他类型都不支持
 
-4. 枚举型：需要列出该字段的所有可能值，存储范围是0-65535bytes（可以在一定程度上代替check约束）
+4. 枚举型：需要列出该字段的所有可能值，存储范围是0-65535bytes（可以*在一定程度上代替check约束*）
 
    ```mysql
-   enum('Female','Male')
+   CREATE TABLE tickets (
+       id INT PRIMARY KEY AUTO_INCREMENT,
+       title VARCHAR(255) NOT NULL,
+       priority ENUM('Low', 'Medium', 'High') NOT NULL
+   );
    ```
 
 5. 布尔型：mysql中会自动转换为tinyint，只有两种取值，1代表true、0代表false
@@ -518,6 +517,119 @@ creata table tmp(
         </td>
     </tr>
 </table>
+## SQL内建函数汇总
+
+#### 一.聚合函数
+
+1. max(x)：最大值函数
+
+2. min(x)：最小值函数
+
+3. count()：总数函数
+
+4. round(x,d)：四舍五入函数，x是需要处理的数，d是保留几位小数
+
+   ![image-20220721100848427](/Users/apple/Documents/Notes/assets/image-20220721100848427.png)
+
+5. sum(x)：累加值函数
+
+6. avg(x)：平均值函数
+
+7. uniq(x)：取去充数函数（近似结果）
+
+8. uniqExact(x)：取去重数函数（准确结果）
+
+9. argMax(arg,val)：按val排序，取val最大时对应arg的值
+
+10. argMin(arg,val)：按val排序，取val最小时对应arg的值
+
+11. uniqIf(x,v)：当v成立时，取去重数（近似结果）
+
+12. uniqExactIf(x,v)：当v成立时，取去重数（准确结果）
+
+13. quantile(level)(x)：取分位数（近似值）
+
+14. quantileExact(level)(x)：取分位数（准确值）
+
+#### 二.时间函数
+
+1. now()：获取当前时间戳
+
+2. curate/curtime：获取当前日期/时间
+
+3. time()：将时间戳转化成时分秒
+
+4. date()：将时间戳或日期转成日月年
+
+   ![image-20220721102030569](/Users/apple/Documents/Notes/assets/image-20220721102030569.png)
+
+5. date_format(time,format)：将时间转化为字符串
+
+   ![image-20220721102554436](/Users/apple/Documents/Notes/assets/image-20220721102554436.png)
+
+6. str_to_date(str,format)：将字符串转化为时间（注意时间字符串的格式和*是否符合正常日期范围*）
+
+   ![image-20220721102945172](/Users/apple/Documents/Notes/assets/image-20220721102945172.png)
+
+7. date_add(time, interval number unit)：为日期增加一个时间间隔
+
+   ```mysql
+   # 普通日期增加
+   select date_add(now(),interval 1 day),date_add(now(),interval 1 hour),date_add(now(),interval 1 second),date_add(now(),interval 1 microsecond),date_add(now(),interval 1 week),date_add(now(),interval 1 month),date_add(now(),interval 1 quarter),date_add(now(),interval 1 year);
+   select date_add(now(),interval '1 1:12:12' day_second);# day_second指单位范围是天到秒
+   ```
+
+   ![image-20220721103906257](/Users/apple/Documents/Notes/assets/image-20220721103906257.png)
+
+8. date_sub()同上
+
+9. date_diff()日期相减函数，基本同date_add
+
+#### 三.字符串函数
+
+1. length(s)：字符串格式长度（中英文各占一个宽度）
+
+   ![image-20220721100549332](/Users/apple/Documents/Notes/assets/image-20220721100549332.png)
+
+2. lower(s)/upper(s)：将英文字符全部小（大）写（与ucase和lcase等价）
+
+   ```mysql
+   select upper(col1) as u_col1 from test;
+   ```
+
+   ![image-20220721095429660](/Users/apple/Documents/Notes/assets/image-20220721095429660.png)
+
+3. concat(s1,s2,s3...)：拼接字符串
+
+   concat函数在连接的时候首先将所有值转换为字符串，如果任何参数为null，concat返回null
+
+   ```mysql
+   select concat(z_test,' ',v_test) from test;
+   ```
+
+   ![image-20220721095816213](/Users/apple/Documents/Notes/assets/image-20220721095816213.png)
+
+4. substring(s,position,length)/mid(…)：从position开始截取长度为length的字符串
+
+   ```mysql
+   select substring(v_test,4,12) from test;
+   ```
+
+   ![image-20220721100115851](/Users/apple/Documents/Notes/assets/image-20220721100115851.png)
+
+5. trim(s)：去掉前后空白字符
+
+   ![image-20220721100221667](/Users/apple/Documents/Notes/assets/image-20220721100221667.png)
+
+6. replaceOne(s,pattern,replacement)/replace(s,pattern,replacement)：替换字符串
+
+#### 四.URL函数
+
+1. path(URL)：获取url的path
+2. pathFull(URL)：获取URL全路径
+3. extractURLParameter(URL,name)：获取url query中对应的参数值
+4. decodeURLComponent(URL)：decode url
+
 ## SQL查询语句
 
 > 数据查询语言（Query Language），从数据库中获取指定的数据，是数据库中的核心操作
