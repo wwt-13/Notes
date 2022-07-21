@@ -645,12 +645,12 @@ having attributes
 order by one or more attributes;
 ```
 
-- select语句：指定要显示的属性列
-- from语句：执行查询对象
-- where语句：执行查询条件
-- group by语句：对查询结果按照执行列的值进行分组（通常会在每组中作用**集函数**）
-- having语句：筛选出只有满足指定条件的组
-- order by语句：对查询结果按照指定列值进行升序或者降序排序
+- select语句：*指定要显示的属性列*
+- from语句：指定*查询对象*
+- where语句：指定*查询条件*
+- group by语句：对查询结果按照执行列的值进行*分组*（通常会在每组中作用**集函数**）
+- having语句：筛选出只有*满足指定条件*的组
+- order by语句：对查询结果按照*指定列值进行升序或者降序排序*
 
 ==查询语句的执行顺序==
 
@@ -698,18 +698,17 @@ order by one or more attributes;
   from student;
   ```
 
-  
 
 **where语句表达查询条件**
 
-| 查询条件 |                 谓词                 |
-| :------: | :----------------------------------: |
-|   比较   | =,>,<,>=,<=,!=<br>NOT+上述比较运算符 |
-| 确定范围 |     between and,not between and      |
-| 确定集合 |              in,not in               |
-|   空值   |         is null,is not null          |
-| 多重条件 |                and,or                |
-| 字符匹配 |            like,not like             |
+| 查询条件 |                 谓词                  |
+| :------: | :-----------------------------------: |
+|   比较   | =,>,<,>=,<=,!=<br/>NOT+上述比较运算符 |
+| 确定范围 |      between and,not between and      |
+| 确定集合 |               in,not in               |
+|   空值   |          is null,is not null          |
+| 多重条件 |                and,or                 |
+| 字符匹配 |             like,not like             |
 
 - **集合查询**
 
@@ -719,11 +718,25 @@ order by one or more attributes;
   where Sname in ('wwt','test','hhh');
   ```
 
+  *<font color="green">Ps:</font>注意一下多属性的联合查询（一些使用自然连接的题目可以用联合查询代替）！！！*
+
+  [512.游戏玩法分析2](https://leetcode.cn/problems/game-play-analysis-ii/)
+
+  ```mysql
+  select player_id,device_id
+  from Activity
+  where(player_id,event_date) in (
+  	select player_id,min(event_date)
+      from Activity
+      group by player_id
+  );
+  ```
+
 - 字符匹配
 
   where语句中可以对字符串进行模板匹配
 
-  where attribute [not] like pattern
+  `where attribute [not] like pattern`
 
   其中%代表任意长度的字符串，_代表任意单个字符
 
@@ -758,7 +771,7 @@ order by one or more attributes;
 >
 > 也就是说会默认忽视空值不将其放到查询结果中
 
-测试是否为空值需要使用is null或者is not null来代替
+*测试是否为空值需要使用is null或者is not null来代替（别忘了！）*
 
 ```mysql
 # 查询缺考的学生姓名
@@ -933,7 +946,7 @@ where student.class_id=class.id;
 >
 > 子查询就是将一个查询块嵌套在另外一个查询块的where语句或者having语句的条件中（就是==嵌套查询==），**这是比较常用的方式**
 >
-> Plus：子查询不能使用order by语句，因为用了也没啥意义
+> *<font color="green">Ps:</font>子查询不能使用order by语句，因为用了也没啥意义*
 
 ```mysql
 select Sname
@@ -945,7 +958,7 @@ where Sno in (
 );
 ```
 
-- 子查询还可以插入from子句中作为临时表使用，但是此时需要对临时表进行更名操作（废话）
+- 子查询还可以插入from子句中作为临时表使用，但是此时需要对临时表进行更名操作（但是如果是联合查询的话可以不进行更名）
 
   ```mysql
   select tmp.sno,sname,cno
