@@ -40,8 +40,6 @@
 | `index.html` and other HTML, Markdown, Textile files | 如果这些文件中包含 [YAML 头信息](http://jekyllcn.com/docs/frontmatter/) 部分，Jekyll 就会自动将它们进行转换。当然，其他的如 `.html`, `.markdown`, `.md`, 或者 `.textile` 等在你的站点根目录下或者不是以上提到的目录中的文件也会被转换。 |
 |                 Other Files/Folders                  | 其他一些未被提及的目录和文件如 `css` 还有 `images` 文件夹， `favicon.ico` 等文件都将被完全拷贝到生成的 site 中。这里有一些[使用 Jekyll 的站点](http://jekyllcn.com/docs/sites/)，如果你感兴趣就来看看吧。 |
 
-
-
 ## 环境配置
 
 > 首先创建一个官方模板用于个人学习使用
@@ -49,6 +47,7 @@
 ```shell
 jekyll new jekyll_for_learn
 bundle exec jekyll server # 构建本地静态页面
+# 创建一个官方模板用于个人使用
 ```
 
 - `jekyll build`：构建静态网页，但是不会部署到本地服务器上。

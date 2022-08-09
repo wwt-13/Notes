@@ -8,43 +8,13 @@
 
 ## Download Homebrew
 
-> Homebrew 是macOS 的套件管理工具，是高效下载软件的一种方法，相当于Linux 下的 yum 、 apt-get 神器，用于下载存在依赖关系的软件包。 通俗地说，Homebrew 是类似于Mac App Store 的一个软件商店。
-
-```shell
-# 安装指令如下
-# intel mac
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# m1 mac
-arch -x86_64 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install)" < /dev/null 2> /dev/null
-```
-
-出现问题：`curl: (7) Failed to connect to raw.githubusercontent.com port 443 after 2264 ms: Connection refused`
-
-Google后发现是mac终端默认不会默认开启代理模式的问题，所以需要修改终端配置文件使终端开启代理模式——<a href="../Mac/Mac终端配置代理.md">Mac终端配置代理</a>
-
-开启代理模式后再次执行上述指令
-
-再次出现问题：`curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to raw.githubusercontent.com:443 `
-
-淦，新版mac OS系统提升了系统安全性，直接*禁用了远程脚本*。。。。
-
-**解决方案**
-
-- 从浏览器手动下载远程脚本到本地，再执行.（过于繁琐😅）
-
-- 切换为国内镜像源（也不理解为啥国内就不会被禁用？）
-
-  ```shell
-  /bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
-  ```
-
-![image-20220719164238172](/Users/apple/Documents/Notes/assets/image-20220719164238172.png)
+> 具体见<a href="/Users/wwt13/Documents/Notes/Mac/Mac-homebrew安装使用.md">Mac-homebrew安装使用</a>
 
 ## Download MinGW
 
 > 安装好homebrew后，执行`brew install mingw-w64`即可
 
-![image-20220719165727735](/Users/apple/Documents/Notes/assets/image-20220719165727735.png)
+![image-20220719165727735](/Users/wwt13/Documents/Notes/assets/image-20220719165727735.png)
 
 ## Vscode Extension-Code Runner
 
@@ -56,7 +26,7 @@ Google后发现是mac终端默认不会默认开启代理模式的问题，所�
 
 > 安装好上述所有插件、工具等后，就可以尝试执行cpp文件了
 
-![image-20220719171209131](/Users/apple/Documents/Notes/assets/image-20220719171209131.png)
+![image-20220719171209131](/Users/wwt13/Documents/Notes/assets/image-20220719171209131.png)
 
 上图可以发现，执行问题已经解决，但是还存在一些问题。
 
@@ -68,7 +38,7 @@ Google后发现是mac终端默认不会默认开启代理模式的问题，所�
 
 > 更改vscode用户设定`run in terminal`即可
 
-![vscode-输入问题解决](/Users/apple/Documents/Notes/assets/vscode-输入问题解决.gif)
+![vscode-输入问题解决](/Users/wwt13/Documents/Notes/assets/vscode-输入问题解决.gif)
 
 ## ==配置调试、语法提示==
 
@@ -94,7 +64,7 @@ Google后发现是mac终端默认不会默认开启代理模式的问题，所�
    }
    ```
 
-2. 选择**生成和调试活动文件**并运行，该操作会自动在`.vscode`文件夹下生成`tasks.json`文件![image-20220719195410075](/Users/apple/Documents/Notes/assets/image-20220719195410075.png)
+2. 选择**生成和调试活动文件**并运行，该操作会自动在`.vscode`文件夹下生成`tasks.json`文件![image-20220719195410075](/Users/wwt13/Documents/Notes/assets/image-20220719195410075.png)
 
    ```json
    //该文件大概长这样

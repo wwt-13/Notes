@@ -1,6 +1,6 @@
 ## 题干
 
-> lab0工作区的csc/code/fibo.c成功更换字段后(bash modify.sh fibo.c char int)，现已有csc/Makefile和csc/code/Makefile，补全**两个Makefile文件**，要求**在csc目录**下通过指令make可在csc/code文件夹中生成fibo.o、main.o，**在csc文件夹中**生成可执行文件fibo，再输入指令make clean后只删除两个.o文件。[注意：不能修改fibo.h和main.c文件中的内容，提交的文件中fibo.c必须是修改后正确的fibo.c，可执行文件fibo作用是从stdin输入一个整数n，可以输出斐波那契数列前n项，每一项之间用空格分开。比如n=5，输出1 1 2 3 5]
+> lab0工作区的csc/code/fibo.c成功更换字段后(bash modify.sh fibo.c char int)，现已有csc/Makefile和csc/code/Makefile，补全**两个Makefile文件**，要求**在csc目录**下通过指令make可在csc/code文件夹中生成fibo.o、main.o，**在csc文件夹中**生成可执行文件fibo，再输入指令make clean后只删除两个.o文件。[注意：不能修改fibo.h和main.c文件中的内容，提交的文件中fibo.c必须是修改后正确的fibo.c，可执行文件fibo作用是从stdin输入一个整数n，可以输出斐波那契数列前n项，每一项之间用空格分开。比如n=5，输出1 1 2 3 5
 
 ## 需要注意的点
 
