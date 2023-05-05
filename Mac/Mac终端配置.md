@@ -109,3 +109,14 @@ inoremap { {<CR>}<ESC>o
 >
 >   *<font color="orange">Tip:</font>homebrew的安装方式具体见<a href="./Mac-homebrew安装使用.md">Mac-homebrew安装使用</a>*
 
+```shell
+# 设置tmux下使用鼠标
+set -g mouse on
+```
+
+### tmux下的复制问题
+
+>   ==macOS系统下需要使用按住fn+`cmd+c`可以进行选择复制。==
+>
+>   *<font color="green">Ps:</font>这个技巧找了很多地方都没找到，没想到最后还是在csdn上发现的——https://blog.csdn.net/weixin_39591916/article/details/111625160* 
+

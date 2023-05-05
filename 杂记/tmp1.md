@@ -960,6 +960,7 @@ find start_directory test
 4. `empty`：查找到路径下所有空文件和文件夹
 
 5. `-regex "pattern" `注意pattern包括了文件路径（-name也支持一部分但是不完全）
+   太麻烦了，不建议吧使用
 
    比方说我想要搜索当前目录下的`ab1.txt`
 

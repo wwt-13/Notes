@@ -5,6 +5,10 @@
 > 今天下午不想学前端，就来折腾一下vscode，也算是为了考研做做准备
 >
 > *<font color="green">Ps:</font>该教程是为了mac端写的*
+>
+> ~~*<font color="red">Attention1:</font>该配置完成后，程序中不允许出现中文路径*~~
+>
+> *<font color="red">Attention2:</font>慎重更新Xcode，非常容易导致之前弄好的配置文件失效*
 
 ## Download Homebrew
 
@@ -45,88 +49,5 @@
 > 详细思路可见[官网教程](https://code.visualstudio.com/docs/cpp/config-clang-mac#_prerequisites)
 >
 > *<font color="green">Ps:</font>发现还是要多看看官网，少看网上各种删减版的乱七八糟的教程，官网的总是最权威、详细的*
-
-首先需要在工作区创建`.vscode`文件夹，并在`.vscode`文件夹中创建三个文件
-
-- `tasks.json`:compiler build settings（*编译器设置*）
-- `launch.json`:debugger settings（*调试设置*）
-- `c_cpp_properties.json`:compiler path and IntelliSense settings（*编译路径和代码智能提示*）
-
-### 配置tasks.json
-
-1. 随便创建一个`hello.cpp`文件
-
-   ```cpp
-   #include<iostream>
-   int main(){
-       cout<<"hello,vscode"<<endl;
-       return 0;
-   }
-   ```
-
-2. 选择**生成和调试活动文件**并运行，该操作会自动在`.vscode`文件夹下生成`tasks.json`文件![image-20220719195410075](/Users/wwt13/Documents/Notes/assets/image-20220719195410075.png)
-
-   ```json
-   //该文件大概长这样
-   {
-       "tasks": [
-           {
-               "type": "cppbuild",
-               "label": "C/C++: clang++ 生成活动文件",
-               "command": "/usr/bin/clang++",
-               "args": [
-                   "-fdiagnostics-color=always",
-                   "-g",
-                   "${file}",
-                   "-o",
-                   "${fileDirname}/${fileBasenameNoExtension}"
-               ],
-               "options": {
-                   "cwd": "${fileDirname}"
-               },
-               "problemMatcher": [
-                   "$gcc"
-               ],
-               "group": "build",
-               "detail": "调试器生成的任务。"
-           }
-       ],
-       "version": "2.0.0"
-   }
-   ```
-
-3. 修改`tasks.json`文件
-
-   > 详细语法讲解见<a href="./tasks.json详解.md">tasks.json详解</a>
-
-   ```json
-   {
-       "version": "2.0.0",
-       "tasks": [
-           {
-               "type": "cppbuild",
-               "label": "C/C++: clang++ 生成活动文件",
-               "command": "/usr/bin/clang++",
-               "args": [
-                   "-std=c++17",
-                   "-stdlib=libc++",
-                   "-g",
-                   "${file}",
-                   "-o",
-                   "${fileDirname}/Binary/${fileBasenameNoExtension}"
-               ],
-               "options": {
-                   "cwd": "${fileDirname}"
-               },
-               "problemMatcher": ["$gcc"],
-               "group": {
-                   "kind": "build",
-                   "isDefault": true
-               },
-               "detail": "编译器: /usr/bin/clang++"
-           }
-       ]
-   }
-   ```
-
-   
+>
+> *<font color="red">Attention:</font>该配置文件对于文件夹格式的命名也有要求，总之源文件夹不能包含`&`*

@@ -15,6 +15,6 @@ date: 2022.8.9
 |  *Mac安装homebrew*  |     关于Mac安装homebrew以及基本的homebrew使用     | <a href="./Mac-homebrew安装使用.md">Mac-homebrew安装使用</a> |
 | *Mac配置Python环境* |          关于Mac配置Python环境的相关内容          |    <a href="./Mac配置Python环境.md">Mac配置Python环境</a>    |
 |  *Mac配置Java环境*  |           关于Mac配置Java环境的相关内容           |      <a href="./Mac配置Java环境.md">Mac配置Java环境</a>      |
-|   *Mac配置C环境*    |            关于Mac配置C环境的相关内容             |         <a href="./Mac配置C环境.md">Mac配置C环境</a>         |
+|   *Mac配置C环境*    |          关于Mac配置C/C++环境的相关内容           |     <a href="./Mac配置C&C++环境.md">Mac配置C&C++环境</a>     |
 |                     |                                                   |                                                              |
 

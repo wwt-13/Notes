@@ -15,6 +15,15 @@ tags:[Typora,metadate,tags]
 
 >   主要记录平时使用较少的/较为特殊的Typora语法
 
+### 上下标
+
+>   比较基础的语法，只要注意一下就行了
+
+| NAME | VALUE  |
+| :--: | :----: |
+| 上标 | ^test^ |
+| 下标 | ~test~ |
+
 ### YAML Front Matter
 
 >   在YAML Front Matter块中放置的是该markdown文档的元数据，也就是文档的描述数据，并且Front Matter部分必须放置在文章顶部。
@@ -113,6 +122,7 @@ You can create footnotes like this[^footnote].
 | $\LaTeX$公式块 | `option+cmd+b` | block  |
 |     代码块     | `option+cmd+c` |  code  |
 |      表格      | `option+cmd+t` | table  |
+|   表格插入行   |  `cmd+enter`   |   -    |
 
 ## 个人使用习惯
 
@@ -138,12 +148,12 @@ You can create footnotes like this[^footnote].
 >
 >   *<font color="green">Ps:</font>配合CheatSheet和CustomShortCuts使用*
 
-|      NAME       |      VALUE      |    MEMORY     |
-| :-------------: | :-------------: | :-----------: |
-| 展开/隐藏侧边栏 | `option+cmd+l`  |     list      |
-|      脚注       | `opeiton+cmd+f` |     foot      |
-|     删除线      |     `cmd+d`     |    delete     |
-|    ~~高亮~~     |   ~~`cmd+h`~~   | ~~highlight~~ |
+|      NAME       |     VALUE      |    MEMORY     |
+| :-------------: | :------------: | :-----------: |
+| 展开/隐藏侧边栏 | `option+cmd+l` |     list      |
+|      脚注       | `option+cmd+f` |     foot      |
+|     删除线      |    `cmd+d`     |    delete     |
+|    ~~高亮~~     |  ~~`cmd+h`~~   | ~~highlight~~ |
 
 ### 配合其他软件
 
