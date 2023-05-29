@@ -1,4 +1,4 @@
-Lab3
+[toc]
 
 ## Thinking
 
