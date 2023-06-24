@@ -1,6 +1,6 @@
 [toc]
 
-# MYSQL操作总结
+# MYSQL 操作总结
 
 ## 杂
 
@@ -9,7 +9,7 @@
 -   数据库名+表名都不支持大写（自动转换为小写）
 -   字段名支持大写
 
-### MySQL不允许的语法格式
+### MySQL 不允许的语法格式
 
 ```mysql
 create table test if not exists(
@@ -18,41 +18,41 @@ create table test if not exists(
 )
 ```
 
-### MySQL注释
+### MySQL 注释
 
 ```mysql
 #这是一个注释
 -- 这也是一个注释，但是必须空一格
 ```
 
-### MySQL输出格式
+### MySQL 输出格式
 
->   有时候，由于数据库字段过多或者数据集过大，查询操作会导致数据无法显示在一行而出现无法对齐的问题，此时可以使用`\G`使得查询结果垂直显示
+> 有时候，由于数据库字段过多或者数据集过大，查询操作会导致数据无法显示在一行而出现无法对齐的问题，此时可以使用`\G`使得查询结果垂直显示
 >
->   $Plus:$更多更好的解决方案可以看这里https://www.itranslater.com/qa/details/2117995727778481152
+> $Plus:$更多更好的解决方案可以看这里https://www.itranslater.com/qa/details/2117995727778481152
 
 ```mysql
 select * from test \G;
 ```
 
-### 优化MySQL体验
+### 优化 MySQL 体验
 
 [mycli](https://zhuanlan.zhihu.com/p/349104648)
 
-### 关于MySQL的各种报错解决
+### 关于 MySQL 的各种报错解决
 
--   `1418`:函数创建失败报错，该报错产生的原因是MySQL默认会关闭创建函数的功能，可以通过`show variables like "%func%";`语句来查看函数功能是否开启，如果未开启的话可以使用`set global log_bin_trust_function_creators=1;`进行开启（该命令的目的是设置临时环境变量）。
+-   `1418`:函数创建失败报错，该报错产生的原因是 MySQL 默认会关闭创建函数的功能，可以通过`show variables like "%func%";`语句来查看函数功能是否开启，如果未开启的话可以使用`set global log_bin_trust_function_creators=1;`进行开启（该命令的目的是设置临时环境变量）。
 
     ![image-20220423103924940](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220423103924940.png)
 
-## SQL分类
+## SQL 分类
 
-- 数据查询语言（DQL）： 其语句也称为“数据检索语句”，用以从表中获得数据，确定数据怎样在应用程序给出。`Database Query Language`
-- 数据操作语言（DML）： 其语句包括动词 *INSERT、UPDATE 和 DELETE*。它们分别用于添加、修改和删除。`Database Manage Language`
-- 事务控制语言（TCL）： 它的语句能确保被 DML 语句影响的表的所有行及时得以更新。包括COMMIT（提交）命令、SAVEPOINT（保存点）命令、ROLLBACK（回滚）命令。`Transaction Control Language`
-- 数据控制语言（DCL）： 它的语句通过 GRANT 或 REVOKE 实现权限控制，确定单个用户和用户组对数据库对象的访问。某些 RDBMS 可用 GRANT 或 REVOKE 控制对表单个列的访问。`Database Control Language`
-- 数据定义语言（DDL）： 其语句包括动词 *CREATE、ALTER 和 DROP*。在数据库中创建新表或修改、删除表（CREATE TABLE 或 DROP TABLE）、为表加入索引等。`Database Define Languaga`
-- 指针控制语言（CCL）： 它的语句，像 DECLARE CURSOR、FETCH INTO 和 UPDATE WHERE CURRENT 用于对一个或多个表单独行的操作。`Cursor Control Language`
+-   数据查询语言（DQL）： 其语句也称为“数据检索语句”，用以从表中获得数据，确定数据怎样在应用程序给出。`Database Query Language`
+-   数据操作语言（DML）： 其语句包括动词 _INSERT、UPDATE 和 DELETE_。它们分别用于添加、修改和删除。`Database Manage Language`
+-   事务控制语言（TCL）： 它的语句能确保被 DML 语句影响的表的所有行及时得以更新。包括 COMMIT（提交）命令、SAVEPOINT（保存点）命令、ROLLBACK（回滚）命令。`Transaction Control Language`
+-   数据控制语言（DCL）： 它的语句通过 GRANT 或 REVOKE 实现权限控制，确定单个用户和用户组对数据库对象的访问。某些 RDBMS 可用 GRANT 或 REVOKE 控制对表单个列的访问。`Database Control Language`
+-   数据定义语言（DDL）： 其语句包括动词 _CREATE、ALTER 和 DROP_。在数据库中创建新表或修改、删除表（CREATE TABLE 或 DROP TABLE）、为表加入索引等。`Database Define Languaga`
+-   指针控制语言（CCL）： 它的语句，像 DECLARE CURSOR、FETCH INTO 和 UPDATE WHERE CURRENT 用于对一个或多个表单独行的操作。`Cursor Control Language`
 
 ## 数据库、表操作和数据更新
 
@@ -60,196 +60,196 @@ select * from test \G;
 
 ### 数据库操作
 
-- 查看数据库
+-   查看数据库
 
-  ```mysql
-  show databases;# 显示所有数据库
-  ```
+    ```mysql
+    show databases;# 显示所有数据库
+    ```
 
-- 使用数据库
+-   使用数据库
 
-  ```mysql
-  use db_name;# 使用该数据库进行操作(操作环境更换为该数据库下的表)
-  ```
+    ```mysql
+    use db_name;# 使用该数据库进行操作(操作环境更换为该数据库下的表)
+    ```
 
-- 数据库创建
+-   数据库创建
 
-  ```mysql
-  create database db_name;
-  ```
+    ```mysql
+    create database db_name;
+    ```
 
-- 删除数据库
+-   删除数据库
 
-  ```mysql
-  drop database db_name;
-  ```
+    ```mysql
+    drop database db_name;
+    ```
 
 ### 表操作
 
-- 创建表
+-   创建表
 
-  ```mysql
-  create table if not exists tb_name( # 如果表不存在的话，创建表
-  	...... # 这里放对各种数据字段的定义和声明、主键约束/外键约束等等
-  )
-  ```
+    ```mysql
+    create table if not exists tb_name( # 如果表不存在的话，创建表
+    	...... # 这里放对各种数据字段的定义和声明、主键约束/外键约束等等
+    )
+    ```
 
-- 查看表
+-   查看表
 
-  ```mysql
-  show tables; # 查看当前数据库中可用的表
-  ```
+    ```mysql
+    show tables; # 查看当前数据库中可用的表
+    ```
 
-- 删除表
+-   删除表
 
-  ```mysql
-  drop table if exists tb_name;
-  ```
+    ```mysql
+    drop table if exists tb_name;
+    ```
 
-- 查看表的具体结构
+-   查看表的具体结构
 
-  ```mysql
-  desc tb_name;
-  ```
+    ```mysql
+    desc tb_name;
+    ```
 
-- 表重命名
+-   表重命名
 
-  ```mysql
-  rename table name_old to name_new; # 方法1
-  alter table name_old rename name_new; # 方法2，推荐使用，更加规范
-  ```
+    ```mysql
+    rename table name_old to name_new; # 方法1
+    alter table name_old rename name_new; # 方法2，推荐使用，更加规范
+    ```
 
 #### 修改表的具体结构
 
->   整体结构如下
+> 整体结构如下
 >
->   ```mysql
->   alter table tb_name
->   [add new_col_name data_type [integrity_constraints]|integrity_constraints]
->   [drop col_name|integrity_constraints]
->   [modify col_name data_type [integrity_constraints]]
->   [change col_name new_col_name data_type [integrity_constraints]];
->   ```
+> ```mysql
+> alter table tb_name
+> [add new_col_name data_type [integrity_constraints]|integrity_constraints]
+> [drop col_name|integrity_constraints]
+> [modify col_name data_type [integrity_constraints]]
+> [change col_name new_col_name data_type [integrity_constraints]];
+> ```
 >
->   <u>add语句</u>：用于增加新列和新的**完整性约束条件**
+> <u>add 语句</u>：用于增加新列和新的**完整性约束条件**
 >
->   <u>drop语句</u>：删除指定的列或者完整性约束条件
+> <u>drop 语句</u>：删除指定的列或者完整性约束条件
 >
->   <u>modify语句</u>：修改指定列的数据类型
+> <u>modify 语句</u>：修改指定列的数据类型
 >
->   <u>change语句</u>：modify的基础上添加修改列名
+> <u>change 语句</u>：modify 的基础上添加修改列名
 >
->   ~~*<font color="red">Attention:</font>修改数据类型的时候无法对完整性约束条件进行修改，完整性约束条件必须单独修改定义。*~~
+> ~~_<font color="red">Attention:</font>修改数据类型的时候无法对完整性约束条件进行修改，完整性约束条件必须单独修改定义。_~~
 >
->   $Plus:$修改原有列定义可能会破坏已有数据。
+> $Plus:$修改原有列定义可能会破坏已有数据。
 
-- 添加字段
+-   添加字段
 
-  ```mysql
-  alter table tb_name add column co_name varchar(80) not null;
-  ```
+    ```mysql
+    alter table tb_name add column co_name varchar(80) not null;
+    ```
 
-  添加完整性约束条件
+    添加完整性约束条件
 
-  ```mysql
-  alter table review add [约束名] index(col0);# 给col0字段添加index
-  ```
+    ```mysql
+    alter table review add [约束名] index(col0);# 给col0字段添加index
+    ```
 
-- 删除字段
+-   删除字段
 
-  ```mysql
-  alter table tb_name drop co_name;
-  ```
+    ```mysql
+    alter table tb_name drop co_name;
+    ```
 
-  删除完整性约束
+    删除完整性约束
 
-  ```mysql
-  # 方法1:直接删除
-  alter table tb_name drop intrgrity_constraints_name col_name;
-  # 方法2:先查看约束名再进行删除(更加稳妥)
-  show create table tb_name;# 查看约束名和约束key
-  alter table tb_name drop in_co_key in_co_name;# 不太明白怎么删除
-  # 感觉下面这种方法更好
-  alter table tb_name drop constraint key_name;
-  ```
+    ```mysql
+    # 方法1:直接删除
+    alter table tb_name drop intrgrity_constraints_name col_name;
+    # 方法2:先查看约束名再进行删除(更加稳妥)
+    show create table tb_name;# 查看约束名和约束key
+    alter table tb_name drop in_co_key in_co_name;# 不太明白怎么删除
+    # 感觉下面这种方法更好
+    alter table tb_name drop constraint key_name;
+    ```
 
-- 修改字段结构+重命名
+-   修改字段结构+重命名
 
-  ```mysql
-  alter table tb_name change column1 column2 varchar(100) not null;
-  # change比modify更加全面,可以修改字段名
-  alter table tb_name modify col1 .....;
-  ```
-  
-- 更新字段的值（不建议使用，建议update全部用于元组操作）
+    ```mysql
+    alter table tb_name change column1 column2 varchar(100) not null;
+    # change比modify更加全面,可以修改字段名
+    alter table tb_name modify col1 .....;
+    ```
 
-  ```mysql
-  update table_name set col_name=new_value where condition;# 需要记忆
-  ```
+-   更新字段的值（不建议使用，建议 update 全部用于元组操作）
+
+    ```mysql
+    update table_name set col_name=new_value where condition;# 需要记忆
+    ```
 
 ### 数据更新
 
->   对表中的*元组*进行操作
+> 对表中的*元组*进行操作
 >
->   三种常见数据更新类型
+> 三种常见数据更新类型
 >
->   -   ==Insert==插入一条或多条元组（常用，已基本掌握）
+> -   ==Insert==插入一条或多条元组（常用，已基本掌握）
 >
->       两种用法
+>     两种用法
 >
->       1.   自己构造数据插入
+>     1.  自己构造数据插入
 >
->            ```mysql
->            insert into tb_name(col1,col2....)
->            values
->            (col1_va1,col2_va1,....),
->            (col1_va2,....),
->            ....;
->            ```
+>         ```mysql
+>         insert into tb_name(col1,col2....)
+>         values
+>         (col1_va1,col2_va1,....),
+>         (col1_va2,....),
+>         ....;
+>         ```
 >
->       2.   将从其他表查询得到的数据插入表
+>     2.  将从其他表查询得到的数据插入表
 >
->            ```mysql
->            insert into tb_name(col1,col2...)
->            select ......;# 数据查询语句
->            # 可以依据此对表进行扩容
->            insert into tb_name(col1,col2,...)
->            select col1,col2,....
->            from tb_name;
->            ```
+>         ```mysql
+>         insert into tb_name(col1,col2...)
+>         select ......;# 数据查询语句
+>         # 可以依据此对表进行扩容
+>         insert into tb_name(col1,col2,...)
+>         select col1,col2,....
+>         from tb_name;
+>         ```
 >
->   -   ==Delete== 删除一条或多条**元组**（删除表中满足where语句条件的***元组***）
+> -   ==Delete== 删除一条或多条**元组**（删除表中满足 where 语句条件的**_元组_**）
 >
->       ```mysql
->       delete from tb_name
->       where conditions;
->       ```
+>     ```mysql
+>     delete from tb_name
+>     where conditions;
+>     ```
 >
->   -   ==Update== 更新**现有**一条或多条**元组**中的值（注意update用于更新的是元组的值）
+> -   ==Update== 更新**现有**一条或多条**元组**中的值（注意 update 用于更新的是元组的值）
 >
->       ```mysql
->       update tb_name
->       set col1=expression1,col2=expression2.....
->       where conditions;
->       ```
+>     ```mysql
+>     update tb_name
+>     set col1=expression1,col2=expression2.....
+>     where conditions;
+>     ```
 
 实例（这里讲讲之前比较少操作的方法）：
 
-1.   将从其他表中查找出的数据插入到表中（**select子句目标列必须和insert匹配**）
+1.  将从其他表中查找出的数据插入到表中（**select 子句目标列必须和 insert 匹配**）
 
-     ```mysql
-     insert into deptage(sdept,avage)
-     select sdept,avg(sage)
-     from student
-     group by sdept;
-     ```
+    ```mysql
+    insert into deptage(sdept,avage)
+    select sdept,avg(sage)
+    from student
+    group by sdept;
+    ```
 
-2.   **数据更新操作**（修改多个元组的值，不指定where的话，**默认作用范围为所有元组**）
+2.  **数据更新操作**（修改多个元组的值，不指定 where 的话，**默认作用范围为所有元组**）
 
-     ```mysql
-     update student
-     set sage=sage+1;# 将所有学生的年龄+1
-     ```
+    ```mysql
+    update student
+    set sage=sage+1;# 将所有学生的年龄+1
+    ```
 
 ## 索引
 
@@ -273,9 +273,9 @@ alter table student add index idx_score(score) # 对score列创建了一个名�
 
 > 设计关系数据表的时候，看上去唯一的列，例如身份证号、邮箱地址，但是因为他们具备业务含义（身份证号和邮箱都**有可能会修改**），所以不宜作为主键（主键原则：唯一且不会进行修改）
 >
-> *但是这些列根据业务要求，又同时具备了唯一性约束*，这种时候，就可以给这些列添加一个唯一索引
+> _但是这些列根据业务要求，又同时具备了唯一性约束_，这种时候，就可以给这些列添加一个唯一索引
 >
-> 注意：MySql对于唯一索引不区分大小写
+> 注意：MySql 对于唯一索引不区分大小写
 
 ```mysql
 alter table students add unique index uni_name(name);
@@ -287,15 +287,15 @@ alter table students add constraint uni_name unique(name);
 
 ---
 
-> 无论是否创建索引，对于用户和应用程序来说，使用关系数据库不会有任何区别。这里的意思是说，当我们在数据库中查询时，如果有相应的索引可用，数据库系统就会自动使用索引来提高查询效率，如果没有索引，查询也能正常执行，只是速度会变慢。因此，***索引可以在使用数据库的过程中逐步优化***。
+> 无论是否创建索引，对于用户和应用程序来说，使用关系数据库不会有任何区别。这里的意思是说，当我们在数据库中查询时，如果有相应的索引可用，数据库系统就会自动使用索引来提高查询效率，如果没有索引，查询也能正常执行，只是速度会变慢。因此，**_索引可以在使用数据库的过程中逐步优化_**。
 
 ## 约束
 
-> 约束，*是一种限制*，它是对表的行和列的数据做出约束，确保表中数据的完整性和唯一性
+> 约束，_是一种限制_，它是对表的行和列的数据做出约束，确保表中数据的完整性和唯一性
 >
 > 三种完整性：域、实体、参照完整性（其实还有一个用户完整性，但是这里不提及，因为这完全是用户自定义的）
 >
-> 域完整性：就是对于数据表中*字段的约束*（unique,not null,default,unsigned等等）
+> 域完整性：就是对于数据表中*字段的约束*（unique,not null,default,unsigned 等等）
 >
 > 实体完整性：通过主键约束和候选键约束实现
 >
@@ -303,85 +303,85 @@ alter table students add constraint uni_name unique(name);
 
 **分类如下**
 
-- *default*：默认约束，域完整性
+-   _default_：默认约束，域完整性
 
-  指定某列的**默认值**，插入数据时，如果此列赋值，则使用default指定的值来填充
+    指定某列的**默认值**，插入数据时，如果此列赋值，则使用 default 指定的值来填充
 
-- *not null*: 非空约束，域完整性
+-   _not null_: 非空约束，域完整性
 
-  指定某列的值不为空，在插入数据的时候必须非空 '' 不等于 null, 0不等于 null
+    指定某列的值不为空，在插入数据的时候必须非空 '' 不等于 null, 0 不等于 null
 
-- *unique*: 唯一约束，实体完整性
+-   _unique_: 唯一约束，实体完整性
 
-- *primary key*: 主键约束，实体完整性
+-   _primary key_: 主键约束，实体完整性
 
-- *foreign key*: 外键约束，参照完整性
+-   _foreign key_: 外键约束，参照完整性
 
-  通过建立外键，设置表与表之间的约束性，限制数据的录入
+    通过建立外键，设置表与表之间的约束性，限制数据的录入
 
-  被外键约束的列，要么为null，要么取值必须参照主表列中的值
+    被外键约束的列，要么为 null，要么取值必须参照主表列中的值
 
-  ```mysql
-  create table emp(
-  	id int primary key auto_increment,
-      name varchar(30) not null,
-      deptno int default 0,
-      foreign key(deptno) references dept(id) # 直接添加外键约束
-  );
-  ```
+    ```mysql
+    create table emp(
+    	id int primary key auto_increment,
+        name varchar(30) not null,
+        deptno int default 0,
+        foreign key(deptno) references dept(id) # 直接添加外键约束
+    );
+    ```
 
-  为已经添加好的数据表添加外键（当表与表之间需要互相添加外键的时候需要用到）
+    为已经添加好的数据表添加外键（当表与表之间需要互相添加外键的时候需要用到）
 
-  ```mysql
-  alter table table_name add constraint table_name(col_name) references tb_name(co_name);# 注意外键和主键的数据类型必须一致，包括是否无符号(是否为)
-  ```
+    ```mysql
+    alter table table_name add constraint table_name(col_name) references tb_name(co_name);# 注意外键和主键的数据类型必须一致，包括是否无符号(是否为)
+    ```
 
-  ***级联关系***
+    **_级联关系_**
 
-  - on delete cascade：删除主表中的数据时，从表中的数据随之删除
-  - on update cascase：更新主表中的数据时，从表中的数据随之更新
-  - on delete set null：删除主表中的数据时，从表中的数据置空
+    -   on delete cascade：删除主表中的数据时，从表中的数据随之删除
+    -   on update cascase：更新主表中的数据时，从表中的数据随之更新
+    -   on delete set null：删除主表中的数据时，从表中的数据置空
 
-- *check*: 检查约束，域完整性
+-   _check_: 检查约束，域完整性
 
-  类似于自定义约束，具体使用方法见<a href="#check">此处</a>
+    类似于自定义约束，具体使用方法见<a href="#check">此处</a>
 
-- *auto_increment*: 自增长约束
+-   _auto_increment_: 自增长约束
 
-  ==自增列必须是键，但是不一定非是主键，并且只能存在一个自增列==
+    ==自增列必须是键，但是不一定非是主键，并且只能存在一个自增列==
 
-  ```mysql
-  create table test(
-  	id int unsigned not null,
-      col int auto_increment not null,
-      primary key(id),
-      key(col)
-  );# 可以创建成功!
-  ```
+    ```mysql
+    create table test(
+    	id int unsigned not null,
+        col int auto_increment not null,
+        primary key(id),
+        key(col)
+    );# 可以创建成功!
+    ```
 
-  ![image-20220404141310760](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404141310760.png)
+    ![image-20220404141310760](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404141310760.png)
 
-  关于mysql中主键(primary key)、外键(foreign key)、键(key)和索引(index)的区别
+    关于 mysql 中主键(primary key)、外键(foreign key)、键(key)和索引(index)的区别
 
-  key 是数据库的**物理结构**，它包含两层意义和作用，
+    key 是数据库的**物理结构**，它包含两层意义和作用，
 
-  1. 约束（偏重于约束和规范数据库的结构完整性）
+    1. 约束（偏重于约束和规范数据库的结构完整性）
 
-  2. 索引index（辅助查询用的）
+    2. 索引 index（辅助查询用的）
 
-  单纯的key和index起的作用相同
+    单纯的 key 和 index 起的作用相同
 
-  **primary key** 有两个作用，一是约束作用（constraint），用来**规范一个存储主键和唯一性**，但同时也在此key上建立了一个主键索引
+    **primary key** 有两个作用，一是约束作用（constraint），用来**规范一个存储主键和唯一性**，但同时也在此 key 上建立了一个主键索引
 
-  **unique key** 也有两个作用，一是约束作用（constraint），规范数据的**唯一性**，但同时也在这个key上建立了一个唯一索引（当然也可以选择不创建索引，但是一般都默认创建）
+    **unique key** 也有两个作用，一是约束作用（constraint），规范数据的**唯一性**，但同时也在这个 key 上建立了一个唯一索引（当然也可以选择不创建索引，但是一般都默认创建）
 
-  **foreign key** 也有两个作用，一是约束作用（constraint），规范数据的引用完整性，但同时也在这个key上建立了一个index
+    **foreign key** 也有两个作用，一是约束作用（constraint），规范数据的引用完整性，但同时也在这个 key 上建立了一个 index
 
-- *unsigned*: 无符号约束
+-   _unsigned_: 无符号约束
 
-- *zerofill*: 零填充约束
+-   _zerofill_: 零填充约束
 
-  ![image-20220721093714599](/Users/apple/Documents/Notes/assets/image-20220721093714599.png)
+    ![image-20220721093714599](/Users/apple/Documents/Notes/assets/image-20220721093714599.png)
 
 ==所有约束的实现如下==
 
@@ -404,9 +404,9 @@ creata table tmp(
 );
 ```
 
-### <span name="check">check约束拓展</span>
+### <span name="check">check 约束拓展</span>
 
->   支持正则表达式
+> 支持正则表达式
 
 ## 字段
 
@@ -416,69 +416,69 @@ creata table tmp(
 
 **数据类型以及类型修饰的意义**：
 
-- 确定该字段值的类型
-- 确定该字段所占据的空间大小
-- 确定该字段是定长还是变长的
-- 该字段如何进行比较和排序
-- 该字段是否能够索引
-- 该字段是外键、主键....?
+-   确定该字段值的类型
+-   确定该字段所占据的空间大小
+-   确定该字段是定长还是变长的
+-   该字段如何进行比较和排序
+-   该字段是否能够索引
+-   该字段是外键、主键....?
 
 **数据类型分类**
 
 1. 数值型
 
-   - 整型：$TINYINT,SMALLINT,MEDIUINT,INT,BIGINT$
-   - 浮点型：包括单精度和双精度浮点型
-     - $float(M,D)$其中M表示浮点型的长度（不包括符号和小数点），D表示小数点后面数字的位数
-     - $decimal(M,D)$以字符串的形式存储，定点类型小数，如果对于精度要求比较高的话推荐使用decimal类型
+    - 整型：$TINYINT,SMALLINT,MEDIUINT,INT,BIGINT$
+    - 浮点型：包括单精度和双精度浮点型
+        - $float(M,D)$其中 M 表示浮点型的长度（不包括符号和小数点），D 表示小数点后面数字的位数
+        - $decimal(M,D)$以字符串的形式存储，定点类型小数，如果对于精度要求比较高的话推荐使用 decimal 类型
 
-   ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型](http://s9.51cto.com/wyfs02/M02/8A/AC/wKioL1g3mobgsiRQAAEOuN_LocM545.png)
+    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型](http://s9.51cto.com/wyfs02/M02/8A/AC/wKioL1g3mobgsiRQAAEOuN_LocM545.png)
 
 2. 字符型：$CHAR,VARVHAR,BINARY,VARBINARY,TEXT等$
 
-   比较常用的就是char型和varchar型
+    比较常用的就是 char 型和 varchar 型
 
-   char(10)和varchar(10)的区别，char(10)代表开辟用于存储的空间就是固定的用于存放10个==字符==，而varchar(10)则是可以变动的，只是在数据库初始化的时候会预存10个字符的空间来适应它（可扩容）
+    char(10)和 varchar(10)的区别，char(10)代表开辟用于存储的空间就是固定的用于存放 10 个==字符==，而 varchar(10)则是可以变动的，只是在数据库初始化的时候会预存 10 个字符的空间来适应它（可扩容）
 
-   ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_02](http://s5.51cto.com/wyfs02/M00/8A/B0/wKiom1g3mqOxypGaAACjNfEmuW8532.png)
+    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_02](http://s5.51cto.com/wyfs02/M00/8A/B0/wKiom1g3mqOxypGaAACjNfEmuW8532.png)
 
 3. 日期时间型：$DATE,TIME,DATETIME,TIMESTAMP$
 
-   常用的为$DATE,DATETIME,TIMESTAMP$
+    常用的为$DATE,DATETIME,TIMESTAMP$
 
-   ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
+    ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
 
-   **基本使用**
+    **基本使用**
 
-   ```mysql
-create table people(
-   	id int auto_increment primary key,
-    birth_date date not null default '1999-1-1',
-   );
-insert into people(birth_date)
-   values
-('1999-1-2'),
-   (curdate()),
-(date(now()));# now()返回的数据是datatime类型,使用data(now())来获取对应的data段数据
-   # 日期格式转换
-select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
-   ```
+    ```mysql
+    create table people(
+    	id int auto_increment primary key,
+     birth_date date not null default '1999-1-1',
+    );
+    insert into people(birth_date)
+    values
+    ('1999-1-2'),
+    (curdate()),
+    (date(now()));# now()返回的数据是datatime类型,使用data(now())来获取对应的data段数据
+    # 日期格式转换
+    select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
+    ```
 
-   ![image-20220404150710634](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404150710634.png)
+    ![image-20220404150710634](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220404150710634.png)
 
-   关于默认值设置：只有时间戳timestamp类型支持系统默认值设置，其他类型都不支持
+    关于默认值设置：只有时间戳 timestamp 类型支持系统默认值设置，其他类型都不支持
 
-4. 枚举型：需要列出该字段的所有可能值，存储范围是0-65535bytes（可以*在一定程度上代替check约束*）
+4. 枚举型：需要列出该字段的所有可能值，存储范围是 0-65535bytes（可以*在一定程度上代替 check 约束*）
 
-   ```mysql
-   CREATE TABLE tickets (
-       id INT PRIMARY KEY AUTO_INCREMENT,
-       title VARCHAR(255) NOT NULL,
-       priority ENUM('Low', 'Medium', 'High') NOT NULL
-   );
-   ```
+    ```mysql
+    CREATE TABLE tickets (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        priority ENUM('Low', 'Medium', 'High') NOT NULL
+    );
+    ```
 
-5. 布尔型：mysql中会自动转换为tinyint，只有两种取值，1代表true、0代表false
+5. 布尔型：mysql 中会自动转换为 tinyint，只有两种取值，1 代表 true、0 代表 false
 
 ### 字段修饰
 
@@ -527,9 +527,9 @@ select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
 
 3. count()：总数函数
 
-4. round(x,d)：四舍五入函数，x是需要处理的数，d是保留几位小数
+4. round(x,d)：四舍五入函数，x 是需要处理的数，d 是保留几位小数
 
-   ![image-20220721100848427](/Users/apple/Documents/Notes/assets/image-20220721100848427.png)
+    ![image-20220721100848427](/Users/apple/Documents/Notes/assets/image-20220721100848427.png)
 
 5. sum(x)：累加值函数
 
@@ -539,13 +539,13 @@ select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
 
 8. uniqExact(x)：取去重数函数（准确结果）
 
-9. argMax(arg,val)：按val排序，取val最大时对应arg的值
+9. argMax(arg,val)：按 val 排序，取 val 最大时对应 arg 的值
 
-10. argMin(arg,val)：按val排序，取val最小时对应arg的值
+10. argMin(arg,val)：按 val 排序，取 val 最小时对应 arg 的值
 
-11. uniqIf(x,v)：当v成立时，取去重数（近似结果）
+11. uniqIf(x,v)：当 v 成立时，取去重数（近似结果）
 
-12. uniqExactIf(x,v)：当v成立时，取去重数（准确结果）
+12. uniqExactIf(x,v)：当 v 成立时，取去重数（准确结果）
 
 13. quantile(level)(x)：取分位数（近似值）
 
@@ -561,76 +561,76 @@ select date_format(birth_date,'%Y-%M/%b-%D;%y-%m-%d') from people;
 
 4. date()：将时间戳或日期转成日月年
 
-   ![image-20220721102030569](/Users/apple/Documents/Notes/assets/image-20220721102030569.png)
+    ![image-20220721102030569](/Users/apple/Documents/Notes/assets/image-20220721102030569.png)
 
 5. date_format(time,format)：将时间转化为字符串
 
-   ![image-20220721102554436](/Users/apple/Documents/Notes/assets/image-20220721102554436.png)
+    ![image-20220721102554436](/Users/apple/Documents/Notes/assets/image-20220721102554436.png)
 
 6. str_to_date(str,format)：将字符串转化为时间（注意时间字符串的格式和*是否符合正常日期范围*）
 
-   ![image-20220721102945172](/Users/apple/Documents/Notes/assets/image-20220721102945172.png)
+    ![image-20220721102945172](/Users/apple/Documents/Notes/assets/image-20220721102945172.png)
 
 7. date_add(time, interval number unit)：为日期增加一个时间间隔
 
-   ```mysql
-   # 普通日期增加
-   select date_add(now(),interval 1 day),date_add(now(),interval 1 hour),date_add(now(),interval 1 second),date_add(now(),interval 1 microsecond),date_add(now(),interval 1 week),date_add(now(),interval 1 month),date_add(now(),interval 1 quarter),date_add(now(),interval 1 year);
-   select date_add(now(),interval '1 1:12:12' day_second);# day_second指单位范围是天到秒
-   ```
+    ```mysql
+    # 普通日期增加
+    select date_add(now(),interval 1 day),date_add(now(),interval 1 hour),date_add(now(),interval 1 second),date_add(now(),interval 1 microsecond),date_add(now(),interval 1 week),date_add(now(),interval 1 month),date_add(now(),interval 1 quarter),date_add(now(),interval 1 year);
+    select date_add(now(),interval '1 1:12:12' day_second);# day_second指单位范围是天到秒
+    ```
 
-   ![image-20220721103906257](/Users/apple/Documents/Notes/assets/image-20220721103906257.png)
+    ![image-20220721103906257](/Users/apple/Documents/Notes/assets/image-20220721103906257.png)
 
 8. date_sub()同上
 
-9. date_diff()日期相减函数，基本同date_add
+9. date_diff()日期相减函数，基本同 date_add
 
 #### 三.字符串函数
 
 1. length(s)：字符串格式长度（中英文各占一个宽度）
 
-   ![image-20220721100549332](/Users/apple/Documents/Notes/assets/image-20220721100549332.png)
+    ![image-20220721100549332](/Users/apple/Documents/Notes/assets/image-20220721100549332.png)
 
-2. lower(s)/upper(s)：将英文字符全部小（大）写（与ucase和lcase等价）
+2. lower(s)/upper(s)：将英文字符全部小（大）写（与 ucase 和 lcase 等价）
 
-   ```mysql
-   select upper(col1) as u_col1 from test;
-   ```
+    ```mysql
+    select upper(col1) as u_col1 from test;
+    ```
 
-   ![image-20220721095429660](/Users/apple/Documents/Notes/assets/image-20220721095429660.png)
+    ![image-20220721095429660](/Users/apple/Documents/Notes/assets/image-20220721095429660.png)
 
 3. concat(s1,s2,s3...)：拼接字符串
 
-   concat函数在连接的时候首先将所有值转换为字符串，如果任何参数为null，concat返回null
+    concat 函数在连接的时候首先将所有值转换为字符串，如果任何参数为 null，concat 返回 null
 
-   ```mysql
-   select concat(z_test,' ',v_test) from test;
-   ```
+    ```mysql
+    select concat(z_test,' ',v_test) from test;
+    ```
 
-   ![image-20220721095816213](/Users/apple/Documents/Notes/assets/image-20220721095816213.png)
+    ![image-20220721095816213](/Users/apple/Documents/Notes/assets/image-20220721095816213.png)
 
-4. substring(s,position,length)/mid(…)：从position开始截取长度为length的字符串
+4. substring(s,position,length)/mid(…)：从 position 开始截取长度为 length 的字符串
 
-   ```mysql
-   select substring(v_test,4,12) from test;
-   ```
+    ```mysql
+    select substring(v_test,4,12) from test;
+    ```
 
-   ![image-20220721100115851](/Users/apple/Documents/Notes/assets/image-20220721100115851.png)
+    ![image-20220721100115851](/Users/apple/Documents/Notes/assets/image-20220721100115851.png)
 
 5. trim(s)：去掉前后空白字符
 
-   ![image-20220721100221667](/Users/apple/Documents/Notes/assets/image-20220721100221667.png)
+    ![image-20220721100221667](/Users/apple/Documents/Notes/assets/image-20220721100221667.png)
 
 6. replaceOne(s,pattern,replacement)/replace(s,pattern,replacement)：替换字符串
 
-#### 四.URL函数
+#### 四.URL 函数
 
-1. path(URL)：获取url的path
-2. pathFull(URL)：获取URL全路径
-3. extractURLParameter(URL,name)：获取url query中对应的参数值
+1. path(URL)：获取 url 的 path
+2. pathFull(URL)：获取 URL 全路径
+3. extractURLParameter(URL,name)：获取 url query 中对应的参数值
 4. decodeURLComponent(URL)：decode url
 
-## SQL查询语句
+## SQL 查询语句
 
 > 数据查询语言（Query Language），从数据库中获取指定的数据，是数据库中的核心操作
 
@@ -645,61 +645,60 @@ having attributes
 order by one or more attributes;
 ```
 
-- select语句：*指定要显示的属性列*
-- from语句：指定*查询对象*
-- where语句：指定*查询条件*
-- group by语句：对查询结果按照执行列的值进行*分组*（通常会在每组中作用**集函数**）
-- having语句：筛选出只有*满足指定条件*的组
-- order by语句：对查询结果按照*指定列值进行升序或者降序排序*
+-   select 语句：_指定要显示的属性列_
+-   from 语句：指定*查询对象*
+-   where 语句：指定*查询条件*
+-   group by 语句：对查询结果按照执行列的值进行*分组*（通常会在每组中作用**集函数**）
+-   having 语句：筛选出只有*满足指定条件*的组
+-   order by 语句：对查询结果按照*指定列值进行升序或者降序排序*
 
 ==查询语句的执行顺序==
 
-> 和其他编程语言不同，sql查询语句并不是顺序执行的
+> 和其他编程语言不同，sql 查询语句并不是顺序执行的
 
-1. from语句组装来自不同数据源的数据（先join再on）$\rightarrow$==首先获取数据源==
-2. where语句基于执行的条件对于记录行进行筛选$\rightarrow$==对获取的数据源进行初步筛选==
-3. group by语句将数据划分为多个分组$\rightarrow$==数据分组==（如果应用了group by，那么后面的所有步骤都只能得到的分组依据值或者是聚合函数值（count、sum、avg等）。原因在于最终的结果集中只为每个组包含一行，这一点需要牢记 ）
+1. from 语句组装来自不同数据源的数据（先 join 再 on）$\rightarrow$==首先获取数据源==
+2. where 语句基于执行的条件对于记录行进行筛选$\rightarrow$==对获取的数据源进行初步筛选==
+3. group by 语句将数据划分为多个分组$\rightarrow$==数据分组==（如果应用了 group by，那么后面的所有步骤都只能得到的分组依据值或者是聚合函数值（count、sum、avg 等）。原因在于最终的结果集中只为每个组包含一行，这一点需要牢记 ）
 4. 使用集函数（聚合函数）进行计算$\rightarrow$==将分组的数据合并为一行==
-5. 使用having语句筛选分组$\rightarrow$==对已分组的数据进行筛选==
-6. select语句选择字段$\rightarrow$==筛选出所需字段==
-7. 使用order by语句对结果进行排序$\rightarrow$==排序==
+5. 使用 having 语句筛选分组$\rightarrow$==对已分组的数据进行筛选==
+6. select 语句选择字段$\rightarrow$==筛选出所需字段==
+7. 使用 order by 语句对结果进行排序$\rightarrow$==排序==
 
 **每个步骤都会产生一个虚拟表，该表将作为下一个步骤的输入（虚拟表对于使用者不可见，只有最后一步生成的表才会传给调用者）**
 
 ### 单表查询
 
-- 普通查询
+-   普通查询
 
-  ```mysql
-  select Sno,Sname
-  from student;
-  select *
-  from student;
-  ```
+    ```mysql
+    select Sno,Sname
+    from student;
+    select *
+    from student;
+    ```
 
-- 查询经过计算的值（select语句的目标列可以为<表达式>）
+-   查询经过计算的值（select 语句的目标列可以为<表达式>）
 
-  ```mysql
-  select Sname,2022-Sage,lower(Sname) # lower代表小写
-  from student;
-  ```
+    ```mysql
+    select Sname,2022-Sage,lower(Sname) # lower代表小写
+    from student;
+    ```
 
-- 使用列别名改变查询得到的列标题
+-   使用列别名改变查询得到的列标题
 
-  ```mysql
-  select Sname as NAME,birth as BIRTHDAY
-  from student;
-  ```
+    ```mysql
+    select Sname as NAME,birth as BIRTHDAY
+    from student;
+    ```
 
-- 利用distinct去除重复行（去重）
+-   利用 distinct 去除重复行（去重）
 
-  ```mysql
-  select distinct Sno,Sname # distinct作用的范围是选出的所有行
-  from student;
-  ```
+    ```mysql
+    select distinct Sno,Sname # distinct作用的范围是选出的所有行
+    from student;
+    ```
 
-
-**where语句表达查询条件**
+**where 语句表达查询条件**
 
 | 查询条件 |                 谓词                  |
 | :------: | :-----------------------------------: |
@@ -710,68 +709,68 @@ order by one or more attributes;
 | 多重条件 |                and,or                 |
 | 字符匹配 |             like,not like             |
 
-- **集合查询**
+-   **集合查询**
 
-  ```mysql
-  select Sname,Ssex
-  from student
-  where Sname in ('wwt','test','hhh');
-  ```
+    ```mysql
+    select Sname,Ssex
+    from student
+    where Sname in ('wwt','test','hhh');
+    ```
 
-  *<font color="green">Ps:</font>注意一下多属性的联合查询（一些使用自然连接的题目可以用联合查询代替）！！！*
+    _<font color="green">Ps:</font>注意一下多属性的联合查询（一些使用自然连接的题目可以用联合查询代替）！！！_
 
-  [512.游戏玩法分析2](https://leetcode.cn/problems/game-play-analysis-ii/)
+    [512.游戏玩法分析 2](https://leetcode.cn/problems/game-play-analysis-ii/)
 
-  ```mysql
-  select player_id,device_id
-  from Activity
-  where(player_id,event_date) in (
-  	select player_id,min(event_date)
-      from Activity
-      group by player_id
-  );
-  ```
+    ```mysql
+    select player_id,device_id
+    from Activity
+    where(player_id,event_date) in (
+    	select player_id,min(event_date)
+        from Activity
+        group by player_id
+    );
+    ```
 
-- 字符匹配
+-   字符匹配
 
-  where语句中可以对字符串进行模板匹配
+    where 语句中可以对字符串进行模板匹配
 
-  `where attribute [not] like pattern`
+    `where attribute [not] like pattern`
 
-  其中%代表任意长度的字符串，_代表任意单个字符
+    其中%代表任意长度的字符串，\_代表任意单个字符
 
-  ```mysql
-  # 查询姓刘学生的姓名、学号和性别
-  select *
-  from student
-  where Sname like '刘%';
-  # 查询全名为3个字的学生姓名
-  select Sname
-  from student
-  where Sname like '___';
-  ```
+    ```mysql
+    # 查询姓刘学生的姓名、学号和性别
+    select *
+    from student
+    where Sname like '刘%';
+    # 查询全名为3个字的学生姓名
+    select Sname
+    from student
+    where Sname like '___';
+    ```
 
-  *当用户需要查询的字符本身就含有%或者_的时候，就需要使用ESCAPE+换码字符对通配符进行转义*
+    _当用户需要查询的字符本身就含有%或者\_的时候，就需要使用 ESCAPE+换码字符对通配符进行转义_
 
-  ```mysql
-  select *
-  from student
-  where Cname like 'DB\_Design' escape '\';
-  ```
+    ```mysql
+    select *
+    from student
+    where Cname like 'DB\_Design' escape '\';
+    ```
 
 **涉及空值的查询**
 
-> 规则： 
+> 规则：
 >
-> Where 语句中的条件表达式有三种可能的计算结果：True，False，或者 UnKnown 
+> Where 语句中的条件表达式有三种可能的计算结果：True，False，或者 UnKnown
 >
-> 任何一个值与NULL进行比较，返回的结果是UnKnown 
+> 任何一个值与 NULL 进行比较，返回的结果是 UnKnown
 >
-> Where子句对被查询表中每一条记录进行条件表达式的计算，只有在计算结果为True时当前记录才会被选中
+> Where 子句对被查询表中每一条记录进行条件表达式的计算，只有在计算结果为 True 时当前记录才会被选中
 >
 > 也就是说会默认忽视空值不将其放到查询结果中
 
-*测试是否为空值需要使用is null或者is not null来代替（别忘了！）*
+_测试是否为空值需要使用 is null 或者 is not null 来代替（别忘了！）_
 
 ```mysql
 # 查询缺考的学生姓名
@@ -782,76 +781,76 @@ where grade is null;
 
 **对查询得到的结果进行排序**
 
-- 可以按照一个或者多个属性进行排序（排序优先级逐步递减）
+-   可以按照一个或者多个属性进行排序（排序优先级逐步递减）
 
-  ==ASC==（ascend：上升）：升序（空值最先显示）
+    ==ASC==（ascend：上升）：升序（空值最先显示）
 
-  ==DESC==（descend：下降）：降序（空值最后显示） 
-  
-  注意上面这两个要放在列名的后面
-  
-  ```mysql
-  select Sno,Grade
-  from student
-  where Cno='3'
-  order by Grade desc;
-  select *
-  from student
-  order by Sdept asc,Sage desc;
-  ```
+    ==DESC==（descend：下降）：降序（空值最后显示）
+
+    注意上面这两个要放在列名的后面
+
+    ```mysql
+    select Sno,Grade
+    from student
+    where Cno='3'
+    order by Grade desc;
+    select *
+    from student
+    order by Sdept asc,Sage desc;
+    ```
 
 ### 聚集和分组
 
-> 在select语句中可以使用集函数，对指定的列进行聚合计算
+> 在 select 语句中可以使用集函数，对指定的列进行聚合计算
 >
 > 聚合函数——又名组函数，也就是对一个组进行操作，返回一个值的函数
 >
-> *<font color="green">Ps:</font>同样是默认忽略缺省值null，除了count会计算全部的个数*
+> _<font color="green">Ps:</font>同样是默认忽略缺省值 null，除了 count 会计算全部的个数_
 
-*常见集函数如下*
+_常见集函数如下_
 
-1. 计数count([distinct|all] 列名 | *)
-2. 计算总和sum([distinct|all] 列名)
-3. 计算平均值avg([distinct|all] 列名)
-4. 求最大值max([distinct|all] 列名)
-5. 求最小值min([distinct|all] 列名)
+1. 计数 count([distinct|all] 列名 | \*)
+2. 计算总和 sum([distinct|all] 列名)
+3. 计算平均值 avg([distinct|all] 列名)
+4. 求最大值 max([distinct|all] 列名)
+5. 求最小值 min([distinct|all] 列名)
 
 **对查询结果进行分组**
 
-使用GROUP BY子句分组
+使用 GROUP BY 子句分组
 
-- 细化集函数的作用对象
+-   细化集函数的作用对象
 
-- 未对查询结果分组时，集函数将作用于**整个查询结果**
+-   未对查询结果分组时，集函数将作用于**整个查询结果**
 
-  对查询结果分组后，集函数将**分别作用于每个组**
+    对查询结果分组后，集函数将**分别作用于每个组**
 
-- GROUP BY子句的作用对象是查询的中间结果表
+-   GROUP BY 子句的作用对象是查询的中间结果表
 
-- 分组方法：按指定的一列或多列值分组，值相等的为一组
+-   分组方法：按指定的一列或多列值分组，值相等的为一组
 
-- 使用GROUP BY子句后，SELECT子句的列名列表中只能出现**分组属性**和**集函数**
+-   使用 GROUP BY 子句后，SELECT 子句的列名列表中只能出现**分组属性**和**集函数**
 
-使用having语句筛选出最终结果
+使用 having 语句筛选出最终结果
 
-- having语句和where语句的区别：两者的作用对象不同
+-   having 语句和 where 语句的区别：两者的作用对象不同
 
-  where语句作用于基表和视图，从中选择满足条件的元组
+    where 语句作用于基表和视图，从中选择满足条件的元组
 
-  **having语句作用于组**，从中选出满足条件的组
+    **having 语句作用于组**，从中选出满足条件的组
 
-- having语句中出现的列只能是**group by子句或者集函数中出现的列**。
+-   having 语句中出现的列只能是**group by 子句或者集函数中出现的列**。
 
-  ```mysql
-  select Sno
-  from student
-  group by Grade
-  having max(Grade)>100;
-  ```
+    ```mysql
+    select Sno
+    from student
+    group by Grade
+    having max(Grade)>100;
+    ```
 
 ### 多表查询
 
-> 针对多张表的数据查询（本质上就是先对两个表进行笛卡尔积再由select选择返回结果）
+> 针对多张表的数据查询（本质上就是先对两个表进行笛卡尔积再由 select 选择返回结果）
 >
 > 最基本语法格式为：`select * from tb1,tb2`
 
@@ -863,14 +862,14 @@ where grade is null;
 >
 > 可以不写连接符（默认），也可以规范一点写`from tb1 cross join tb2`
 
-问题1：多表查询的列重名问题
+问题 1：多表查询的列重名问题
 
 ![image-20220403183426311](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220403183426311.png)
 
 可以投影查询的设置列别名（或者还可以再修改表名使得形式更加简洁）来解决
 
 ```mysql
-select 
+select
 s1.id s1id,s2.id s2id,
 s1.name s1name,s2.name s2name,
 s1.gender s1gender,s2.gender s2gender
@@ -881,7 +880,7 @@ from mysqlearn as s1,mysqlearn1 as s2;# 虽然但是，还是相当麻烦.....
 
 #### 等值连接
 
-> Where子句中的连接运算符为=号的连接操作（等价于**内连接**+on）
+> Where 子句中的连接运算符为=号的连接操作（等价于**内连接**+on）
 >
 > `[tb1.]col1=[tb2.]col2`（引用唯一属性名的时候可以省略表名前缀）
 
@@ -902,12 +901,12 @@ from t_student natural join t_class
 
 #### 内连接
 
-> 查询出两个表的**共同部分**，也就是笛卡尔积满足on条件的部分（等价于等值连接）
+> 查询出两个表的**共同部分**，也就是笛卡尔积满足 on 条件的部分（等价于等值连接）
 >
 > ![inner-join](https://www.liaoxuefeng.com/files/attachments/1246892164662976/l)
 
 ```mysql
-select * 
+select *
 from student inner join class
 on student.class_id=class.id;
 # 上述语句等价于
@@ -918,7 +917,7 @@ where student.class_id=class.id;
 
 #### 外连接
 
-> mysql中不支持全外连接（outer join），但是其实全外连接就是一个笛卡尔积......，所以全外连接其实没啥意义
+> mysql 中不支持全外连接（outer join），但是其实全外连接就是一个笛卡尔积......，所以全外连接其实没啥意义
 >
 > 所以主要需要注意的就是左外连接（left join）和右外连接（outer join）
 >
@@ -928,7 +927,7 @@ where student.class_id=class.id;
 
 > 选出左表存在右表不存在+左右表都存在的记录
 >
-> 右表不存在的字段使用null补齐
+> 右表不存在的字段使用 null 补齐
 
 ![left-outer-join](https://www.liaoxuefeng.com/files/attachments/1246893588481376/l)
 
@@ -936,17 +935,17 @@ where student.class_id=class.id;
 
 > 选出右表存在右左表不存在+左右表都存在的记录
 >
-> 左表不存在的字段使用null补齐
+> 左表不存在的字段使用 null 补齐
 
 ![right-outer-join](https://www.liaoxuefeng.com/files/attachments/1246893609222688/l)
 
 ### 子查询
 
-> 我们通常将一个select-from-where语句称为一个查询块
+> 我们通常将一个 select-from-where 语句称为一个查询块
 >
-> 子查询就是将一个查询块嵌套在另外一个查询块的where语句或者having语句的条件中（就是==嵌套查询==），**这是比较常用的方式**
+> 子查询就是将一个查询块嵌套在另外一个查询块的 where 语句或者 having 语句的条件中（就是==嵌套查询==），**这是比较常用的方式**
 >
-> *<font color="green">Ps:</font>子查询不能使用order by语句，因为用了也没啥意义*
+> _<font color="green">Ps:</font>子查询不能使用 order by 语句，因为用了也没啥意义_
 
 ```mysql
 select Sname
@@ -958,214 +957,219 @@ where Sno in (
 );
 ```
 
-- 子查询还可以插入from子句中作为临时表使用，但是此时需要对临时表进行更名操作（但是如果是联合查询的话可以不进行更名）
+-   子查询还可以插入 from 子句中作为临时表使用，但是此时需要对临时表进行更名操作（但是如果是联合查询的话可以不进行更名）
 
-  ```mysql
-  select tmp.sno,sname,cno
-  from sc,(
-  	select sno,sname
-      from student
-      where sdept='is'
-  )as tmp
-  where sc.sno=tmp.sno;
-  ```
+    ```mysql
+    select tmp.sno,sname,cno
+    from sc,(
+    	select sno,sname
+        from student
+        where sdept='is'
+    )as tmp
+    where sc.sno=tmp.sno;
+    ```
 
 相关子查询和不相关子查询
 
-- 相关子查询：**内层查询依赖于外层子查询的结果**
+-   相关子查询：**内层查询依赖于外层子查询的结果**
 
-  首先取外层查询中表的第一个元组（==逐行考察==），根据它与内层查询相关的属性值处理内层查询，若WHERE子句返回值为真，则取此元组放入结果表；
+    首先取外层查询中表的第一个元组（==逐行考察==），根据它与内层查询相关的属性值处理内层查询，若 WHERE 子句返回值为真，则取此元组放入结果表；
 
-  然后再取外层表的下一个元组；
+    然后再取外层表的下一个元组；
 
-  重复这一过程，直至外层表全部检查完为止。
+    重复这一过程，直至外层表全部检查完为止。
 
-- 不相关子查询：**子查询的结果用于建立其父查询的查找条件** 
+-   不相关子查询：**子查询的结果用于建立其父查询的查找条件**
 
-  由里向外逐层处理。即每个子查询在上一级查询处理之前求解
+    由里向外逐层处理。即每个子查询在上一级查询处理之前求解
 
 #### 子查询——谓词
 
-- 带==in==谓词的子查询
+-   带==in==谓词的子查询
 
-  ```mysql
-  select Sno,Sname,Sdept
-  from student
-  where Sdept in(
-  	select Sdept
-      from student
-      where Sname='刘晨'
-  ); # 不相关子查询
-  ```
-
-  比较复杂的例子：查询选修了课程名为"信息系统"的学生学号和姓名
-
-  ```mysql
-  # 方法一:利用子查询，思路清晰但是代码冗长
-  select Sno,Sname # 最终查询得到的结果，可以直接在第一步确定
-  from Student # 数据来源同样是确定的
-  where Sno in( # 找到选课表中选修了"信息系统"这门课的学生
-  	select Sno
-      from SC
-      where Cno in(
-      	select Cno
-          from Course
-          where Cname="信息系统"
-      )
-  );
-  # 方法二:利用自然连接，一下搞定
-  select Sno,Sname
-  from Student natural join SC natural join Course
-  where Course.name='信息系统';
-  # 方法三:等值连接，和方法二类似
-  select Sno,Sname
-  from Student,SC,Course
-  where Student.Sno=SC.Sno
-  and SC.Cno=Course.Cno
-  and Course.name='信息系统';
-  ```
-
-- 带有==any==或者==all==谓词的子查询
-
-  any：任意一个值
-
-  all：所有制
-  
-  一般与比较运算符（>,<,>=,<=,!=,=）配合使用
-  
-  例：查询其他系比信息系任意一个学生年龄小的学生姓名和年龄
-  
-  ```mysql
-  select Sanme,Sage
-  from student
-  where Sage < any(
-  	select Sage
-      from student
-      where Sdept='IS'
-  ) and Sdept!='IS';
-  ```
-  
-  通常，any和all谓词可以使用***集函数***去实现，并且使用集函数实现子查询一般比直接使用any和all的查询效率要高很多，因为集函数通常能够减少比较次数
-  
-  ```mysql
-  select Sanme,Sage
-  from student
-  where Sage < (
-  	select max(Sage)
-      from student
-      where Sdept='IS'
-  ) and Sdept!='IS';
-  ```
-  
-- 带有==exists/not exists==谓词的子查询
-
-  带有exists谓词的子查询不返回任何数据，**只产生逻辑真值"true"或逻辑假值"false"**
-
-  若内层查询结果非空，则返回真值；若内层查询结果为空，则返回假值。
-
-  由EXISTS引出的子查询，其目标列表达式通常都用==*== ，因为带EXISTS的子查询只返回真值或假值，给出列名无实际意义
-
-  ```mysql
-  select * 
-  from A
-  where exists(
-  	select *
-      from B
-      where B.a=A.a
-  ); # 相关子查询
-  ```
-
-  所有带in谓词、比较运算符、any和all谓词的子查询都能用带exists谓词的子查询等价替换。
-
-  - 使用==exists/not exists==实现全称量词$\forall$
-  
-    例子：***查询选修了全部课程的学生姓名***。
-  
-    Student(学生表)、SC(选课表)、Course(课程表)
-  
-    查询选修了全部课程的学生姓名$\leftrightarrow$查询一个学生，不存在这样的课程他没有选修
-    $$
-    (\forall)P\leftrightarrow \neg(\exist(\neg P))
-    $$
-    mysql不支持除法操作（😓）
-  
     ```mysql
-    select Sname
-    from Student
-    where not exists(
+    select Sno,Sname,Sdept
+    from student
+    where Sdept in(
+    	select Sdept
+        from student
+        where Sname='刘晨'
+    ); # 不相关子查询
+    ```
+
+    比较复杂的例子：查询选修了课程名为"信息系统"的学生学号和姓名
+
+    ```mysql
+    # 方法一:利用子查询，思路清晰但是代码冗长
+    select Sno,Sname # 最终查询得到的结果，可以直接在第一步确定
+    from Student # 数据来源同样是确定的
+    where Sno in( # 找到选课表中选修了"信息系统"这门课的学生
+    	select Sno
+        from SC
+        where Cno in(
+        	select Cno
+            from Course
+            where Cname="信息系统"
+        )
+    );
+    # 方法二:利用自然连接，一下搞定
+    select Sno,Sname
+    from Student natural join SC natural join Course
+    where Course.name='信息系统';
+    # 方法三:等值连接，和方法二类似
+    select Sno,Sname
+    from Student,SC,Course
+    where Student.Sno=SC.Sno
+    and SC.Cno=Course.Cno
+    and Course.name='信息系统';
+    ```
+
+-   带有==any==或者==all==谓词的子查询
+
+    any：任意一个值
+
+    all：所有制
+
+    一般与比较运算符（>,<,>=,<=,!=,=）配合使用
+
+    例：查询其他系比信息系任意一个学生年龄小的学生姓名和年龄
+
+    ```mysql
+    select Sanme,Sage
+    from student
+    where Sage < any(
+    	select Sage
+        from student
+        where Sdept='IS'
+    ) and Sdept!='IS';
+    ```
+
+    通常，any 和 all 谓词可以使用**_集函数_**去实现，并且使用集函数实现子查询一般比直接使用 any 和 all 的查询效率要高很多，因为集函数通常能够减少比较次数
+
+    ```mysql
+    select Sanme,Sage
+    from student
+    where Sage < (
+    	select max(Sage)
+        from student
+        where Sdept='IS'
+    ) and Sdept!='IS';
+    ```
+
+-   带有==exists/not exists==谓词的子查询
+
+    带有 exists 谓词的子查询不返回任何数据，**只产生逻辑真值"true"或逻辑假值"false"**
+
+    若内层查询结果非空，则返回真值；若内层查询结果为空，则返回假值。
+
+    由 EXISTS 引出的子查询，其目标列表达式通常都用==\*== ，因为带 EXISTS 的子查询只返回真值或假值，给出列名无实际意义
+
+    ```mysql
+    select *
+    from A
+    where exists(
     	select *
-        from Course
+        from B
+        where B.a=A.a
+    ); # 相关子查询
+    ```
+
+    所有带 in 谓词、比较运算符、any 和 all 谓词的子查询都能用带 exists 谓词的子查询等价替换。
+
+    -   使用==exists/not exists==实现全称量词$\forall$
+
+        例子：**_查询选修了全部课程的学生姓名_**。
+
+        Student(学生表)、SC(选课表)、Course(课程表)
+
+        查询选修了全部课程的学生姓名$\leftrightarrow$查询一个学生，不存在这样的课程他没有选修
+
+        $$
+        (\forall)P\leftrightarrow \neg(\exist(\neg P))
+        $$
+
+        mysql 不支持除法操作（😓）
+
+        ```mysql
+        select Sname
+        from Student
         where not exists(
         	select *
+            from Course
+            where not exists(
+            	select *
+                from SC
+                where SC.Sno=Student.Sno and
+                SC.Cno=Cource.Cno
+            )
+        );
+        ```
+
+    -   使用==exists/not exists==实现逻辑蕴含$\rightarrow$（implication）
+
+        SQL 语言中不存在蕴含谓词，需要通过谓词演算进行等价转化
+
+        $$
+        p\rightarrow q\leftrightarrow \neg p \and q
+        $$
+
+        例子：查询至少选修了学生 95002 选修的全部课程的学生号码
+
+        关系代数实现
+
+        $$
+        \Pi_{Sno,C\#}\div \Pi_{C\#}{\sigma_{Sno='95002'}{SC}}
+        $$
+
+        对于任意课程 y，学生 95002 选修了，则学生 x 也选修了
+
+        得到关系式如下
+
+        $$
+        \forall y (p\rightarrow q) = \neg(\exist(y)(\neg (p\rightarrow q)))=\neg\exist(y)(p\and \neg q)
+        $$
+
+        ```mysql
+        select Sno
+        from Student
+        where not exist(
+        	select *
             from SC
-            where SC.Sno=Student.Sno and
-            SC.Cno=Cource.Cno
-        )
-    );
-    ```
-  
-  - 使用==exists/not exists==实现逻辑蕴含$\rightarrow$（implication）
-  
-    SQL语言中不存在蕴含谓词，需要通过谓词演算进行等价转化
-    $$
-    p\rightarrow q\leftrightarrow \neg p \and q
-    $$
-    例子：查询至少选修了学生95002选修的全部课程的学生号码
-  
-    关系代数实现
-    $$
-    \Pi_{Sno,C\#}\div \Pi_{C\#}{\sigma_{Sno='95002'}{SC}}
-    $$
-    对于任意课程y，学生95002选修了，则学生x也选修了
-    
-    得到关系式如下
-    $$
-    \forall y (p\rightarrow q) = \neg(\exist(y)(\neg (p\rightarrow q)))=\neg\exist(y)(p\and \neg q)
-    $$
-    
-    ```mysql
-    select Sno
-    from Student
-    where not exist(
-    	select *
-        from SC
-        where SC.Cno in ( 
-        	select Cno
-            from SC
-            where SC.Sno='95502'
-        ) and SC.Cno not in(
-      		select Cno
-            from SC
-            where Sno!=SC.Sno
-        )
-    );
-    ```
-    
-    
+            where SC.Cno in (
+            	select Cno
+                from SC
+                where SC.Sno='95502'
+            ) and SC.Cno not in(
+          		select Cno
+                from SC
+                where Sno!=SC.Sno
+            )
+        );
+        ```
 
 ### 集合查询
 
-mysql只支持并操作Union，其他交（intersect）、差（except）都可以简单的利用where语句实现（因为太简单就不赘述了）
+mysql 只支持并操作 Union，其他交（intersect）、差（except）都可以简单的利用 where 语句实现（因为太简单就不赘述了）
 
 ## 视图
 
->   视图是一种==虚表==（virtual table），是从一个或多个基本表中导出的表（视图就是在数据库中存储的一条数据查询语句）。
+> 视图是一种==虚表==（virtual table），是从一个或多个基本表中导出的表（视图就是在数据库中存储的一条数据查询语句）。
 >
->   DBMS指定CREATIVE VIEW语句只是*把视图的定义存入数据字典*，并不执行其中的查询语句。
+> DBMS 指定 CREATIVE VIEW 语句只是*把视图的定义存入数据字典*，并不执行其中的查询语句。
 >
->   对视图进行查询的时候，按照视图的定义从基本表中将数据查出
+> 对视图进行查询的时候，按照视图的定义从基本表中将数据查出
 >
->   对于某些视图（可更新视图），可以对视图执行数据更新操作，数据库会根据视图的定义去更新对应的基本表数据。
+> 对于某些视图（可更新视图），可以对视图执行数据更新操作，数据库会根据视图的定义去更新对应的基本表数据。
 >
->   ==$What\ is\ 视图\ used\ for?$==
+> ==$What\ is\ 视图\ used\ for?$==
 >
->   可以看看视图的优点，体会视图的用途
+> 可以看看视图的优点，体会视图的用途
 >
->   1.   **简单**：使用视图的用户完全不需要关心后面对应的**表的结构、关联条件和筛选条件**，对用户来说已经是<u>***过滤好的复合条件的结果集***</u>。
->   2.   ==**安全**==：使用视图的用户==只能访问他们被允许查询的结果集==，**对表的权限管理并不能限制到某个行某个列**，但是通过视图就可以简单的实现
->   3.   **数据独立**：一旦视图的结构确定了，可以屏蔽表结构变化对用户的影响，源表增加列对视图没有影响；源表修改列名，则可以通过修改视图来解决，不会造成对访问者的影响
+> 1.  **简单**：使用视图的用户完全不需要关心后面对应的**表的结构、关联条件和筛选条件**，对用户来说已经是<u>**_过滤好的复合条件的结果集_**</u>。
+> 2.  ==**安全**==：使用视图的用户==只能访问他们被允许查询的结果集==，**对表的权限管理并不能限制到某个行某个列**，但是通过视图就可以简单的实现
+> 3.  **数据独立**：一旦视图的结构确定了，可以屏蔽表结构变化对用户的影响，源表增加列对视图没有影响；源表修改列名，则可以通过修改视图来解决，不会造成对访问者的影响
 >
->   总而言之，使用视图的大部分情况是为了==保障数据安全性==，==提高查询效率==。比如说我们<u>**经常用到几个表的关联结果**</u>，那么我们就可以使用视图来处理，或者说第三方程序需要调用我们的业务库，可以按需创建视图给第三方程序查询。
+> 总而言之，使用视图的大部分情况是为了==保障数据安全性==，==提高查询效率==。比如说我们<u>**经常用到几个表的关联结果**</u>，那么我们就可以使用视图来处理，或者说第三方程序需要调用我们的业务库，可以按需创建视图给第三方程序查询。
 
 ### 视图创建以及使用方法
 
@@ -1197,34 +1201,34 @@ with check option;
 
 ```mysql
 create view v_match
-as 
+as
 select a.PLAYERNO,a.NAME,MATCHNO,WON,LOST,c.TEAMNO,c.DIVISION
-from 
+from
 PLAYERS a,MATCHES b,TEAMS c
 where a.PLAYERNO=b.PLAYERNO and b.TEAMNO=c.TEAMNO;
 ```
 
 定义视图时，组成视图的属性列需要**全部省略**或者**全部指定**。
 
--   全省略：视图属性由子查询select目标列中的字段构成
+-   全省略：视图属性由子查询 select 目标列中的字段构成
 -   全指定：具体见如下情形
-    1.   某个目标列是<u>集函数</u>或者<u>列表达式</u>
-    2.   多表连接的时候出现了**同名列**作为视图字段
-    3.   需要在视图中为某个**列重命名**更合适的名字
+    1.  某个目标列是<u>集函数</u>或者<u>列表达式</u>
+    2.  多表连接的时候出现了**同名列**作为视图字段
+    3.  需要在视图中为某个**列重命名**更合适的名字
 
 不建议以`select *`的方式创建视图，这样定义的视图，当<u>修改基表的结构时</u>（添加列不会影响，并且默认不会将添加的列放入视图中），**基表和视图之间的映像关系很容易被破坏（当然正常创建的也会被破坏，只是不会那么容易？）**，导致视图无法正常工作
 
 ![image-20220412145526514](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220412145526514.png)
 
-where语句可能会限制视图查询的输出，导致插入视图的数据在视图中看不到（“矛盾语句”可以插入，但是查询的时候看不到）
+where 语句可能会限制视图查询的输出，导致插入视图的数据在视图中看不到（“矛盾语句”可以插入，但是查询的时候看不到）
 
-可以通过with check option增加插入限制（添加后矛盾语句无法插入）
+可以通过 with check option 增加插入限制（添加后矛盾语句无法插入）
 
 ### 视图规范
 
--   视图命名建议统一前缀，比如==以v或view开头==，便于识别。
+-   视图命名建议统一前缀，比如==以 v 或 view 开头==，便于识别。
 
--   SQL SECURITY使用默认的DEFINER，表示已视图定义者的权限去查询视图。
+-   SQL SECURITY 使用默认的 DEFINER，表示已视图定义者的权限去查询视图。
 
 -   视图定义者建议使用相关程序用户。
 
@@ -1238,97 +1242,97 @@ where语句可能会限制视图查询的输出，导致插入视图的数据在
 
 ## 数据库的查询优化问题
 
->   SQL语句对于不同的执行方案对性能的差距巨大
+> SQL 语句对于不同的执行方案对性能的差距巨大
 >
->   $Plus:$主要掌握这类问题的计算方法和分析方法
+> $Plus:$主要掌握这类问题的计算方法和分析方法
 
 `例题分析`
 
-求：选修了课程c2的学生姓名
+求：选修了课程 c2 的学生姓名
 
 ```mysql
 select student.Sname
 from student,cs
-where student.sno=sc.sno 
+where student.sno=sc.sno
 and sc.cno='c2';
 ```
 
-问：此查询的IO和CPU处理代价是多少？
+问：此查询的 IO 和 CPU 处理代价是多少？
 
 假设：
 
--   外存：student1000条，sc10000条，选修2号课程的学生50条
--   内存：一个内存块可以装10个student或者100个sc，内存中一次可以存取5块student元组，1块sc元组和若干块连接元组
+-   外存：student1000 条，sc10000 条，选修 2 号课程的学生 50 条
+-   内存：一个内存块可以装 10 个 student 或者 100 个 sc，内存中一次可以存取 5 块 student 元组，1 块 sc 元组和若干块连接元组
 
--   读写速度：20块/秒
+-   读写速度：20 块/秒
 
 $$
 Q1=\Pi_{Sname}(\sigma_{student.Sno=sc.Sno\and sc.Cno='c2'}(student\times sc))
 $$
 
-1.   $student \times sc$
+1.  $student \times sc$
 
-     读取总块数
+    读取总块数
 
-     = 读student块表数+读sc表的次数\*每遍块数
+    = 读 student 块表数+读 sc 表的次数\*每遍块数
 
-     = $1000/10+(1000/10/5)\times(10000/100)$
+    = $1000/10+(1000/10/5)\times(10000/100)$
 
-     = $2100$
+    = $2100$
 
-     是否可以有第二种方法
+    是否可以有第二种方法
 
-     读取总块数
+    读取总块数
 
-     = 读sc表的块数+读student的次数*每遍块数
+    = 读 sc 表的块数+读 student 的次数\*每遍块数
 
-     = $10000/100+(1000/10)*(10000/100/1)$
+    = $10000/100+(1000/10)*(10000/100/1)$
 
-     = $100+100*100$
+    = $100+100*100$
 
-     = $10100$
+    = $10100$
 
-     读写时间=$2100/20$=105s
+    读写时间=$2100/20$=105s
 
-2.   中间结果处理
+2.  中间结果处理
 
-     中间表大小=$1000*10000=10^7$(一千万条元组)
+    中间表大小=$1000*10000=10^7$(一千万条元组)
 
-     写中间结果的时间=$10^7/10/20=50000s$
+    写中间结果的时间=$10^7/10/20=50000s$
 
-3.   $\sigma$
+3.  $\sigma$
 
-     同样需要遍历整个中间表
+    同样需要遍历整个中间表
 
-     耗费时间=$50000s$
+    耗费时间=$50000s$
 
-4.   $\Pi$
+4.  $\Pi$
 
-5.   总时间？
+5.  总时间？
 
-## SQL控制语句
+## SQL 控制语句
 
->   1.   授予或访问数据库的某种特权
->   2.   控制数据库操纵事务发生的事件以及效果
->   3.   对数据库实行监控等等
+> 1.  授予或访问数据库的某种特权
+> 2.  控制数据库操纵事务发生的事件以及效果
+> 3.  对数据库实行监控等等
 >
->   其余在后续课程学习中完善
+> 其余在后续课程学习中完善
 
-## SQL存储过程
+## SQL 存储过程
 
->   基本定义：**存储过程**（Stored Procedure）是在大型数据库系统中，*一组为了完成特定功能的SQL 语句集*，存储在数据库中，<u>经过第一次编译后调用不需要再次编译（因此执行速度优越）</u>，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。存储过程是数据库中的一个重要对象
+> 基本定义：**存储过程**（Stored Procedure）是在大型数据库系统中，_一组为了完成特定功能的 SQL 语句集_，存储在数据库中，<u>经过第一次编译后调用不需要再次编译（因此执行速度优越）</u>，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。存储过程是数据库中的一个重要对象
 
 ---
 
-==一些和存储过程无关但是比较重要的tip==
+==一些和存储过程无关但是比较重要的 tip==
 
-### delimiter命令
+### delimiter 命令
 
->   默认情况下，所有sql语句都是以分号“;”结尾
+> 默认情况下，所有 sql 语句都是以分号“;”结尾
 >
->   这样的话对于存储过程就会产生一个问题（整体执行和语句执行的问题）
+> 这样的话对于存储过程就会产生一个问题（整体执行和语句执行的问题）
 >
->   <u>见下方语句</u>
+> <u>见下方语句</u>
 
 ```mysql
 # 当然下面的语句改成小写也无所谓
@@ -1352,7 +1356,7 @@ END;
 
 此时就需要使用==`delimiter`==语句，定义**定界符**（默认定界符是`;`）
 
-<font color="red">$Attention:$</font>delimiter的作用域是会话级别的，如果设置`delimiter $`那么当前的会话都会变成以`$`结束
+<font color="red">$Attention:$</font>delimiter 的作用域是会话级别的，如果设置`delimiter $`那么当前的会话都会变成以`$`结束
 
 所以此时可以将上面的存储过程改写如下
 
@@ -1376,9 +1380,9 @@ delimiter ;
 
 ### 自定义变量
 
->   用户自定义变量是一个==用来存储内容的临时容器==，在连接MySQL的整个过程中都存在，可以使用下面的`set`和`select`来定义它们
+> 用户自定义变量是一个==用来存储内容的临时容器==，在连接 MySQL 的整个过程中都存在，可以使用下面的`set`和`select`来定义它们
 >
->   基本格式：`set @var:=something`
+> 基本格式：`set @var:=something`
 
 ```mysql
 # 定义
@@ -1393,12 +1397,12 @@ select ... where col<=@last_week;
 
 ### 存储过程的特点
 
-1.   能够完成比较复杂的判断和运算
-2.   **可编程性强**、比较灵活（类比函数和方法）
-3.   SQL编程的代码可以==重复使用==
-4.   执行速度快（不需要再次编译）、
-5.   减少网络之间的数据传输，节省开销（这个应该指的是云端数据库）
-6.   和触发器类似，都是一组SQL语句集合，但是存储过程时==主动调用==，而触发器则是==被动调用==（需要出发条件），并且能够实现的功能比触发器更加强大。
+1.  能够完成比较复杂的判断和运算
+2.  **可编程性强**、比较灵活（类比函数和方法）
+3.  SQL 编程的代码可以==重复使用==
+4.  执行速度快（不需要再次编译）、
+5.  减少网络之间的数据传输，节省开销（这个应该指的是云端数据库）
+6.  和触发器类似，都是一组 SQL 语句集合，但是存储过程时==主动调用==，而触发器则是==被动调用==（需要出发条件），并且能够实现的功能比触发器更加强大。
 
 <font color="red">$Attention:$</font>由于存储过程是预编译的，所以**无法在数据库脚本中进行定义**（自相矛盾，因为数据库脚本每次运行都要编译）
 
@@ -1426,7 +1430,7 @@ call show_tables();
 
 ### 存储过程的变量
 
->   通过一个简单的例子来学习一下存储过程中变量的**声明**和**赋值**
+> 通过一个简单的例子来学习一下存储过程中变量的**声明**和**赋值**
 
 ```mysql
 # 此处省略delimiter定义
@@ -1445,21 +1449,21 @@ begin
 end;
 ```
 
-1.   变量的声明使用`declare`,一句declare只声明一个变量，变量必须先声明后使用
+1.  变量的声明使用`declare`,一句 declare 只声明一个变量，变量必须先声明后使用
 
-     <font color="red">注意</font>：`declare`无法声明`not null`，并且未初始化的变量值均为`null`，并且`declare`声明必须在存储过程的最初完成`if`等块中无法使用`declare`语句
+    <font color="red">注意</font>：`declare`无法声明`not null`，并且未初始化的变量值均为`null`，并且`declare`声明必须在存储过程的最初完成`if`等块中无法使用`declare`语句
 
-2.   变量具有**数据类型**和**长度**，与<u>mysql的SQL数据类型保持一致</u>，因此甚至还能制定默认值、字符集和排序规则等
+2.  变量具有**数据类型**和**长度**，与<u>mysql 的 SQL 数据类型保持一致</u>，因此甚至还能制定默认值、字符集和排序规则等
 
-3.   变量可以通过`set`来赋值，也可以通过`select into`的方式赋值
+3.  变量可以通过`set`来赋值，也可以通过`select into`的方式赋值
 
-4.   返回变量需要使用`select`语句，如：select 变量名
+4.  返回变量需要使用`select`语句，如：select 变量名
 
 #### 作用域
 
->   存储过程中的作用域仅限与`begin...end`块之间
+> 存储过程中的作用域仅限与`begin...end`块之间
 >
->   如果需要在多个块之间传值的话，需要使用全局变量（这个非常简单）
+> 如果需要在多个块之间传值的话，需要使用全局变量（这个非常简单）
 
 比较简单，通过一个实例来进行说明即可
 
@@ -1487,11 +1491,11 @@ end;
 
 ### 存储过程参数模式
 
->   三种模式：in、out、inout
+> 三种模式：in、out、inout
 >
->   -   in（默认）：该参数可以作为**输入**，也就是该参数需要调用方传入值
->   -   out：该参数可以作为**输出**，也就是该参数可以作为返回值（需要*改变传入值*的时候使用）
->   -   inout：该参数既可以作为输入又可以作为输出，也就是该参数既需要传入值，又可以返回值
+> -   in（默认）：该参数可以作为**输入**，也就是该参数需要调用方传入值
+> -   out：该参数可以作为**输出**，也就是该参数可以作为返回值（需要*改变传入值*的时候使用）
+> -   inout：该参数既可以作为输入又可以作为输出，也就是该参数既需要传入值，又可以返回值
 
 <u>**使用实例**</u>
 
@@ -1515,13 +1519,13 @@ call test1(@tmp); # 传入值必须是定义的变量
 
 ### 存储过程条件语句
 
->   条件判断语句`if() then...else...end if`
+> 条件判断语句`if() then...else...end if`
 >
->   多条件判断`if() then... elseif() then... ... else ... end if;`
+> 多条件判断`if() then... elseif() then... ... else ... end if;`
 
 <u>实例演示</u>
 
-```mysql
+```sql
 create procedure test(in user_id int)
 begin
 	declare username varchar(32) default '';
@@ -1537,13 +1541,13 @@ end;
 
 ### 存储过程循环语句
 
->   while语句基本结构`while(表达式) do ... end while;`
+> while 语句基本结构`while(表达式) do ... end while;`
 >
->   Plus：mysql中其实还有一些集中循环语句，~~但是这里掌握`while`即可~~（不够还得了解其他两种用法）
+> Plus：mysql 中其实还有一些集中循环语句，~~但是这里掌握`while`即可~~（不够还得了解其他两种用法）
 
 #### while
 
-<u>while实例演示</u>
+<u>while 实例演示</u>
 
 ```mysql
 create procedure test()
@@ -1554,16 +1558,16 @@ begin
 		set i=i+1;
 		insert into test1(id) values (i);
 	end while;
-end;	
+end;
 ```
 
 #### repeat
 
->   基本循环格式`repeat ... until(表达式) end repeat`
+> 基本循环格式`repeat ... until(表达式) end repeat`
 >
->   和while的主要区别就是它在语句执行之后检查是否满足循环条件（这点可以用于==游标==的循环）
+> 和 while 的主要区别就是它在语句执行之后检查是否满足循环条件（这点可以用于==游标==的循环）
 
-*实例演示*
+_实例演示_
 
 ```mysql
 create procedure proc()
@@ -1577,23 +1581,23 @@ begin
 end;
 ```
 
-#### loop、leave、iterate语句
+#### loop、leave、iterate 语句
 
->   loop语句使得某些语句重复执行，但是注意**loop语句本身没有停止循环的语句，必须是遇到leave语句等等才能停止循环**
+> loop 语句使得某些语句重复执行，但是注意**loop 语句本身没有停止循环的语句，必须是遇到 leave 语句等等才能停止循环**
 >
->   leave语句就是用于跳出循环的（需要搭配label标签使用）
+> leave 语句就是用于跳出循环的（需要搭配 label 标签使用）
 >
->   iteate也是用于跳出本次循环的，它的作用可以类比continue（同样需要搭配label使用）
+> iteate 也是用于跳出本次循环的，它的作用可以类比 continue（同样需要搭配 label 使用）
 >
->   但是在正式开始学习这些之前，还需要了解一样东西——`label循环标签`
+> 但是在正式开始学习这些之前，还需要了解一样东西——`label循环标签`
 
-#### label循环标签
+#### label 循环标签
 
->   $什么是label？$
+> $什么是label？$
 >
->   label并不是一种特定的语句，它约定了一种<u>*标志*</u>，而`leave、iterate`语句就需要用到这种标志
+> label 并不是一种特定的语句，它约定了一种<u>_标志_</u>，而`leave、iterate`语句就需要用到这种标志
 >
->   比方说下面的几个例子
+> 比方说下面的几个例子
 
 ```mysql
 add_num:loop
@@ -1601,9 +1605,9 @@ set @count=@count+1;# 该循环会死循环
 end loop add_num;
 ```
 
-在这里，add_num就是对于loop循环的标志，类似于给该loop循环的变量名（注意：二者都是==可选的！==）
+在这里，add_num 就是对于 loop 循环的标志，类似于给该 loop 循环的变量名（注意：二者都是==可选的！==）
 
-下面这个例子可以看到定义label的真正作用
+下面这个例子可以看到定义 label 的真正作用
 
 ```mysql
 add_num: loop
@@ -1613,7 +1617,7 @@ add_num: loop
 end loop; # 此处的add_num就可有可无
 ```
 
-实例：输出start-end之间的所有偶数
+实例：输出 start-end 之间的所有偶数
 
 ```mysql
 create procedure tmp(in start int,in end int)
@@ -1634,27 +1638,25 @@ end;
 
 ### 存储过程之临时表（未完成）
 
-
-
 ### ==存储过程之游标的使用==
 
->   $What\ is\ cursor(游标)?$
+> $What\ is\ cursor(游标)?$
 >
->   游标类似于==指针==，是一种能从包含多条数据记录的结果集中每次提取**一条记录**的机制
+> 游标类似于==指针==，是一种能从包含多条数据记录的结果集中每次提取**一条记录**的机制
 >
->   游标可以遍历所有行，但是他*<u>一次只能指向一行</u>*
+> 游标可以遍历所有行，但是他*<u>一次只能指向一行</u>*
 >
->   **游标的作用就是用于对查询数据库所返回的记录进行遍历，以便进行相应的操作**
+> **游标的作用就是用于对查询数据库所返回的记录进行遍历，以便进行相应的操作**
 
 <u>游标基本用法</u>
 
-1.   声明游标`declare cursor_name cursor for table_name;`（这里的table可以是你查询出来的任意集合）
-2.   打开定义的游标`open cursor_name`
-3.   使用游标获取一行数据`fetch cursor_name into col1,col2,....`
-4.   依据获取的数据执行数据更新、删改操作
-5.   释放游标`close cursor_name;`
+1.  声明游标`declare cursor_name cursor for table_name;`（这里的 table 可以是你查询出来的任意集合）
+2.  打开定义的游标`open cursor_name`
+3.  使用游标获取一行数据`fetch cursor_name into col1,col2,....`
+4.  依据获取的数据执行数据更新、删改操作
+5.  释放游标`close cursor_name;`
 
-<u>示例演示1</u>
+<u>示例演示 1</u>
 
 ```mysql
 create procedure test()
@@ -1675,10 +1677,10 @@ begin
 end;
 ```
 
-<u>实例演示2</u>
+<u>实例演示 2</u>
 
 ```mysql
-create function check_user_cursor( 
+create function check_user_cursor(
     name_t varchar(20),
     password_t varchar( 30 ),
     password_new varchar( 30 ),
@@ -1695,7 +1697,7 @@ begin
 		if(stopflag=1) then
 			leave loop_label;
 		end if;
-		case process 
+		case process
 			when 1 then
 				if(name_t=fe_uname and password_t=fe_password) then
 					return true; # 此时查询到对应的用户记录
@@ -1715,13 +1717,13 @@ end
 
 ==**关于游标使用的注意事项**==
 
-1.   `FETCH INTO`的变量名绝对不能是你定义==CURSOR时SQL语句查出来的列名或者列别名==，也就说你定义的变量名既不能是表中已经存在的列名，也不能是你定义游标时用过的别名，==只要一个条件不符合，FETCH INTO就把全部的变量赋NULL值==（所以定义游标变量的时候加个前缀是好习惯）
+1.  `FETCH INTO`的变量名绝对不能是你定义==CURSOR 时 SQL 语句查出来的列名或者列别名==，也就说你定义的变量名既不能是表中已经存在的列名，也不能是你定义游标时用过的别名，==只要一个条件不符合，FETCH INTO 就把全部的变量赋 NULL 值==（所以定义游标变量的时候加个前缀是好习惯）
 
 ### 存储过程流程控制
 
->   使用case分支语句，和if...then类似
+> 使用 case 分支语句，和 if...then 类似
 
-*基本语法结构*
+_基本语法结构_
 
 ```mysql
 case ...
@@ -1738,7 +1740,7 @@ create procedure testcase(userid int)
 begin
 	declare my_status int default 0;
 	select status into my_status from users where id=userid;
-	
+
 	case my_status
 		when 1 then update users set score=10 where id=userid;
 		when 2 then update users set score=20 where id=userid;
@@ -1748,52 +1750,50 @@ begin
 end;
 ```
 
-
-
 ### 存储过程整体操作语句
 
-1.   删除某个存储过程`drop procedure if exists procedure_name`
+1.  删除某个存储过程`drop procedure if exists procedure_name`
 
-2.   查看存储过程创建代码`show create procedure procedure_name`
+2.  查看存储过程创建代码`show create procedure procedure_name`
 
-3.   查看存储过程`show procedure status like 'proc_name'\G;`
+3.  查看存储过程`show procedure status like 'proc_name'\G;`
 
-     -   mysql：可以查看但是出现乱码
-     -   mycli：无法查看（直接卡死）
-     -   tableplus：可以查看，查看所有`show procedure status`
+    -   mysql：可以查看但是出现乱码
+    -   mycli：无法查看（直接卡死）
+    -   tableplus：可以查看，查看所有`show procedure status`
 
-     ![image-20220422134607212](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220422134607212.png)
+    ![image-20220422134607212](https://wwt13-images-1305051431.cos.ap-beijing.myqcloud.com/img/image-20220422134607212.png)
 
-4.   查看所有存储过程的名字`select name from mysql.proc where db='xx' and type='procedure'`
+4.  查看所有存储过程的名字`select name from mysql.proc where db='xx' and type='procedure'`
 
-     查看所有函数也是同理`select name from mysql.proc where db='xx' and type='function'`
+    查看所有函数也是同理`select name from mysql.proc where db='xx' and type='function'`
 
 Plus：存储过程可修改，但是我个人认为那样还不如直接删了重建
 
 ## 数据库完整性约束
 
-## SQL时间类型使用
+## SQL 时间类型使用
 
->   MySQL中支持的几种时间类型（常用的是`date、time、datetime、timestamp`）
+> MySQL 中支持的几种时间类型（常用的是`date、time、datetime、timestamp`）
 >
->   ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
+> ![MySQL的数据类型及其常用修饰符详解_Mysql的数据类型_03](https://s4.51cto.com//wyfs02/M00/8A/B0/wKiom1g3mrPRp64CAABsxlmpJZs268.png)
 
-## MySQL函数介绍
+## MySQL 函数介绍
 
 ### 字符串类
 
-1.   `concat(str1,str2,str3...)`需要一个或者多个字符串参数，并将它们拼接成一个字符串
+1.  `concat(str1,str2,str3...)`需要一个或者多个字符串参数，并将它们拼接成一个字符串
 
-     ```mysql
-     select concat('MySQL','CONCAT');
-     # 空一行防止遮挡
-     ```
+    ```mysql
+    select concat('MySQL','CONCAT');
+    # 空一行防止遮挡
+    ```
 
-2.   `concat_ws(sep,str1,str2....)`和上面类似，但是第一个参数是字符串连接的分隔符
+2.  `concat_ws(sep,str1,str2....)`和上面类似，但是第一个参数是字符串连接的分隔符
 
 ---
 
-*触发器创建示例*
+_触发器创建示例_
 
 ```mysql
 create trigger fruittrig # 创建触发器
@@ -1814,144 +1814,142 @@ values
 
 ---
 
-## MySQL事务管理
+## MySQL 事务管理
 
 ### 数据库的并发性
 
->   数据库的最大特点之一就是==数据库中的数据资源是共享的==
+> 数据库的最大特点之一就是==数据库中的数据资源是共享的==
 
-​	每个用户在存取数据库中的数据时，可能是*串行执行*，即每个时刻只有一个用户程序运行，也可能是多个用户并行地存取数据库。
+​ 每个用户在存取数据库中的数据时，可能是*串行执行*，即每个时刻只有一个用户程序运行，也可能是多个用户并行地存取数据库。
 
-​	串行执行意味着一个用户在运行程序时，*其他用户程序必须等到这个用户程序结束才能对数据库进行存取*，这样如果一个用户程序涉及大量数据的输入/输出交换，则数据库系统的大部分时间将处于闲置（只对一个用户提供服务）状态。
+​ 串行执行意味着一个用户在运行程序时，_其他用户程序必须等到这个用户程序结束才能对数据库进行存取_，这样如果一个用户程序涉及大量数据的输入/输出交换，则数据库系统的大部分时间将处于闲置（只对一个用户提供服务）状态。
 
-​	因此，为了充分利用数据库资源，数据库用户都是对数据库系统**并行存取**数据。
+​ 因此，为了充分利用数据库资源，数据库用户都是对数据库系统**并行存取**数据。
 
 #### 关于数据库的一致性
 
->   数据的一致性：==在任何时刻用户面对的数据库都是符合现实世界的语义逻辑的==
+> 数据的一致性：==在任何时刻用户面对的数据库都是符合现实世界的语义逻辑的==
 >
->   当多个用户对数据库进行并发存取时（同一个数据块），如果不对并发操作进行控制，就会产生不正确的数据，破坏数据的一致性
+> 当多个用户对数据库进行并发存取时（同一个数据块），如果不对并发操作进行控制，就会产生不正确的数据，破坏数据的一致性
 >
->   而数据库的并发控制是以**事务**为基本单位进行的，可以通过对事务所操作的数据*施加封锁*来实现一致性
+> 而数据库的并发控制是以**事务**为基本单位进行的，可以通过对事务所操作的数据*施加封锁*来实现一致性
 
 #### 事务的基本概念
 
->   $What\ is\ affairs?$
+> $What\ is\ affairs?$
 >
->   *数据库事务*：是数据库管理系统执行过程中的一个<u>逻辑单位</u>，由有限的数据库操作序列构成
+> _数据库事务_：是数据库管理系统执行过程中的一个<u>逻辑单位</u>，由有限的数据库操作序列构成
 >
->   当事务被提交给了DBMS（数据库管理系统），则DBMS需要确保*该事务中的所有操作都成功完成且其结果被永久保存在数据库中*，如果**事务中有的操作没有成功完成，则事务中的所有操作都需要被回滚，回到事务执行前的状态**;同时，该事务对数据库或者其他事务的执行无影响，所有的事务都好像在独立的运行
+> 当事务被提交给了 DBMS（数据库管理系统），则 DBMS 需要确保*该事务中的所有操作都成功完成且其结果被永久保存在数据库中*，如果**事务中有的操作没有成功完成，则事务中的所有操作都需要被回滚，回到事务执行前的状态**;同时，该事务对数据库或者其他事务的执行无影响，所有的事务都好像在独立的运行
 
->   $Why\ we\ need\ affairs?$
+> $Why\ we\ need\ affairs?$
 >
->   -   为数据库操作序列提供了一个**从失败中恢复到正常状态的方法**，同时提供了数据库即使在异常状态下仍能保持一致性的方法
->   -   当多个应用程序在并发访问数据库时，可以在这些应用程序之间提供一个隔离方法，以防止彼此的操作互相干扰
+> -   为数据库操作序列提供了一个**从失败中恢复到正常状态的方法**，同时提供了数据库即使在异常状态下仍能保持一致性的方法
+> -   当多个应用程序在并发访问数据库时，可以在这些应用程序之间提供一个隔离方法，以防止彼此的操作互相干扰
 
->   事务的开始与结束可以由用户显式控制，如果用户没有显式的定义事务，则由DBMS按照缺省规定自动划分事务（通常一条DML*Date manipulation language*语句为一个事务）
+> 事务的开始与结束可以由用户显式控制，如果用户没有显式的定义事务，则由 DBMS 按照缺省规定自动划分事务（通常一条 DML*Date manipulation language*语句为一个事务）
 >
->   用户自定义的事务以`Begin transaction`开始，以`Commit`或者`Rollback`结束
+> 用户自定义的事务以`Begin transaction`开始，以`Commit`或者`Rollback`结束
 >
->   -   `Commit`表示事务的提交，即将事务中所有对数据库的更新写回到磁盘上的物理数据库中去，此时事务正常结束
->   -   `Rollback`表示事务的回滚，即在事务运行的过程中发生了某种故障，事务不能继续执行，系统将事务中已完成的操作全部撤销，回滚到事务执行前的状态
+> -   `Commit`表示事务的提交，即将事务中所有对数据库的更新写回到磁盘上的物理数据库中去，此时事务正常结束
+> -   `Rollback`表示事务的回滚，即在事务运行的过程中发生了某种故障，事务不能继续执行，系统将事务中已完成的操作全部撤销，回滚到事务执行前的状态
 >
->   一个基础事务实例(银行账户转账)
+> 一个基础事务实例(银行账户转账)
 >
->   ```mysql
->   start transaction
->   select balance from checking where customer_id=123;
->   update checking set balance=balance-200 where customer_id=123;
->   update checking set balance=balance+200 where customer_id=123;
->   commit;
->   ```
+> ```mysql
+> start transaction
+> select balance from checking where customer_id=123;
+> update checking set balance=balance-200 where customer_id=123;
+> update checking set balance=balance+200 where customer_id=123;
+> commit;
+> ```
 
 ##### 事务的特性——ACID
 
-1.   原子性（$Atomicity$）：事务作为一个整体被执行，包含在其中的对数据库的操作要么全部被执行，要么都不执行（==通过事务日志实现==）
-2.   一致性（$Consistency$）：事务应确保数据库的状态从一个一致状态转变为另一个一致状态。一致状态的含义是数据库中的数据应满足完整性约束（==通过事务日志实现==）
-3.   隔离性（$Isolation$）：多个事务并发执行的时候，一个事务的执行不影响其他事务的执行（==通过锁、MVCC实现==）
-4.   持久性（$Durability$）：以及被提交的事务对数据库的修改应该永久保存在数据库中（==通过事务日志实现==）
+1.  原子性（$Atomicity$）：事务作为一个整体被执行，包含在其中的对数据库的操作要么全部被执行，要么都不执行（==通过事务日志实现==）
+2.  一致性（$Consistency$）：事务应确保数据库的状态从一个一致状态转变为另一个一致状态。一致状态的含义是数据库中的数据应满足完整性约束（==通过事务日志实现==）
+3.  隔离性（$Isolation$）：多个事务并发执行的时候，一个事务的执行不影响其他事务的执行（==通过锁、MVCC 实现==）
+4.  持久性（$Durability$）：以及被提交的事务对数据库的修改应该永久保存在数据库中（==通过事务日志实现==）
 
 ### 并发事务带来的问题
 
 #### 更新丢失（Lost Update）
 
->   当两个或多个事务选择同一行，然后基于最初选定的值更新该行时，由于每个事务都不知道其他事务的存在，就会发生丢失更新问题——**最后的更新覆盖了由其他事务所做的更新**
+> 当两个或多个事务选择同一行，然后基于最初选定的值更新该行时，由于每个事务都不知道其他事务的存在，就会发生丢失更新问题——**最后的更新覆盖了由其他事务所做的更新**
 
 #### 脏读（Dirty Reads）
 
->   一个事务正在对一条记录做修改，在这个事务完成并提交前， 这条记录的数据就处于*不一致状态*； <u>这时， 另一个事务也来读取同一条记录</u>，如果不加控制，第二个事务读取了这些“脏”数据，并据此做进一步的处理，就会产生未提交的数据依赖关系
+> 一个事务正在对一条记录做修改，在这个事务完成并提交前， 这条记录的数据就处于*不一致状态*； <u>这时， 另一个事务也来读取同一条记录</u>，如果不加控制，第二个事务读取了这些“脏”数据，并据此做进一步的处理，就会产生未提交的数据依赖关系
 
 #### 不可重复读（Non-Repeatable Reads）
 
->   一个事务在读取某些数据后的某个时间，再次读取以前读过的数据，却*发现其读出的数据已经发生了改变、或某些记录已经被删除了*，这种现象就叫做“不可重复读”
+> 一个事务在读取某些数据后的某个时间，再次读取以前读过的数据，却*发现其读出的数据已经发生了改变、或某些记录已经被删除了*，这种现象就叫做“不可重复读”
 >
->   至于“幻读（Phantom Reads）”，这里不做细分
+> 至于“幻读（Phantom Reads）”，这里不做细分
 >
->   稍微提一下：
+> 稍微提一下：
 >
->   -   不可重复读的重点是修改：在同一事务中，同样的条件，第一次读的数据和第二次读的数据不一样。（因为中间有其他事务提交了修改）
->   -   幻读的重点在于新增或者删除：在同一事务中，同样的条件,，第一次和第二次读出来的记录数不一样。（因为中间有其他事务提交了插入/删除）
+> -   不可重复读的重点是修改：在同一事务中，同样的条件，第一次读的数据和第二次读的数据不一样。（因为中间有其他事务提交了修改）
+> -   幻读的重点在于新增或者删除：在同一事务中，同样的条件,，第一次和第二次读出来的记录数不一样。（因为中间有其他事务提交了插入/删除）
 
 #### 各问题的解决办法
 
-1.   更新丢失：通常应该==完全避免==，防止更新丢失，*并不能单靠数据库事务控制器来解决*，需要**应用程序对要更新的数据加必要的锁来解决**，因此，防止更新丢失应该是应用的责任
-2.   脏读、不可重复读、幻读：都是数据库读一致性的问题，必须由数据库提供一定的事务隔离机制来解决：
-     -   ==加锁==：在读取数据的时候，对数据加锁，防止其他事务对数据进行修改
-     -   ==数据的多版本并发控制==（MultiVersion Concurrency Control，简称MVCC）：多版本数据库，不需要添加任何锁，通过一定的机制生成一个数据请求时间点的一致性数据快照（Snapshot），并通过这个快照来提供一定级别（语句级或事务级）的一致性读取。此时从用户的角度看，就像数据库可以提供同一数据的多个版本
+1.  更新丢失：通常应该==完全避免==，防止更新丢失，_并不能单靠数据库事务控制器来解决_，需要**应用程序对要更新的数据加必要的锁来解决**，因此，防止更新丢失应该是应用的责任
+2.  脏读、不可重复读、幻读：都是数据库读一致性的问题，必须由数据库提供一定的事务隔离机制来解决：
+    -   ==加锁==：在读取数据的时候，对数据加锁，防止其他事务对数据进行修改
+    -   ==数据的多版本并发控制==（MultiVersion Concurrency Control，简称 MVCC）：多版本数据库，不需要添加任何锁，通过一定的机制生成一个数据请求时间点的一致性数据快照（Snapshot），并通过这个快照来提供一定级别（语句级或事务级）的一致性读取。此时从用户的角度看，就像数据库可以提供同一数据的多个版本
 
 ### 事务的隔离级别
 
->   SQL标准定义了4类隔离级别，每一种级别都规定了对于一个事务中所作的修改，哪些在事务内和事务间是可见的，哪些是不可见的。
+> SQL 标准定义了 4 类隔离级别，每一种级别都规定了对于一个事务中所作的修改，哪些在事务内和事务间是可见的，哪些是不可见的。
 >
->   *低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销*
+> _低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销_
 
 ##### 第一级别：Read Uncommitted（读取未提交内容）
 
->   ==可以直接看到其他未提交事务的执行结果==
+> ==可以直接看到其他未提交事务的执行结果==
 >
->   该隔离级别很少用于实际应用，因为它的性能不比其他级别好多少
+> 该隔离级别很少用于实际应用，因为它的性能不比其他级别好多少
 >
->   该级别引发的问题：**脏读**
+> 该级别引发的问题：**脏读**
 
 #### 第二级别：Read Committed（读取提交内容）
 
->   *大多数数据库的默认隔离级别（==注意不是MySQL中默认的==）*
+> _大多数数据库的默认隔离级别（==注意不是 MySQL 中默认的==）_
 >
->   满足隔离的基本定义：一个事务只能看见已经提交的事务所作的改变
+> 满足隔离的基本定义：一个事务只能看见已经提交的事务所作的改变
 >
->   该级别引发的问题：**不可重复读**
+> 该级别引发的问题：**不可重复读**
 >
->   1.   交叉的事务有新的commit导致的数据改变
->   2.   *一个数据库被多个实例操作时，同一事物的其他实例在该实例处理期间可能会有新的commit*
+> 1.  交叉的事务有新的 commit 导致的数据改变
+> 2.  _一个数据库被多个实例操作时，同一事物的其他实例在该实例处理期间可能会有新的 commit_
 
 #### 第三级别：Repeatable Read（可重读）
 
->   *MySQL的默认事务隔离等级*
+> _MySQL 的默认事务隔离等级_
 >
->   可以确保同一个事务的多个实例在并发读取数据的时候，会看到同样的数据行
+> 可以确保同一个事务的多个实例在并发读取数据的时候，会看到同样的数据行
 >
->   此级别可能出现的问题——幻读(Phantom Read)：当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行（**不太理解为啥会出现“幻读” 的问题**）
+> 此级别可能出现的问题——幻读(Phantom Read)：当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行（**不太理解为啥会出现“幻读” 的问题**）
 >
->   InnoDB和Falcon存储引擎通过多版本并发控制(MVCC，Multiversion Concurrency Control)机制解决幻读问题；InnoDB还通过间隙锁解决幻读问题
+> InnoDB 和 Falcon 存储引擎通过多版本并发控制(MVCC，Multiversion Concurrency Control)机制解决幻读问题；InnoDB 还通过间隙锁解决幻读问题
 
-#### 第四级别（暂时不写了，先看PPT上的内容）
+#### 第四级别（暂时不写了，先看 PPT 上的内容）
 
 ---
 
 ### 事务的并发控制机制
 
->   主要目的：对事物的并行运行顺序进行合理安排，达成事物的*隔离性*和*一致性*
+> 主要目的：对事物的并行运行顺序进行合理安排，达成事物的*隔离性*和*一致性*
 
 #### 调度（Schedule）
 
->   在保留统一事务原有的执行顺序的同时，对各事务中各个指令的执行序列做出安排
+> 在保留统一事务原有的执行顺序的同时，对各事务中各个指令的执行序列做出安排
 
 #### 锁（）
 
 #### 协议（）
 
+# MySQL 语句规范
 
-
-# MySQL语句规范
-
-> 自己总结的MySql书写时的语句规范
+> 自己总结的 MySql 书写时的语句规范

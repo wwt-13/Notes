@@ -1,63 +1,66 @@
-#Database/MySQL
+[toc]
+
+# Database/MySQL
 
 > Only record what I need to know and what I'am not so familar with.
 
 ## 杂
 
-> 这里放的是不知道该如何归类的MySQL内容，包括了一些约定俗称的基础等等
+> 这里放的是不知道该如何归类的 MySQL 内容，包括了一些约定俗称的基础等等
 
 1. 命令默认以;截止[^1]
 2. 数据库名+==表名==都不支持大写（==会自动转换为小写，但可能按照大写显示==），但是字段名支持大写
-3. 两种注释格式：`#`(常用) ` --  `
+3. 两种注释格式：`#`(常用) `-- `
 4. 在命令末尾加上`\G`,可以打打改善某些指令的显示效果(_原理是将查询结果从默认的按行打印切换为按列打印_)
 
 ### 报错处理
 
-> 鉴于MySQL离谱的报错机制（往往一处语法错误会报出另外一个风牛马不相及的报错提示），所以进行常见的报错整理是非常有必要的
+> 鉴于 MySQL 离谱的报错机制（往往一处语法错误会报出另外一个风牛马不相及的报错提示），所以进行常见的报错整理是非常有必要的
 
 ### 数据类型
 
-> 关系代数中的属性类型，在MySQL中，就是数据库下表中的字段类型
-> ps：MySQL中，定义一个字段类型的基本语法（`col_name date_type constraint`）
+> 关系代数中的属性类型，在 MySQL 中，就是数据库下表中的字段类型
+> ps：MySQL 中，定义一个字段类型的基本语法（`col_name date_type constraint`）
 
 1. 数值型
-   - 整型 $tinyint,smallint,mediumint,int,bigint$
-   - 浮点型 $float,double,dccimal(M,D)$
-     _M,D_分别代表浮点数长度（不包括小数点和符号），和小数点后位数
-     比较常用的一般只有`int`和`float`
-   
-   | 类型      | 字节数 |
-   | --------- | ------ |
-   | tinyint   | 1      |
-   | smallint  | 2      |
-   | mediunint | 3      |
-   | int       | 4      |
-   | bigint    | 8      |
-   
+
+    - 整型 $tinyint,smallint,mediumint,int,bigint$
+    - 浮点型 $float,double,dccimal(M,D)$
+      *M,D*分别代表浮点数长度（不包括小数点和符号），和小数点后位数
+      比较常用的一般只有`int`和`float`
+
+    | 类型      | 字节数 |
+    | --------- | ------ |
+    | tinyint   | 1      |
+    | smallint  | 2      |
+    | mediunint | 3      |
+    | int       | 4      |
+    | bigint    | 8      |
+
 2. 字符型
-   一般常用的只有$char$和$varchar$,二者区别是`char(10)`开辟出的存储空间是固定的10个字符，而`varchar(10)`则在开辟是为空，后续再根据存放内容自动分配空间(char追求时间效率，varchar追求空间效率)
+   一般常用的只有$char$和$varchar$,二者区别是`char(10)`开辟出的存储空间是固定的 10 个字符，而`varchar(10)`则在开辟是为空，后续再根据存放内容自动分配空间(char 追求时间效率，varchar 追求空间效率)
 3. 日期时间型
 4. 枚举型(用于给字段指定一个特定范围)
    `enum(value1,value2,value3......)`
 5. 布尔型
-   mysql中没有内置的布尔类型，但是为了方便，MYSQL提供`boolean`作为`tinyint(1)`的同义词，其中0为false,1为true
-   > [!hint] 关于TRUE、FALSE和UNKNOWN
-   > 在mysql中，Where语句中的条件表达式有三种可能的计算结果：true,false,unknown
-   > 三者均可通过数值来代替：true=1,false=0,unknown=0.5
+   mysql 中没有内置的布尔类型，但是为了方便，MYSQL 提供`boolean`作为`tinyint(1)`的同义词，其中 0 为 false,1 为 true
+    > [!hint] 关于 TRUE、FALSE 和 UNKNOWN
+    > 在 mysql 中，Where 语句中的条件表达式有三种可能的计算结果：true,false,unknown
+    > 三者均可通过数值来代替：true=1,false=0,unknown=0.5
 
 ```sql
 create table if not exists tb1(
    id int auto_increment,
    name char(10) not null,
    gender enum('male','female'),
-   passed boolean default false, 
+   passed boolean default false,
    primary key(id) # 需要注意的是最后一行不需要,
 );
 ```
 
-## 基本MySQL语法
+## 基本 MySQL 语法
 
-> 讲解最为基础的SQL语法
+> 讲解最为基础的 SQL 语法
 
 ### 数据库操作
 
@@ -83,7 +86,7 @@ create table if not exists tb1(
 
 基本使用形式：`col_name col_type constraint`(指创建表时)
 
-_**基本书写规范**_👇🏻
+***基本书写规范***👇🏻
 
 ```sql
 CREATE TABLE 表名(
@@ -93,62 +96,62 @@ CREATE TABLE 表名(
 )
 ```
 
-- `default`：默认约束，指定某列的**默认值**，插入数据时，如果此列未赋值，则使用default指定的值来填充
-  ```sql
-  name varchar(10) default 'wwt'
-  ```
-- `not null`: 非空约束，指定某列的值**不能为空**，在插入数据的时候必须指定， ''不等于 null, 0不等于 null
-- `unique`：唯一约束，但不等同于`primary key`
-  - 指定**列**或**列组合**唯一，保证数据唯一性
-  - 不能出现重复值，但是可以出现多个NULL
-  - _同一张表可以存在多个唯一约束_
-  > [!todo]
-  > 对于unique相关的知识将在_**索引**_章节具体介绍，这里只是进行粗略了解
-- _`primary key`_: ==主键约束==
-  **等价于唯一约束+非空约束**
-  **注意，主键等价于关系代数的主码，可能不止一个字段**
-  **如果建表时未建主键，mysql会自动选择第一个唯一非空字段作为主键，如果没有则会内建一个不可见字段作为主键**
-- `foreign key`：外键约束
-  - 通过建立外键，设置表与表之间的约束性，限制数据的录入,被外键约束的列，_**要么为null，要么取值必须参照主表列中的值**_
-  - _**外键约束的列类型必须和原表主键类型完全一致**_（比如`unsigned`等等）
-  ```sql
-  create table dept(
-      id int unsigned auto_increment,
-      primary key(id)
-  );
-  create table tb_test(
-      id int auto_increment,
-      name varchar(10) not null,
-      d_no int default 0,
-      primary key(id),
-      foreign key(d_no) references dept(id)
-  );
-  # 创建数据表tb_test时会报错"...are incompatible."
-  # 数据格式不匹配(d_no同样需要unsigned,但是default貌似没有影响？)
-  create table tb_test(
-      id int auto_increment,
-      name varchar(10) not null,
-      d_no int unsigned default 0,
-      primary key(id),
-      foreign key(d_no) references dept(id)
-  );
-  # success
-  ```
-- `auto_increment`：自增长约束
-  - 自增长的必须是**键**(必须有key约束)，但不一定是非得是主键
-  - ==一个表只能有一个自增长约束==
-- `check`：自定义约束
-  使用方式为：`check+表达式`，可以对列单独添加约束，也可以列直接添加约束，下面直接看例子⬇️
-  ```sql
-  create table if not exist test_tb(
-      id int unsigned auto_increment,
-      tid int,
-      sid int not null check(sid>10),
-      check(tid>sid and tid<100),
-      primary key(id)
-  );
-  ```
-  ^d28ee7
+-   `default`：默认约束，指定某列的**默认值**，插入数据时，如果此列未赋值，则使用 default 指定的值来填充
+    ```sql
+    name varchar(10) default 'wwt'
+    ```
+-   `not null`: 非空约束，指定某列的值**不能为空**，在插入数据的时候必须指定， ''不等于 null, 0 不等于 null
+-   `unique`：唯一约束，但不等同于`primary key`
+    -   指定**列**或**列组合**唯一，保证数据唯一性
+    -   不能出现重复值，但是可以出现多个 NULL
+    -   _同一张表可以存在多个唯一约束_
+        > [!todo]
+        > 对于 unique 相关的知识将在***索引***章节具体介绍，这里只是进行粗略了解
+-   _`primary key`_: ==主键约束==
+    **等价于唯一约束+非空约束**
+    **注意，主键等价于关系代数的主码，可能不止一个字段**
+    **如果建表时未建主键，mysql 会自动选择第一个唯一非空字段作为主键，如果没有则会内建一个不可见字段作为主键**
+-   `foreign key`：外键约束
+    -   通过建立外键，设置表与表之间的约束性，限制数据的录入,被外键约束的列，_**要么为 null，要么取值必须参照主表列中的值**_
+    -   _**外键约束的列类型必须和原表主键类型完全一致**_（比如`unsigned`等等）
+    ```sql
+    create table dept(
+        id int unsigned auto_increment,
+        primary key(id)
+    );
+    create table tb_test(
+        id int auto_increment,
+        name varchar(10) not null,
+        d_no int default 0,
+        primary key(id),
+        foreign key(d_no) references dept(id)
+    );
+    # 创建数据表tb_test时会报错"...are incompatible."
+    # 数据格式不匹配(d_no同样需要unsigned,但是default貌似没有影响？)
+    create table tb_test(
+        id int auto_increment,
+        name varchar(10) not null,
+        d_no int unsigned default 0,
+        primary key(id),
+        foreign key(d_no) references dept(id)
+    );
+    # success
+    ```
+-   `auto_increment`：自增长约束
+    -   自增长的必须是**键**(必须有 key 约束)，但不一定是非得是主键
+    -   ==一个表只能有一个自增长约束==
+-   `check`：自定义约束
+    使用方式为：`check+表达式`，可以对列单独添加约束，也可以列直接添加约束，下面直接看例子 ⬇️
+    ```sql
+    create table if not exist test_tb(
+        id int unsigned auto_increment,
+        tid int,
+        sid int not null check(sid>10),
+        check(tid>sid and tid<100),
+        primary key(id)
+    );
+    ```
+    ^d28ee7
 
 > [!note] 拓展：外键级联操作
 >
@@ -164,7 +167,7 @@ CREATE TABLE 表名(
 
 1. `desc tb_name`同时还能查看表结构（虽然这条命令本来的功能就是查看表结构）
    ![[CleanShot 2023-02-22 at 19.47.55.png]]
-2. `show create table tb_name`可以直接查看**当前的**表语法结构_(推荐与`\G`结合使用)_
+2. `show create table tb_name`可以直接查看**当前的**表语法结构*(推荐与`\G`结合使用)*
    ![[CleanShot 2023-03-09 at 15.46.25.png]]
 
 ### 表基本操作
@@ -172,30 +175,30 @@ CREATE TABLE 表名(
 > 创建、删除表等在关系层面的操作
 
 1. 创建：`create table [if not exists] tb_name(col_name col_type ...)`
-   ```mysql
-   create table if not exists tb2(
-       id int unsigned auto_increment,
-       name varchar(10) default "name",
-       primary key(id)
-   ); # 注意截止符
-   ```
-   > [!attention] 说明
-   > 有关约束部分的内容将在之后进行详细说明(primary key,unsigned之类的)
+    ```mysql
+    create table if not exists tb2(
+        id int unsigned auto_increment,
+        name varchar(10) default "name",
+        primary key(id)
+    ); # 注意截止符
+    ```
+    > [!attention] 说明
+    > 有关约束部分的内容将在之后进行详细说明(primary key,unsigned 之类的)
 2. 删除：`drop table [if exists] tb_name`
 
-#### alter语句
+#### alter 语句
 
 > 通用的表修改语句，可以对表进行列删除、列添加、约束修改、重命名等等操作
-> 关键在与学了alter后，就不用学习其他非通用的表修改语句了（防止记忆混乱）
+> 关键在与学了 alter 后，就不用学习其他非通用的表修改语句了（防止记忆混乱）
 
 ```sql
 # 实验表，用于测试alter语句
 create table stu(
-	id int not null, 
-	name char(10) not null, 
-	class int not null, 
+	id int not null,
+	name char(10) not null,
+	class int not null,
 	age int,
-	primary key(id) 
+	primary key(id)
 );
 ```
 
@@ -210,7 +213,7 @@ create table stu(
 
 > 从数据库中获取指定的数据，这是数据库管理技术中的**核心操作**
 
-基本查询流程如下👇🏻
+基本查询流程如下 👇🏻
 
 ```sql
 select 字段 # 指定了要显示的属性列
@@ -223,9 +226,9 @@ order by one or more attributes; # 对查询结果按照指定列值进行升序
 
 ^f25911
 
-#### SQL查询语句执行顺序
+#### SQL 查询语句执行顺序
 
-> 和其他编程语言不同，_sql的查询语句并不是顺序执行的_
+> 和其他编程语言不同，_sql 的查询语句并不是顺序执行的_
 
 ![[MySQL#^f25911]]
 
@@ -243,11 +246,11 @@ order by one or more attributes; # 对查询结果按照指定列值进行升序
 
 > 顾名思义，指的是仅涉及一个表的查询操作，相对简单(其实就是`from`语句中不涉及类似`join`的表连接操作)
 
-表查询实例模型👇🏻
+表查询实例模型 👇🏻
 
-- 学生表`Stu(Sno,Sname,Ssex,Sage,Sdept)`
-- 课程表`Co(Cno,Cname,Cpno,Ccredit)`
-- 学生选课表`SC(Sno,Cno,Grade)`
+-   学生表`Stu(Sno,Sname,Ssex,Sage,Sdept)`
+-   课程表`Co(Cno,Cname,Cpno,Ccredit)`
+-   学生选课表`SC(Sno,Cno,Grade)`
 
 ```sql
 # 表创建脚本
@@ -288,11 +291,11 @@ values
 ^4fa73c
 
 ![[CleanShot 2023-03-09 at 16.33.40.png]]
-数据插入成功👆🏻
+数据插入成功 👆🏻
 
 ##### 查询经过修改的值
 
-> `select`查询语句后的字段可以经过_表达式计算_、_重命名_、_内置函数_后作为结果表中的值
+> `select`查询语句后的字段可以经过*表达式计算*、_重命名_、*内置函数*后作为结果表中的值
 > 该部分内容比较简单，举个例子就行了
 
 ```sql
@@ -309,16 +312,16 @@ select Sname,2023-Sage as 'Year of Birth',lower(Sdept) from stu
 >
 > 需要注意的是`distinct`作用于所有列
 
-##### where语句查询条件
+##### where 语句查询条件
 
 > 简单，这里只提及一下`like`部分的内容
 
 ![[CleanShot 2023-03-09 at 16.49.00.png]]
 
-- `where attribute like pattern`
-  1. `%`代表任意长度的字符串
-  2. `_`代表任意单个字符
-  3. **如果用户查询结果中本身包含了`%`或`_`，可以通过`escape`指定特定转义字符**
+-   `where attribute like pattern`
+    1. `%`代表任意长度的字符串
+    2. `_`代表任意单个字符
+    3. **如果用户查询结果中本身包含了`%`或`_`，可以通过`escape`指定特定转义字符**
 
 _**Now use some example to explain things above.**_
 
@@ -343,8 +346,7 @@ escape '*'
 
 ##### 结果排序
 
-> 使用`order by`子句可以对查询结果进行排序，基本使用方式：`order by field asc/desc`
-> _**ps：默认排序方式为升序asc**_
+> 使用`order by`子句可以对查询结果进行排序，基本使用方式：`order by field asc/desc` > _**ps：默认排序方式为升序 asc**_
 
 ```sql
 select * from Stu
@@ -355,18 +357,18 @@ order by Sage desc;
 ##### 分组和聚集
 
 > _**通过`group by`语句可以对查询结果进行分组**，**分组后，聚集函数的作用对象将切换为各个分组，==分组的作用就是细化聚集函数的作用对象==**_
-> 在`select`语句中可以使用聚集函数，对指定的列进行聚集计算（SUM、AVE、COUNT等等）
+> 在`select`语句中可以使用聚集函数，对指定的列进行聚集计算（SUM、AVE、COUNT 等等）
 
-常见的聚集函数如下所示👇🏻
+常见的聚集函数如下所示 👇🏻
 
-- `COUNT([DISTINCT|ALL] COL_NAME|*)`计数函数
-- `SUM([DISTINCT|ALL] COL_NAME)`求和函数
-- `AVG([DISTINCT|ALL] COL_NAME)`取平均函数
-- `MAX([DISTINCT|ALL] COL_NAME)`最大值
-- `MIN([DISTINCT|ALL] COL_NAME)`最小值
+-   `COUNT([DISTINCT|ALL] COL_NAME|*)`计数函数
+-   `SUM([DISTINCT|ALL] COL_NAME)`求和函数
+-   `AVG([DISTINCT|ALL] COL_NAME)`取平均函数
+-   `MAX([DISTINCT|ALL] COL_NAME)`最大值
+-   `MIN([DISTINCT|ALL] COL_NAME)`最小值
 
 > [!hint]
-> 空值不会加入COUNT、SUM、AVG等函数的计算，`avg(Sage)=sum(Sage)/count(Sage)`
+> 空值不会加入 COUNT、SUM、AVG 等函数的计算，`avg(Sage)=sum(Sage)/count(Sage)`
 
 ```sql
 select Sdept,avg(Sage)
@@ -379,8 +381,8 @@ group by Sdept;
 > 通过`having`语句对分组结果进行筛选，和`where`语句类似，区别是作用对象
 
 ```sql
-select Sdept,avg(Sage) 
-from stu group by Sdept 
+select Sdept,avg(Sage)
+from stu group by Sdept
 having count(*)>1
 ```
 
@@ -391,9 +393,9 @@ having count(*)>1
 > 在`from`语句中，可以进行关系代数中进行各种连接操作（笛卡尔积、内连接、$\theta-连接$、自然连接、外连接[^2]、左-外连接、右-外连接）
 > 下面将对各种连接方法进行一一介绍
 
-- 内连接、笛卡尔积、$\theta-连接$：这三者本质上都是一类，都是在笛卡尔积的基础上+on条件+where条件
-- 自然连接：只保留相同列名的属性值相同的元组
-- 左-外连接、右-外连接：以左为例，对于on条件而言，**无论如何都会保留左表的内容**，但对于where而言，会依据相关条件进行筛选
+-   内连接、笛卡尔积、$\theta-连接$：这三者本质上都是一类，都是在笛卡尔积的基础上+on 条件+where 条件
+-   自然连接：只保留相同列名的属性值相同的元组
+-   左-外连接、右-外连接：以左为例，对于 on 条件而言，**无论如何都会保留左表的内容**，但对于 where 而言，会依据相关条件进行筛选
 
 ![[Pasted image 20230309190020.png]]
 
@@ -407,8 +409,7 @@ having count(*)>1
 ##### 子查询
 
 > 称一个`select-from-where`语句为一个查询块
-> _将一个查询块嵌套到另外一个查询块中，这样的查询方式称为子查询（不是所有DBMS都支持子查询）_
-> _**ps：通常查询块嵌套在where语句和having语句中，当然其他地方也可以放置**_
+> _将一个查询块嵌套到另外一个查询块中，这样的查询方式称为子查询（不是所有 DBMS 都支持子查询）_ > _**ps：通常查询块嵌套在 where 语句和 having 语句中，当然其他地方也可以放置**_
 
 ```sql
 select * from stu s1 # 对stu重命名为s1，只需要之间空一格即可，当然通过as命名也可以
@@ -422,11 +423,11 @@ where SC.Sno=SIS.Sno
 > [!note] order by
 > 子查询中，使用`order by`语句是没有意义的，因为只需要用到内容，不需要子查询的顺序
 
-- 相关子查询：子查询的**查询条件**依赖于父查询
-  - 首先取外层查询中表的第一个元组，根据它与内层查询相关的属性值处理内层查询，**若WHERE子句返回值为真，则取此元组放入结果表**；
-  - 然后再取外层表的下一个元组；
-  - 重复这一过程，直至外层表全部检查完为止
-- 不相关子查询：由内向外逐层处理，_**子查询的结果用于建立其父查询的查找条件**_
+-   相关子查询：子查询的**查询条件**依赖于父查询
+    -   首先取外层查询中表的第一个元组，根据它与内层查询相关的属性值处理内层查询，**若 WHERE 子句返回值为真，则取此元组放入结果表**；
+    -   然后再取外层表的下一个元组；
+    -   重复这一过程，直至外层表全部检查完为止
+-   不相关子查询：由内向外逐层处理，_**子查询的结果用于建立其父查询的查找条件**_
 
 > [!warning]
 > 需要注意的是，相关与不相关子查询仅仅只是子查询的两个分类（只是概念上的不同，与子查询使用的谓词无关）
@@ -434,14 +435,14 @@ where SC.Sno=SIS.Sno
 
 [[MySQL#^4fa73c]]:别忘了实例表的结构
 
-带有`in`谓词的子查询👇🏻
+带有`in`谓词的子查询 👇🏻
 
 ```sql
-select Sno,Sname,Sdept 
+select Sno,Sname,Sdept
 from Student
 where Sdept in
 (
-	select Sdept 
+	select Sdept
 	from Student
 	where Sname="刘晨"
 ); # 此为不相关子查询
@@ -462,7 +463,7 @@ where Sno in
 );
 ```
 
-比较运算符的子查询👇🏻($>,<,>=,<=,<>,!=,=$)
+比较运算符的子查询 👇🏻($>,<,>=,<=,<>,!=,=$)
 
 1. 内层查询返回的得是==单值==，否则会报错
 2. 子查询要跟在比较运算符后面
@@ -485,23 +486,23 @@ where Sage < any(
 	select Sage
 	from Stu
 	where Sdept="Math"
-); 
+);
 # 这里 any 等价于 `< select max(Sage) ...`
 # 同理，把any换成all的话就等价于`< select min(Sage) ...`
 ```
 
 > [!tip]
-> 相比all和any谓词，更推荐使用集函数替代(因为集函数的查询次数少，查询效率高)
+> 相比 all 和 any 谓词，更推荐使用集函数替代(因为集函数的查询次数少，查询效率高)
 
-###### exists谓词
+###### exists 谓词
 
 > 存在量词$\exists$,此谓词较为特殊，需要单独分区进行阐述
 
-- 带有`exists`谓词的子查询不返回任何数据，只产生逻辑真值`true`(子查询结果非空)或逻辑假值`false`(子查询结果为空)
-- 由exists引出的子查询，其==目标列表达式通常用`*`==(因为只要看有无结果元组即可，给出列名毫无意义)
-- 一些带`exists/not exists`的子查询不能被其他形式的子查询等价替换，但是所有带`in`、比较运算符、`all`和`any`的子查询都可以被带`exists`的子查询等价替换***(exists子查询的特殊之处)***
-- `exists`谓词修饰的子查询，多为==_相关子查询_==
-- `not exists`谓词同理
+-   带有`exists`谓词的子查询不返回任何数据，只产生逻辑真值`true`(子查询结果非空)或逻辑假值`false`(子查询结果为空)
+-   由 exists 引出的子查询，其==目标列表达式通常用`*`==(因为只要看有无结果元组即可，给出列名毫无意义)
+-   一些带`exists/not exists`的子查询不能被其他形式的子查询等价替换，但是所有带`in`、比较运算符、`all`和`any`的子查询都可以被带`exists`的子查询等价替换**_(exists 子查询的特殊之处)_**
+-   `exists`谓词修饰的子查询，多为==_相关子查询_==
+-   `not exists`谓词同理
 
 ```sql
 # 示例脚本
@@ -523,7 +524,7 @@ values
 (1,2),(3,3)
 ```
 
-关于`exists`查询的执行过程👇🏻
+关于`exists`查询的执行过程 👇🏻
 
 ![[CleanShot 2023-03-09 at 20.50.14.png]]
 
@@ -539,10 +540,10 @@ where exists(
 ); # 相关子查询
 ```
 
-> [!important] 通过exists/not exists实现全称量词$\forall$
-> MySQL不支持$\forall$[^3],通过离散数学等价转化实现$(\forall x)P<=>\neg(\exists x(\neg P))$
+> [!important] 通过 exists/not exists 实现全称量词$\forall$
+> MySQL 不支持$\forall$[^3],通过离散数学等价转化实现$(\forall x)P<=>\neg(\exists x(\neg P))$
 > 并且只能通过`exists`谓词来实现全称量词相关的查询操作
-> 为了表达全称量化，需要将=="所有的行都满足条件P" 这样的命题转换成 "不存在不满足条件P的行"==
+> 为了表达全称量化，需要将=="所有的行都满足条件 P" 这样的命题转换成 "不存在不满足条件 P 的行"==
 
 ```sql
 # 查询选修了全部课程的学生姓名=>x=课程,P(x)代表该学生S选修了这门课程=>不存在这样的课程，学生S没有选修
@@ -560,7 +561,7 @@ where not exists(
 );
 ```
 
-> [!important] 通过exists/not exists实现逻辑蕴涵$\rightarrow$
+> [!important] 通过 exists/not exists 实现逻辑蕴涵$\rightarrow$
 > 同样可以通过谓词演算，将逻辑谓词蕴涵等价转换为$p\rightarrow q<=>\neg p\vee q$
 
 ```sql
@@ -611,12 +612,12 @@ where not exists(
 		select *
 		from SC as SC2
 		where SC2.Sno=1 and Sc2.Cno=SC.Cno
-	) 
+	)
 );
 # 还是错🙅🏻‍♀️
 ```
 
-最终还是选择参考下PPT上的答案👇🏻
+最终还是选择参考下 PPT 上的答案 👇🏻
 
 ```sql
 # 不存在这样的课程y，学生95002选修了y，而学生x没有选
@@ -641,7 +642,7 @@ where not exists(
 ##### 集合查询
 
 > 就是对于查询的结果集进行并(`UNION`)、交(`INTERSECT`)、差(`EXCEPT`)等运算，单位是集合
-> 需要注意的是，==MySQL只支持并查询==，其余操作均可以通过关系运算符很方便的实现
+> 需要注意的是，==MySQL 只支持并查询==，其余操作均可以通过关系运算符很方便的实现
 
 该部分内容较为简单，直接看样例即可
 
@@ -668,11 +669,11 @@ WHERE nation='CHINA' and age>18;
 > 该部分内容比较简单，只对相关内容进行举例即可
 > ps:该部分内容过于简单所以直接把它合并到数据查询子标题下了
 
-共有三种数据更新类型👇🏻
+共有三种数据更新类型 👇🏻
 
-- Insert插入一条或多条元组
-- Delete删除一条或多条元组
-- Update更新现有一条或多条元组中的值
+-   Insert 插入一条或多条元组
+-   Delete 删除一条或多条元组
+-   Update 更新现有一条或多条元组中的值
 
 _插入子查询的值_
 
@@ -716,7 +717,7 @@ delete from Stu;
 ### 视图
 
 > What is View? And what is View used for?
-> 视图是一个虚拟表，类似于子查询，它本身并不包含数据，只是作为一个`select`语句保存在数据字典中(用来创建视图的表称为基表base table)
+> 视图是一个虚拟表，类似于子查询，它本身并不包含数据，只是作为一个`select`语句保存在数据字典中(用来创建视图的表称为基表 base table)
 > 视图就是一个保存在数据字典的子查询，用户通过视图可以方便的查询到基表的相关数据，而不需要了解基表的数据结构
 
 > [!note] 为什么要使用视图？
@@ -727,7 +728,7 @@ delete from Stu;
 
 #### 视图创建
 
-> 创建视图的基本语法如下👇🏻
+> 创建视图的基本语法如下 👇🏻
 
 ```sql
 create [or replace] [algorithm={undefined|merge|temptable}]
@@ -737,13 +738,13 @@ as select_statement
 ```
 
 1. `on replace`：替换已有视图
-2. `algorithm`：视图选择算法，默认是undefined(由MySQL自动选择要使用的算法)
-3. `select_statement`：select语句`select col_name from ... where ...`
+2. `algorithm`：视图选择算法，默认是 undefined(由 MySQL 自动选择要使用的算法)
+3. `select_statement`：select 语句`select col_name from ... where ...`
 4. `with [cascade|local] check option`：视图在更新的时候要保证在视图的选线范围内
-   1. cascade为默认值，代表更新视图时，必须满足视图的一致性[^4]
-   2. local表示更新视图时，只需要满足该视图定义的一个条件即可
+    1. cascade 为默认值，代表更新视图时，必须满足视图的一致性[^4]
+    2. local 表示更新视图时，只需要满足该视图定义的一个条件即可
 
-> [!hint] 关于with check option
+> [!hint] 关于 with check option
 > 该选项用于保持视图的一致性，也就是对于通过视图对于基表进行的修改，必须要能通过该视图看到基表修改后的结果
 
 ```sql
@@ -774,9 +775,9 @@ values
 > 视图其实就是一个虚拟表，所以完全可以把它当做一个正常的表来查询、查看表结构等等
 > `select * from v_name`,`desc v_name`,......
 > 当然也可以通过`show tables`来查看当前数据库下的视图(因为本质就是表嘛)
-> 如果要指定查询视图的话，需要指定comment，`show table status where comment='view'\G`(推荐加上\G指令，直接查出来的表结构惨不忍睹)
+> 如果要指定查询视图的话，需要指定 comment，`show table status where comment='view'\G`(推荐加上\G 指令，直接查出来的表结构惨不忍睹)
 
-视图可以_自定义列名_(如果不自定义的话自动使用select语句中的列名)
+视图可以*自定义列名*(如果不自定义的话自动使用 select 语句中的列名)
 
 ```sql
 # 自定义列名(注意列名数量必须和select语句中的相匹配)
@@ -787,7 +788,7 @@ select ...
 #### 视图修改
 
 > 有两种修改方法，`alter`和`or replace`，建议直接通过`or replace`来进行修改
-> ps:主要是alter懒得记了(而且`or replace`相当于直接重新创建了对应视图，更加方便)
+> ps:主要是 alter 懒得记了(而且`or replace`相当于直接重新创建了对应视图，更加方便)
 
 ```sql
 create or replace view Born_2002 as
@@ -796,17 +797,17 @@ select ...
 
 #### 视图更新
 
-> 不推荐🙅🏻‍♀️通过视图对基表进行更新，下面是MySQL对于视图数据更新的要求
+> 不推荐 🙅🏻‍♀️ 通过视图对基表进行更新，下面是 MySQL 对于视图数据更新的要求
 
-1. select子句中包含`distinct`
-2. select子句中包含**组函数**
-3. select语句中包含`group by`子句
-4. select语句中包含`order by`子句
-5. select语句中包含`union` 、`union all`等集合运算符
-6. where子句中包含**相关子查询**
-7. from子句中包含**多个表**
+1. select 子句中包含`distinct`
+2. select 子句中包含**组函数**
+3. select 语句中包含`group by`子句
+4. select 语句中包含`order by`子句
+5. select 语句中包含`union` 、`union all`等集合运算符
+6. where 子句中包含**相关子查询**
+7. from 子句中包含**多个表**
 8. 如果视图中有**计算列**，则不能更新
-9. 如果基表中有**某个具有非空约束的列未出现在视图定义中**，则不能做insert操作
+9. 如果基表中有**某个具有非空约束的列未出现在视图定义中**，则不能做 insert 操作
 
 ### 索引与查询优化
 
@@ -814,10 +815,10 @@ select ...
 
 ### 用户自定义约束
 
-> 1. Check约束：通过限制输入到列中的值来限制域的完整性
-> 2. 触发器(trigger)：Event-Condition-Action，在数据库发生某项更新的时候，触发执行action
+> 1. Check 约束：通过限制输入到列中的值来限制域的完整性
+> 2. 触发器(trigger)：Event-Condition-Action，在数据库发生某项更新的时候，触发执行 action
 
-#### Check约束
+#### Check 约束
 
 ![[MySQL#^d28ee7]]
 
@@ -831,23 +832,23 @@ select ...
 > [!attention]
 > Cannot associate a trigger with a temporary table or view
 
-触发器的五大特性👇🏻
+触发器的五大特性 👇🏻
 
 1. `trigger`主体语句由`begin`开头，`end`结尾
 2. 什么条件触发：`Insert`、`Delete`、`Update`
 3. 什么时候触发：在增删改前或后
 4. 触发频率：_**针对每行执行一次**_
-5. 触发器定义在表上(无法对临时表和视图定义trigger)、
+5. 触发器定义在表上(无法对临时表和视图定义 trigger)、
 
 > [!note]
-> 从触发器的触发频率也可以看出，应该尽量少使用触发器（特别是对于增删改非常频繁的表），因为这会大大降低数据库运行的效率（<mark style="background: #FFB8EBA6;">trigger针对每一行都要执行一次</mark>）
-> 即使要使用，begin-end之间的语句效率也应该尽量高
+> 从触发器的触发频率也可以看出，应该尽量少使用触发器（特别是对于增删改非常频繁的表），因为这会大大降低数据库运行的效率（<mark style="background: #FFB8EBA6;">trigger 针对每一行都要执行一次</mark>）
+> 即使要使用，begin-end 之间的语句效率也应该尽量高
 
 ##### delimiter
 
-> 用于人为指定命令结束符，`delimiter |`就指定了`|`作为mysql命令的结束符
+> 用于人为指定命令结束符，`delimiter |`就指定了`|`作为 mysql 命令的结束符
 
-这是因为MySQL默认以`;`为命令结束符，这样的话在命令行创建函数、触发器等等语句中包含分号的MySQL语法的话，MySQL就会直接在子句的结尾结束，这时就需要使用`delimiter`事先指定结束符
+这是因为 MySQL 默认以`;`为命令结束符，这样的话在命令行创建函数、触发器等等语句中包含分号的 MySQL 语法的话，MySQL 就会直接在子句的结尾结束，这时就需要使用`delimiter`事先指定结束符
 
 ```sql
 delimiter ||
@@ -861,7 +862,7 @@ end||
 delimiter ;
 ```
 
-基本定义语句↓
+基本定义语句 ↓
 
 ```sql
 create trigger trigger_name
@@ -873,12 +874,12 @@ begin
 end
 ```
 
-- trigger_time:指定了触发器执行的时间(`before|after`)，在事件之前or之后
-- trigger_event:指定触发事件(触发条件)
-  - insert：插入某一行时触发触发器，可能通过`insert`、load data、replace语句触发
-  - update：更改某一行时激活触发器
-  - delete：删除某行时激活触发器
-- trigger_order：为MySQL5.7后新添加的内容，暂时不考虑
+-   trigger_time:指定了触发器执行的时间(`before|after`)，在事件之前 or 之后
+-   trigger_event:指定触发事件(触发条件)
+    -   insert：插入某一行时触发触发器，可能通过`insert`、load data、replace 语句触发
+    -   update：更改某一行时激活触发器
+    -   delete：删除某行时激活触发器
+-   trigger_order：为 MySQL5.7 后新添加的内容，暂时不考虑
 
 ```sql
 create trigger tg1
@@ -906,18 +907,15 @@ end
 
 ## 学习资料
 
-[MySQL练习汇总](https://zhuanlan.zhihu.com/p/92590262)
+[MySQL 练习汇总](https://zhuanlan.zhihu.com/p/92590262)
 [王陵的个人博客](https://www.cnblogs.com/wkfvawl/p/10889002.html)
 [青石路的个人博客](https://www.cnblogs.com/youzhibing/p/11385136.html)
-[深入解析MySQL视图VIEW](https://www.cnblogs.com/geaozhang/p/6792369.html#chuangjianshitu)
-[MySQL触发器trigger的使用](https://www.cnblogs.com/geaozhang/p/6819648.html)
+[深入解析 MySQL 视图 VIEW](https://www.cnblogs.com/geaozhang/p/6792369.html#chuangjianshitu)
+[MySQL 触发器 trigger 的使用](https://www.cnblogs.com/geaozhang/p/6819648.html)
 
 # footnote
 
-[^1]: 当然也可以通过delimiter来自定义结束符号（一般在数据库脚本中使用）
-
-[^2]: MySQL中不支持外连接，不过可以通过union实现同样效果
-
+[^1]: 当然也可以通过 delimiter 来自定义结束符号（一般在数据库脚本中使用）
+[^2]: MySQL 中不支持外连接，不过可以通过 union 实现同样效果
 [^3]: 从离散数学的角度很好解释，已知$\neg,\exists$,其他所有的逻辑谓词也就能顺势推导出来了(就是有点麻烦)
-
 [^4]: 一般视图建议指定此选项，除非你定义的是可更新的简单视图
