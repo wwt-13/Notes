@@ -2,5 +2,7 @@
     "files.exclude": {
         "**/.DS_Store": false,
         "**/.git": false
-    }
+    },
+    "editor.formatOnSave": true,
+    "black-formatter.importStrategy": "fromEnvironment"
 }

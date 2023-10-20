@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            let D1, D2, D3, P4;
+            D1 = 0b0010;
+            D2 = 0b1111;
+            // 字符串转2进制
+            D3 = parseInt(prompt('请输入一个0b开头的四位二进制数'), 2);
+            P4 = D1 ^ D2 ^ D3;
+            alert((D1 ^ D2 ^ P4) != D3 ? '出错了' : '正确');
+        </script>
+    </body>
+</html>
