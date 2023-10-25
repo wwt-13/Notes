@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            .content {
+                font-size: larger;
+            }
+            .arrow_box {
+                position: relative;
+                text-align: center;
+                height: 100px;
+                width: 400px;
+                background: #88b7d5;
+                border: 4px solid #c2e1f5;
+            }
+            .arrow_box::after,
+            .arrow_box::before {
+                content: '';
+                left: 100%;
+                top: 50%;
+                border: solid transparent;
+                position: absolute;
+            }
+            .arrow_box::after {
+                border-left-color: #88b7d5;
+                /* 和margin-top:-30px等价，都是上移30px */
+                transform: translateY(-30px);
+                border-width: 30px;
+            }
+            .arrow_box::before {
+                border-left-color: #c2e1f5;
+                transform: translateY(-36px);
+                border-width: 36px;
+            }
+        </style>
+    </head>
+    <!-- 尝试对 https://cssarrowplease.com/ 网站进行一个复刻 -->
+    <!-- 沃趣，实现箭头的思路确实很牛逼 -->
+    <!-- 利用空元素的border为三角形实现了箭头 -->
+    <!-- 利用positon: absolute, top:50%以及margin-top/transform实现了元素居中 -->
+    <!-- 还有一点就是，对于::after和::before伪元素而言，主元素是其祖先元素（这是根据absolute的特性推断出来的） -->
+    <body>
+        <div class="arrow_box">
+            <div class="content">CSS ARROW PLEASE!</div>
+        </div>
+    </body>
+</html>

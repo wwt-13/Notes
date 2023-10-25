@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            div {
+                width: 300px;
+                height: 3rem;
+                margin: 1rem;
+                background-color: #ddd;
+            }
+            #m1 {
+                border-left: 1rem solid deeppink;
+            }
+            #m2 {
+                position: relative;
+            }
+            #m2::before {
+                content: '';
+                /* height: 2rem;hei无效，因为::before等价行内元素 */
+                height: 2rem;
+                border: 0.5rem solid deeppink;
+                position: absolute;
+            }
+            #m3 {
+                transform: translateX(1rem);
+                box-shadow: -1rem 0 deeppink;
+            }
+            #m4 {
+                box-shadow: inset 1rem 0 deeppink;
+            }
+            #m5 {
+                transform: translateX(1rem);
+                filter: drop-shadow(-1rem 0 deeppink);
+            }
+            #m6 {
+                background: linear-gradient(to right, deeppink 1rem, #ddd 1rem);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="m1"></div>
+        <div id="m2"></div>
+        <div id="m3"></div>
+        <div id="m4"></div>
+        <div id="m5"></div>
+        <div id="m6"></div>
+    </body>
+</html>
