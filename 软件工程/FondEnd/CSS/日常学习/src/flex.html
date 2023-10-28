@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            div {
+                margin: 2px;
+            }
+            #container {
+                display: flex;
+                flex-direction: column;
+                border: 2px solid black;
+            }
+            /* flex-direction */
+            #wrapper1 {
+                display: flex;
+                flex-direction: row-reverse;
+                border: 2px dotted red;
+            }
+            #wrapper1 > div {
+                border: 4px dashed #7fe002;
+            }
+            /* flex-wrap */
+            #wrapper2 {
+                display: flex;
+                flex-wrap: wrap;
+                border: 2px dotted rgb(35, 172, 79);
+            }
+            #wrapper2 > div {
+                width: 30%;
+                border: 4px dashed #4bfd49;
+            }
+            /* flex-basis */
+            /* flex-basis定义了元素的空间大小，默认为auto，如果div设置了宽度但未设置flex-basis则flex-basis为width */
+            /* 因为设置为auto，所以如果元素未设置width的话，其宽度为元素内容的宽度 */
+            /* 需要注意的是flex-basis的优先级要高于容器的width，比如设置width=200px,flex-basis=150px，容器最大宽度只会为150px */
+            #wrapper3 {
+                display: flex;
+                border: 2px dotted rgb(210, 241, 10);
+            }
+            #wrapper3 > div {
+                max-width: 150px;
+                flex-basis: 100px;
+                border: 4px dashed #9848d1;
+            }
+            /* flex-grow */
+            /* flex-grow设置的以flex-basis为基础，延主轴方向增长的倍率，默认为0，也就是不增长（默认不分配富余空间） */
+            #wrapper4 {
+                display: flex;
+                border: 2px dotted rgb(55, 0, 255);
+            }
+            #wrapper4 > div {
+                /* flex-grow: 1; */
+                border: 4px dashed #3c1bb3;
+            }
+            #wrapper4 > :first-child {
+                flex-grow: 1;
+            }
+            #wrapper4 > :nth-child(2) {
+                flex-grow: 2;
+            }
+            /* flex-shrink */
+            /* flex-shrink和flex-grow正好相反，grow是分配富余的空间，shrink就是吸收缺失的空间 */
+            #wrapper5 {
+                display: flex;
+                max-width: 800px;
+                border: 2px dotted rgb(255, 0, 217);
+            }
+            #wrapper5 > div {
+                flex-basis: 200px;
+                border: 4px dashed #4fa772;
+            }
+            /* 默认吸收空间=(200*1)/(200*1+200*1+200*1+200*1+200*1)*(超出范围的空间),也就是均分 */
+            /* 假设总空间为750px,则总基准空间为200*5=1000px，超出250px，则每个平均缩小50px */
+            /* 加入某子元素设置flex-shrink:2 则吸收空间=250*(200*2)/(200*1+200*2+200*1+200*1+200*1)=83.3px */
+            #wrapper5 > :first-child {
+                flex-shrink: 2;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="wrapper1">
+                <div id="item1">w1>i1</div>
+                <div id="item2">w1>i2</div>
+                <div id="item3">w1>i3</div>
+                <div id="item4">w1>i4</div>
+                <div id="item5">w1>i5</div>
+            </div>
+            <div id="wrapper2">
+                <div id="item1">w2>i1</div>
+                <div id="item2">w2>i2</div>
+                <div id="item3">w2>i3</div>
+                <div id="item4">w2>i4</div>
+                <div id="item5">w2>i5</div>
+            </div>
+            <div id="wrapper3">
+                <div id="item1">w3>i1</div>
+                <div id="item2">w3>i2</div>
+                <div id="item3">w3>i3</div>
+                <div id="item4">w3>i4</div>
+                <div id="item5">w3>i5</div>
+            </div>
+            <div id="wrapper4">
+                <div id="item1">w4>i1</div>
+                <div id="item2">w4>i2</div>
+                <div id="item3">w4>i3</div>
+                <div id="item4">w4>i4</div>
+                <div id="item5">w4>i5</div>
+            </div>
+            <div id="wrapper5">
+                <div id="item1">w5>i1</div>
+                <div id="item2">w5>i2</div>
+                <div id="item3">w5>i3</div>
+                <div id="item4">w5>i4</div>
+                <div id="item5">w5>i5</div>
+            </div>
+        </div>
+    </body>
+</html>

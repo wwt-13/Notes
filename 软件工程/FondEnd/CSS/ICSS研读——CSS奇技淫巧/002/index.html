@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            :root {
+                --clr-1: #ece3ce;
+                --clr-2: #739072;
+                --clr-3: #4f6f52;
+                --clr-4: #3a4d39;
+                --clr-5: #3d30a2;
+                --clr-6: #b15eff;
+                --clr-7: #ffa33c;
+                --clr-8: #fffb73;
+                --clr-9: #00a9ff;
+            }
+            body {
+                height: 100vh;
+                display: grid;
+                place-content: center;
+            }
+            .wrapper {
+                display: grid;
+                gap: 1rem;
+                grid-template-columns: 100px 100px 100px;
+                grid-template-rows: 100px 100px 100px;
+                grid-template-areas: 'm1 m2 m3' 'm4 m5 m6' 'm7 m8 m9';
+            }
+            .m1 {
+                grid-area: m1;
+                background-color: var(--clr-6);
+                border: 0.8rem dashed var(--clr-9);
+                position: relative;
+            }
+            .m1::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: #fff;
+            }
+            .m2 {
+                padding: 1rem;
+                grid-area: m2;
+                border: 0.8rem dashed var(--clr-9);
+                position: relative;
+                /* background-origin: content-box; */
+                /* 我是猪鼻，刚才直接设置不生效的原因是同时设置background-color和background-image的话图层会互相覆盖，这里就是image的图层在color的上面了 */
+                background-origin: padding-box;
+                background-clip: padding-box;
+                background-image: linear-gradient(0deg, #fff, #fff);
+            }
+            .m2::before {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                inset: -0.8rem;
+                background-color: var(--clr-6);
+            }
+            .m3 {
+                grid-area: m3;
+                background-color: var(--clr-6);
+            }
+            .m4 {
+                grid-area: m4;
+                background-color: var(--clr-6);
+            }
+            .m5 {
+                grid-area: m5;
+                background-color: var(--clr-6);
+            }
+            .m6 {
+                grid-area: m6;
+                background-color: var(--clr-6);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="m1"></div>
+            <div class="m2"></div>
+            <div class="m3"></div>
+            <div class="m4"></div>
+            <div class="m5"></div>
+            <div class="m6"></div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,95 @@
+/* @property，css自定义属性，暂时还属于一种实验性功能 */
+@property --gradient-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+:root {
+    /* :root该伪类会匹配文档树的根元素<html> */
+    /* 需要注意的是:root一般用于定义全局变量 */
+    --clr-1: #052b2f;
+    --clr-2: #073438;
+    --clr-3: #0e4b50;
+    --clr-4: #2d8f85;
+    --clr-5: #637c54;
+}
+body {
+    background: var(--clr-2);
+    /* 可以方便的设置铺满屏幕 */
+    min-height: 100vh;
+    display: grid;
+    /* place-content是align-content和justify-content的缩写 */
+    place-content: center;
+}
+.card {
+    height: 60vh;
+    /* aspect-ratio用于为盒子设置纵横比,width/height */
+    aspect-ratio: 1/1.5;
+    background: var(--clr-1);
+    /* 对于该设计而言，确实是棱角分明的更好看 */
+    /* border-radius: 0.5rem; */
+
+    position: relative;
+}
+
+.card::before,
+.card::after {
+    content: '';
+    position: absolute;
+    /* inset是top,right,bottom,left的简写属性 */
+    /* 比如inset: 1rem就等价于设置top=right=bottom=left=1rem */
+    /* 所以这里设置inset:0就等价于填满.card */
+    /* 当然如果设置了height,width等宽高相关的属性的话，inset的优先级还是要低于它们的 */
+    inset: -0.3rem;
+    /* 继承父元素的border-radius也就是.card的 */
+    border-radius: inherit;
+    /* 草，太逆天了，让动画在一个特定的角度生效，太天才了 */
+    /* 不太懂的是为啥这里需要var() */
+    /* 但是由于是linear-gradient，其旋转的速度并不是匀速的 */
+    /* 可以使用conic-gradient解决，但是这又导致了会多出来一条扫描线的问题 */
+    /* 可以使用循环颜色解决（已经看不懂了hh） */
+    background: conic-gradient(
+        from var(--gradient-angle),
+        var(--clr-3),
+        var(--clr-4),
+        var(--clr-5),
+        var(--clr-4),
+        var(--clr-3)
+    );
+    z-index: -1;
+}
+
+/* 我趣，如果直接设置高斯模糊的话，整个::after会呈现透明的效果，所以才需要::before和::after相结合(相当于只显示边框模糊，非常nice) */
+.card::after {
+    filter: blur(3.5rem);
+}
+
+.card::before,
+.card::after {
+    animation: rotation 5s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        --gradient-angle: 0deg;
+    }
+    100% {
+        --gradient-angle: 360deg;
+    }
+}
+
+/* 整体旋转，不顶用
+.card::before,
+.card::after {
+    animation: rotation 20s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} */

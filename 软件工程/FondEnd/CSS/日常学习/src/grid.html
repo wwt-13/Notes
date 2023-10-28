@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            @property --gradient-angle {
+                syntax: '<angle>';
+                initial-value: 0deg;
+                inherits: false;
+            }
+            :root {
+                --clr-1: #c4e773;
+                --clr-2: #ca3206;
+                --clr-3: #5c43da;
+                --clr-4: #f19209;
+                --clr-5: #9c9647;
+                --clr-6: #51e638;
+                --clr-7: #3407cc;
+                --clr-8: #19c3a4;
+                --clr-9: #01b67e;
+                --clr-10: #9baa18;
+            }
+            body {
+                min-height: 100vh;
+                display: grid;
+                /* place-content用于设置整个容器在标签内的位置 */
+                place-content: center;
+            }
+            .container {
+                position: relative;
+                display: grid;
+                /* 可以设定网格线的名字方便之后引用 */
+                grid-template-columns: [c1] 100px [c2] 100px [c3] 100px [c4];
+                grid-template-rows: [r1] 100px [r2] 100px [r3] 100px [r4] 100px [r5];
+                /* grid-template-columns: repeat(auto-fill, 100px); */
+                /* 设置行间距和列间距 */
+                /* 统一设置，常用 */
+                /* gap: 10px; */
+                row-gap: 5px;
+                column-gap: 5px;
+                /* 设置网格区域命名以及网格合并 */
+                /* 需要注意的是，网格区域的合并会影响网格项 */
+                /* .代表该单元格不需要利用(该单元格不属于任何区域) */
+                /* 确实方便，个人认为区域命名是比grid-column和grid-row更好的布局形式 */
+                grid-template-areas:
+                    'a . .'
+                    'd e f'
+                    'test test test';
+                /* 设置元素填充顺序: row或者column */
+                /* 还可以指定(在某些项目指定位置后)剩下的项目怎么自动放置，设置dense代表尽可能填满，不漏掉单元格，默认则是会空出单元格 */
+                grid-auto-flow: row dense;
+                /* justify-items：设置单元格内容水平位置,align-items：设置垂直位置,place-items前两者缩写 */
+                /* 可以分别设置start|end|center|stretch，默认为stretch */
+                place-items: stretch;
+                /* justify-content：设置整个容器在标签内部的水平位置，align-content：设置整个容器在标签内部的垂直位置，place-content还是前两者的缩写 */
+                /* 可以设置start|end|center|stretch|space-around|space-between|space-evenly */
+                /* place-content: center; */
+
+                /* 有时，一些项目的指定位置会被指定在现有网格的外部，比如3x3的指定了个第四行的位置，此时浏览器会自动生成多余的网格用于放置项目 */
+                /* 而grid-auto-columns和grid-auto-rows就是用于设置自动生成的网格的列宽和行高的 */
+                /* 不然的话，宽高会被设置为元素内容的宽高 */
+                grid-auto-columns: 100px;
+                grid-auto-rows: 100px;
+            }
+            .container > :nth-child(1) {
+                background-color: var(--clr-1);
+                /* 设置占据单元格，可以直接写number也可以写line-name */
+                /* 就是设置项目占据位置的 */
+                /* 也可以使用span 2代表跨过两个单元格 */
+                /* 1/3 or c1/c3 */
+                grid-column: c1 / c3;
+            }
+            .container > :nth-child(2) {
+                background-color: var(--clr-2);
+                grid-column: c1 / c3;
+            }
+            .container > :nth-child(3) {
+                /* justify-self,align-self,place-self是。。。。 */
+                /* 应该不用多说了 */
+                background-color: var(--clr-3);
+            }
+            .container > :nth-child(4) {
+                background-color: var(--clr-4);
+            }
+            .container > :nth-child(5) {
+                background-color: var(--clr-5);
+            }
+            .container > :nth-child(6) {
+                background-color: var(--clr-6);
+            }
+            .container > :nth-child(7) {
+                background-color: var(--clr-7);
+            }
+            .container > :nth-child(8) {
+                background-color: var(--clr-8);
+            }
+            .container > :nth-child(9) {
+                grid-area: test;
+                background-color: var(--clr-9);
+            }
+            .container > :nth-child(10) {
+                background-color: var(--clr-10);
+                grid-column: 1/3;
+                grid-row: 5/7;
+            }
+            .container::before,
+            .container::after {
+                position: absolute;
+                z-index: -1;
+                content: '';
+                inset: -0.3rem;
+                background: linear-gradient(var(--gradient-angle), var(--clr-3), var(--clr-7), var(--clr-8));
+                animation: rotation 10s linear infinite;
+            }
+            .container::after {
+                filter: blur(2rem);
+            }
+            @keyframes rotation {
+                from {
+                    --gradient-angle: 0deg;
+                }
+                to {
+                    --gradient-angle: 360deg;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+        </div>
+    </body>
+</html>
