@@ -1,0 +1,159 @@
+/* ========================================
+    FUNCTIONS
+   ======================================== */
+
+// PX to EM
+
+$browser-context: 14;
+
+@function em($pixels, $context: $browser-context) {
+    @if (unitless($pixels)) {
+        $pixels: $pixels * 1px;
+    }
+
+    @if (unitless($context)) {
+        $context: $context * 1px;
+    }
+
+    @return $pixels / $context * 1em;
+}
+
+/* ========================================
+       GRID
+      ======================================== */
+
+@mixin row() {
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+}
+
+@mixin column($span, $sum, $gap: 1em) {
+    width: percentage($span/$sum);
+    padding: 0 $gap;
+    float: left;
+}
+
+@mixin grid($span, $sum, $gap: 1em, $align: top) {
+    display: inline-block;
+    width: percentage($span/$sum);
+    padding: 0 $gap;
+    vertical-align: $align;
+    margin: 0 -4px 0 0 !important;
+}
+
+@mixin container() {
+    max-width: em(1280);
+    padding: 0 1em;
+    margin: auto;
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+}
+
+/* ========================================
+       COLOR
+      ======================================== */
+
+$tangerine: #ff4d4d;
+$turquoise: #34768e;
+$seafoam: #79b7aa;
+$navy: #043f6c;
+
+$gray: #808080;
+$gray--light: lighten($gray, 40);
+
+$brand--main: $tangerine;
+$brand--second: $turquoise;
+$neutral: $gray--light;
+
+a {
+    color: $brand--second;
+    text-decoration: none;
+    color: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #ccc;
+    padding: 0.5em;
+}
+
+/* ========================================
+       MASONRY GRID
+      ======================================== */
+
+.grid {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+.grid--sizer,
+.grid--item,
+.grid--item__featured {
+    @include column(1, 2, $gap: 0);
+}
+
+@media screen and (min-width: 768px) {
+    .grid--sizer,
+    .grid--item {
+        @include column(1, 3, $gap: 0);
+    }
+
+    .grid--item__featured {
+        @include column(2, 3, $gap: 0);
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .grid--sizer,
+    .grid--item {
+        @include column(1, 4, $gap: 0);
+    }
+
+    .grid--item__featured {
+        @include column(2, 4, $gap: 0);
+    }
+}
+
+.grid--item {
+    padding: 1em;
+}
+
+.grid--item img {
+    display: block;
+    width: 100%;
+}
+
+.grid--card {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    position: relative;
+}
+
+.grid--title {
+    padding: 1em;
+    h3 {
+        margin: 0;
+    }
+    p {
+        margin: 6px 0 8px 0;
+    }
+}

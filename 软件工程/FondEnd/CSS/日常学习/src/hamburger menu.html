@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            /* basic styles */
+            body {
+                margin-top: 3em;
+                background: #eee;
+                color: #555;
+                font-family: 'Open Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
+            }
+            p,
+            p a {
+                font-size: 12px;
+                text-align: center;
+                color: #888;
+            }
+            /* burger styles */
+            #toggle {
+                width: 28px;
+                height: 30px;
+                margin: 30px auto 10px;
+                cursor: pointer;
+            }
+            #toggle div {
+                position: relative;
+            }
+            #toggle div:after,
+            #toggle div:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: -9px;
+            }
+            #toggle div:after {
+                top: 9px;
+            }
+            /* 设置汉堡样式 */
+            #toggle div,
+            #toggle div:before,
+            #toggle div:after {
+                width: 100%;
+                height: 5px;
+                background-color: #888;
+                transition: all 0.3s;
+                /* 设置3D元素在背朝用户时是否可见 */
+                backface-visibility: hidden;
+                border-radius: 2px;
+            }
+            /* on activation */
+            #toggle.on div {
+                background-color: transparent;
+            }
+            #toggle.on div:before {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            #toggle.on div:after {
+                transform: rotate(-45deg) translate(7px, -8px);
+            }
+            #toggle.on + #menu {
+                opacity: 1;
+                visibility: visible;
+            }
+            #menu {
+                position: relative;
+                color: #999;
+                width: 200px;
+                padding: 10px;
+                margin: auto;
+                text-align: center;
+                border: 4px;
+                background: white;
+                filter: drop-shadow(0 0 0.75rem);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.4s;
+            }
+        </style>
+    </head>
+    <body>
+        <div href="#menu" id="toggle"><div></div></div>
+        <div id="menu">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <script>
+            let theToggle = document.getElementById('toggle');
+            // elem是否包含className
+            function hasClass(elem, className) {
+                // 添加空格是为了确保能够完全匹配(排除menu匹配submenu的情况)
+                return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+            }
+            // 给所选元素添加类
+            function addClass(elem, className) {
+                if (!hasClass(elem, className)) {
+                    elem.className += ' ' + className;
+                }
+            }
+            // 给所选元素移除类
+            function removeClass(elem, className) {
+                let newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+                if (hasClass(elem, className)) {
+                    while (newClass.indexOf(' ' + className + ' ') >= 0) {
+                        newClass = newClass.replace(' ' + className + ' ', ' ');
+                    }
+                    elem.className = newClass.replace(/^\s+|\s+$/g, '');
+                }
+            }
+            function toggleClass(elem, className) {
+                if (hasClass(elem, className)) {
+                    removeClass(elem, className);
+                } else {
+                    addClass(elem, className);
+                }
+            }
+            theToggle.onclick = function () {
+                toggleClass(this, 'on');
+                return false;
+            };
+        </script>
+    </body>
+</html>
