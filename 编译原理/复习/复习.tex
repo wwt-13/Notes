@@ -665,7 +665,7 @@ while(在Dstates中有一个未标记状态T){
 
 \subsubsection{FIRST集}
 
-\paragraph{概念} 串首终结符，给定一个文法符号串a，a的FIRST(a)被定义为可以从a推导出的所有串首终结符的集合
+\paragraph{概念} 串首终结符，给定一个文法符号串a，a的FIRST(a)被定义为可以从a推导出的所有串首终结符的集合，如果$a\Rightarrow^* \epsilon$，那么$\epsilon$也在FIRST(a)中
 
 \subsubsection{FOLLOW集}
 
@@ -683,6 +683,13 @@ while(在Dstates中有一个未标记状态T){
 \end{itemize}
 
 如果每个具有\emph{相同左部}的各个产生式的可选集互不相交的话，就可以做出确定的分析
+
+产生式$A\rightarrow \alpha$的可选集SELECT
+
+\begin{itemize}
+    \item 如果$\epsilon \notin FIRST(\alpha)$,则$SELECT(A\rightarrow\alpha)=FIRST(\alpha)$
+    \item 如果$\epsilon \in FIRST(\alpha)$,则$SELECT(A\rightarrow\alpha)=(FIRST(\alpha)-\{\epsilon\})\cup FOLLOW(\alpha)$
+\end{itemize}
 
 \subsection{自底向上语法分析}
 
