@@ -1,0 +1,51 @@
+\documentclass[UTF8]{ctexart} % 添加中文支持
+
+% documentclass到begin之间称为导言区，可以在这里进行一些全局设置
+
+% 使用usepackage来添加宏包
+% 所谓宏包，就是一系列控制序列的合集，这些控制序列太常用，以至于人们会觉得每次将他们写在导言区太过繁琐，于是将他们打包放在同一个文件中
+% 宏包就是用于拓展Latex功能的
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+
+% latexindent用于tex文件格式化，删除多余空行只需添加-m参数即可
+
+\title{文章标题}
+\author{文章作者}
+\date{\today}
+
+\begin{document}
+
+% 根据导言区设置生成标题、作者、日期
+\maketitle % Insert the title, author and date
+
+\newpage
+
+\begin{abstract}
+    摘要内容
+\end{abstract}
+
+\newpage
+
+% 生成目录(需要注意的是，目录的正确生成至少需要编译两次)
+\tableofcontents
+
+\newpage
+
+\section{一级标题}
+
+\subsection{二级标题}
+
+\subsubsection{三级标题}
+
+\paragraph{段落标题}段落内容
+
+\subparagraph{子段落标题}子段落内容
+
+% *表示该章节不会出现在目录中(2,3级子标题同理)
+\section*{一级标题(不在目录内)}
+
+% 短标题：[]内的内容会出现在目录中，{}内的内容会出现在正文中，适用于标题过长无法在目录or页眉内完全显示的情况
+\section[短标题]{This is a Very Long Title That Might Not Fit on One Line in the Table of Contents or the Header}
+
+\end{document}
