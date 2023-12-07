@@ -691,6 +691,21 @@ while(在Dstates中有一个未标记状态T){
     \item 如果$\epsilon \in FIRST(\alpha)$,则$SELECT(A\rightarrow\alpha)=(FIRST(\alpha)-\{\epsilon\})\cup FOLLOW(\alpha)$
 \end{itemize}
 
+\subsubsection{LL(1)文法}
+
+\paragraph{概念} 文法G是LL(1)的，当且仅当G的任意两个具有相同左部的产生式$A\rightarrow \alpha|\beta$满足下列条件
+
+\begin{itemize}
+    \item 如果$\alpha$和$\beta$均不能推导出$\epsilon$，则$FIRST(\alpha)\cap FIRST(\beta)=\phi $
+    \item $\alpha$和$\beta$至多只能有一个能推导出$\epsilon$(不能两个均能推导出$\epsilon$，那样的话$SELECT(\alpha)\cap SELECT(\beta)=FOLLOW(A)$，也就是说SELECT集相交了)
+          \begin{enumerate}
+              \item 如果$\alpha\Rightarrow^* \epsilon$,则$FIRST(\alpha)\cap FOLLOW(A)=\phi$
+              \item 如果$\beta\Rightarrow^* \epsilon$,则$FIRST(\beta)\cap FOLLOW(A)=\phi$
+          \end{enumerate}
+\end{itemize}
+
+总结一句话，就是$SELECT$集别相交就行
+
 \subsection{自底向上语法分析}
 
 \end{document}
