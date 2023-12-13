@@ -1,0 +1,12 @@
+digraph epsilon_nfa{
+    rankdir=LR
+    start[shape=plaintext]
+    A,B[shape=circle]
+    C[shape=doublecircle]
+    start->A
+    A->B[label=ℇ]
+    A->A[label=0]
+    B->B[label=1]
+    B->C[label=ℇ]
+    C->C[label=2]
+}

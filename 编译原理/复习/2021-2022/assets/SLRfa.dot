@@ -1,0 +1,119 @@
+digraph G{
+    rankdir=LR;
+    compound=true;
+    subgraph cluster_10{
+        label="文法";
+        bgcolor=lightblue
+        node [shape=plaintext];
+        node [label="S'"] S0;
+        node [label=S] S1,S2,S3;
+        node [label=CD] CD;
+        node [label=DC] DC;
+        node [label=C] C0,C1;
+        node [label=aCb] C2;
+        node [label=ab] C3;
+        node [label=D] D0,D1;
+        node [label=Db] D2;
+        node [label=b] D3;
+        S0->S1
+        S2->CD
+        S3->DC
+        C0->C2
+        C1->C3
+        D0->D2
+        D1->D3
+    }
+    subgraph cluster_0{
+        label="I0";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="S'"] S0_0;
+        node [label="·S"] S0_1;
+        node [label="S"] S0_2;
+        node [label="·CD"] S0_3;
+        node [label="C"] S0_4,S0_7;
+        node [label="·aCb"] S0_5;
+        node [label="·ab"] S0_6;
+        S0_0->S0_1
+        S0_2->S0_3
+        S0_4->S0_5
+        S0_7->S0_6
+    }
+    subgraph cluster_1{
+        label="I1"
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="S'"] S1_0;
+        S1_0->S1_1
+    }
+    subgraph cluster_2{
+        label="I2";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="S"] S2_0;
+        node [label="C·D"] S2_1;
+        node [label="D"] S2_2,S2_3;
+        node [label="·Db"] S2_4;
+        node [label="·b"] S2_5;
+        S2_0->S2_1
+        S2_2->S2_4
+        S2_3->S2_5
+    }
+    subgraph cluster_3{
+        label="I3";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="C"] S3_0,S3_1,S3_2,S3_3;
+        node [label="a·Cb"] S3_4;
+        node [label="a·b"] S3_5;
+        node [label="·aCb"] S3_6;
+        node [label="·ab"] S3_7;
+        S3_0->S3_4
+        S3_1->S3_5
+        S3_2->S3_6
+        S3_3->S3_7
+    }
+    subgraph cluster_4{
+        label="I4";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="S"] S4_0;
+        node [label="CD·"] S4_1;
+        node [label="D"] S4_2;
+        node [label="D·b"] S4_3;
+        S4_0->S4_1
+        S4_2->S4_3
+    }
+    subgraph cluster_5{
+        label="I5";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="D"] S5_0;
+        node [label="b·"] S5_1;
+        S5_0->S5_1
+    }
+    subgraph cluster_6{
+        label="I6";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="C"] S6_0;
+        node [label="aC·b"] S6_1;
+        S6_0->S6_1
+    }
+    subgraph cluster_7{
+        label="I7";
+        bgcolor="#e6dead"
+        node [shape=plaintext];
+        node [label="C"] S7_0;
+        node [label="ab·"] S7_1;
+        S7_0->S7_1
+    }
+    S0_1->S1_0[label="S" lhead=cluster_0 ltail=cluster_1]
+    S0_3->S2_0[label="C" lhead=cluster_0 ltail=cluster_2]
+    S0_5->S3_0[label="a" lhead=cluster_0 ltail=cluster_3]
+    S2_1->S4_0[label="D" lhead=cluster_2 ltail=cluster_4]
+    S2_5->S5_0[label="b" lhead=cluster_2 ltail=cluster_5]
+    S3_4->S6_0[label="C" lhead=cluster_3 ltail=cluster_6]
+    S3_5->S7_0[label="b" lhead=cluster_3 ltail=cluster_7]
+    S3_6->S3_[label="b" lhead=cluster_3 ltail=cluster_7]
+}

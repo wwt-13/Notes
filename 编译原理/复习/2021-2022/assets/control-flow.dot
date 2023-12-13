@@ -1,0 +1,55 @@
+digraph G{
+    rankdir=LR
+    e[shape=box,style=filled,color=lightgrey,label="Entry"]
+    e->
+    subgraph cluster_1 {
+        label=B1
+        node[shape=plaintext,label=
+"i = 1
+t1 = 0
+ans = 1"]
+        1
+    }
+    subgraph cluster_2 {
+        label=B2
+        node[shape=plaintext,label=
+"L1: if i<=n goto L2"]
+        2
+    }
+    subgraph cluster_3 {
+        label=B3
+        node[shape=plaintext,label=
+"goto L3"]
+        3
+    }
+    subgraph cluster_4 {
+        label=B4
+        node[shape=plaintext,label=
+"L2: t1 = ans * i
+ans = t1
+t2 = m * t1
+t3 = m / t1
+t4 = t2 + t3
+t5 = t4 * 2
+t6 = m * t1
+t7 = t6 * t6
+t5 = t7 * t6
+t8 = t5
+t9 = t8
+i=i+1
+goto L1"]
+        4
+    }
+    subgraph cluster_5 {
+        label=B5
+    node[shape=plaintext,label=
+"L3: writeln (t8)
+return ans"]
+        5
+    }
+    1->2
+    2->4
+    2->3
+    4->2
+    3->5
+}

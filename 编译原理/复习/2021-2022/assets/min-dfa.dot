@@ -1,0 +1,9 @@
+digraph nfa{
+    rankdir=LR
+    start[shape=plaintext]
+    0,1[shape=doublecircle]
+    start->0
+    0->1[label=b]
+    1->0[label=a]
+    1->1[label=b]
+}

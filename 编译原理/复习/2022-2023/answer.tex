@@ -1,0 +1,58 @@
+\documentclass[UTF8]{ctexart} % 添加中文支持
+
+% documentclass到begin之间称为导言区，可以在这里进行一些全局设置
+
+% 使用usepackage来添加宏包
+% 所谓宏包，就是一系列控制序列的合集，这些控制序列太常用，以至于人们会觉得每次将他们写在导言区太过繁琐，于是将他们打包放在同一个文件中
+% 宏包就是用于拓展Latex功能的
+\usepackage{graphicx} % 用于导入外部图片的宏包(推荐格式pdf>>>>png>jpg>eps)
+\usepackage{amsmath} % 使用 AMS-LaTeX 提供的数学功能
+\usepackage{lmodern} % 解决字体警告问题
+% \usepackage[pdf]{graphviz} % graphviz绘图支持(需要安装graphviz)
+% 我的评价是还不如把latex和graphviz分开使用（latex渲染，graphviz绘图，不必非得把两者合并到一起）
+\usepackage{float} % 防止图片乱浮动导致图片文字顺序混乱的包
+\usepackage{multirow} % 多行表格合并的宏包
+\usepackage{diagbox} % 表头斜线分割宏包
+\usepackage{listings} % 代码块宏包
+\usepackage{color} % 颜色宏包
+\usepackage{arydshln} % 表格虚线宏包
+
+\title{2022-2023编译原理卷A}
+\author{Garone Lombard}
+\date{\today}
+
+\begin{document}
+
+% 根据导言区设置生成标题、作者、日期
+\maketitle % Insert the title, author and date
+
+\newpage
+
+\begin{abstract}
+    编译原理2022-2023试卷答案自行整理
+\end{abstract}
+
+\newpage
+
+% 生成目录(需要注意的是，目录的正确生成至少需要编译两次)
+\tableofcontents
+
+\newpage
+
+\section{填空}
+
+\paragraph{1} 123
+
+\section{正则文法与自动机}
+
+\section{符号表构造与运行时存储分析}
+
+\section{LL(1)分析法}
+
+\section{算符优先分析法}
+
+\section{SLR分析法}
+
+\section{代码优化}
+
+\end{document}

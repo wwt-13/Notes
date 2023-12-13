@@ -1,0 +1,9 @@
+digraph G{
+    rankdir=LR
+    start[shape=plaintext]
+    q0[shape=circle]
+    F[shape=doublecircle]
+    start->q0
+    q0->F[label=r1]
+    q0->F[label=r2]
+}

@@ -1,0 +1,15 @@
+digraph G {
+	rankdir=LR
+	node [shape=plaintext]
+	0[label=""]
+
+	subgraph cluster_0 {
+		style=filled;
+		fillcolor="#cab642";
+		"S'"->⋅S
+		S->⋅BB
+		B1->⋅aB
+		B2->⋅b
+		label = "I0";
+	}
+}

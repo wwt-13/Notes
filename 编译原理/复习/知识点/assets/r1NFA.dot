@@ -1,0 +1,7 @@
+digraph G{
+    rankdir=LR
+    start[shape=plaintext]
+    F[shape=doublecircle]
+    start->F
+    F->F[label=r1]
+}

@@ -1,0 +1,13 @@
+digraph G{
+    rankdir=LR
+    start[shape=plaintext]
+    A,B,C[shape=circle,fillcolor=deepskyblue,style=filled]
+    D[shape=doublecircle,fillcolor=deepskyblue,style=filled]
+    start->A
+    A->A[label="a"]
+    A->B[label="a"]
+    B->B[label="b"]
+    B->C[label="b"]
+    C->C[label="c"]
+    C->D[label="c"]
+}

@@ -1,0 +1,35 @@
+\contentsline {section}{\numberline {1}填空}{4}{}%
+\contentsline {paragraph}{1.}{4}{}%
+\contentsline {paragraph}{2.}{4}{}%
+\contentsline {paragraph}{3.}{4}{}%
+\contentsline {paragraph}{4.}{4}{}%
+\contentsline {paragraph}{5.}{4}{}%
+\contentsline {paragraph}{6.}{4}{}%
+\contentsline {paragraph}{7.}{4}{}%
+\contentsline {paragraph}{8.}{4}{}%
+\contentsline {paragraph}{9.}{4}{}%
+\contentsline {paragraph}{10.}{4}{}%
+\contentsline {section}{\numberline {2}正则文法与自动机}{5}{}%
+\contentsline {paragraph}{题干}{5}{}%
+\contentsline {paragraph}{1.}{5}{}%
+\contentsline {paragraph}{2.}{5}{}%
+\contentsline {paragraph}{3.}{6}{}%
+\contentsline {section}{\numberline {3}LL(1)和算符优先分析法}{7}{}%
+\contentsline {paragraph}{1.}{7}{}%
+\contentsline {paragraph}{证明}{7}{}%
+\contentsline {paragraph}{2.}{7}{}%
+\contentsline {paragraph}{2.1}{7}{}%
+\contentsline {paragraph}{2.2}{8}{}%
+\contentsline {section}{\numberline {4}SLR分析法}{8}{}%
+\contentsline {paragraph}{题干}{8}{}%
+\contentsline {paragraph}{1.}{8}{}%
+\contentsline {paragraph}{2.}{9}{}%
+\contentsline {paragraph}{3.}{9}{}%
+\contentsline {section}{\numberline {5}符号表构造与运行时存储分析}{11}{}%
+\contentsline {paragraph}{1.}{12}{}%
+\contentsline {paragraph}{2.}{12}{}%
+\contentsline {section}{\numberline {6}代码优化}{14}{}%
+\contentsline {paragraph}{题干}{14}{}%
+\contentsline {paragraph}{1.}{14}{}%
+\contentsline {paragraph}{2.}{16}{}%
+\contentsline {paragraph}{3.}{17}{}%

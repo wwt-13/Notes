@@ -1,0 +1,60 @@
+\documentclass[UTF8]{ctexart} % 添加中文支持
+
+% documentclass到begin之间称为导言区，可以在这里进行一些全局设置
+
+% 使用usepackage来添加宏包
+% 所谓宏包，就是一系列控制序列的合集，这些控制序列太常用，以至于人们会觉得每次将他们写在导言区太过繁琐，于是将他们打包放在同一个文件中
+% 宏包就是用于拓展Latex功能的
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath} % 使用 AMS-LaTeX 提供的数学功能
+\usepackage{lmodern} % 解决字体警告问题
+
+\title{编译原理复习}
+\author{Garone Lombard}
+\date{\today}
+
+\begin{document}
+
+% 根据导言区设置生成标题、作者、日期
+\maketitle % Insert the title, author and date
+
+\newpage
+
+\begin{abstract}
+	编译原理烤漆复习手册
+\end{abstract}
+
+\newpage
+
+% 生成目录(需要注意的是，目录的正确生成至少需要编译两次)
+\tableofcontents
+
+\newpage
+
+\section{文法和语言}
+
+\paragraph{文法定义} 四元组
+\begin{equation}
+	G=(V_T,V_N,P,S)
+\end{equation}
+\subsection{文法的分类}
+
+\paragraph{0型文法} 无限制文法，只要求\emph{产生式的左部存在一个非终结符}即可。
+
+\begin{equation}
+	\forall \alpha \rightarrow \beta \in P \qquad \alpha\text{中至少包含一个}V_N
+\end{equation}
+
+\paragraph{1型文法} 上下文有关文法，在\underline{0型文法的基础上}进一步要求\emph{产生式的左部长度小于等于右部长度}
+\begin{equation}
+	\begin{aligned}
+		\forall \alpha \rightarrow \beta \in P \qquad |\alpha| \leq |\beta| \\
+		\text{产生式的一般形式}\quad \alpha1A\alpha2 \rightarrow \alpha1\beta\alpha2(\beta \neq \epsilon)
+	\end{aligned}
+\end{equation}
+
+\paragraph{2型文法}
+
+\paragraph{3型文法}
+
+\end{document}

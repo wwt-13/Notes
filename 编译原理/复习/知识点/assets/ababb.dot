@@ -1,0 +1,36 @@
+digraph G{
+    rankdir=LR
+    compound=true
+    start1,start2,start3,start4[shape=plaintext,label="start"]
+    null1,null2,null3,null4,null5,null6,null7,null8,null9,null10,null11[shape=circle,label=""]
+    F1,F2,F3,F4[shape=doublecircle,label="F"]
+    subgraph cluster_0 {
+        start1->null1
+        null1->F1[label="(a|b)*abb"]
+    }
+    subgraph cluster_1 {
+        start2->null2
+        null2->null3[label="(a|b)*"]
+        null3->null4[label="a"]
+        null4->null5[label="b"]
+        null5->F2[label="b"]
+    }
+    subgraph cluster_2 {
+        start3->null6
+        null6->null6[label="(a|b)"]
+        null6->null7[label="a"]
+        null7->null8[label="b"]
+        null8->F3[label="b"]
+    }
+    subgraph cluster_3 {
+        start4->null9
+        null9->null9[label="a"]
+        null9->null9[label="b"]
+        null9->null10[label="a"]
+        null10->null11[label="b"]
+        null11->F4[label="b"]
+    }
+    start1->start2[lhead=cluster_0,ltail=cluster_1]
+    start2->start3[lhead=cluster_1,ltail=cluster_2]
+    start3->start4[lhead=cluster_2,ltail=cluster_3]
+}
