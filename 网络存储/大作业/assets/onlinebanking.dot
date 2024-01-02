@@ -1,0 +1,25 @@
+digraph OnlineBanking {
+    compound=true;
+    node [shape=record];
+    
+    // Nodes
+    User [label="用户"];
+    Authentication [label="用户身份验证"];
+    Transactions [label="交易处理"];
+    StatusUpdate [label="交易状态更新"];
+    Database [label="数据库"];
+  
+    // Edges
+    User -> Authentication [label="登录"];
+    Authentication -> Database [lhead=cluster0, label="验证身份"];
+    User -> Transactions [label="开始交易"];
+    Transactions -> Database [lhead=cluster0, label="处理交易"];
+    User -> StatusUpdate [label="更新交易状态"];
+    StatusUpdate -> Database [lhead=cluster0, label="更新状态"];
+
+    // Database Subgraph
+    subgraph cluster0 {
+      label="后端数据库";
+      Database;
+    }
+}

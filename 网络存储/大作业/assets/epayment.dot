@@ -1,0 +1,28 @@
+digraph EPayment {
+    rankdir=LR
+    compound=true;
+    node [shape=box,width=1.3];
+    
+    // Nodes
+    User [label="用户"];
+    PaymentRequest [label="支付请求处理"];
+    EligibilityCheck [label="用户资格验证"];
+    ExecutePayment [label="执行支付交易"];
+    BalanceUpdate [label="账户余额更新"];
+    TransactionStatusUpdate [label="交易状态更新"];
+    Database [label="数据库"];
+
+    // Edges
+    User -> PaymentRequest [label="发起支付"];
+    PaymentRequest -> EligibilityCheck [label="请求处理"];
+    EligibilityCheck -> ExecutePayment [label="资格验证通过"];
+    ExecutePayment -> BalanceUpdate [label="支付完成"];
+    BalanceUpdate -> TransactionStatusUpdate [label="余额更新"];
+    TransactionStatusUpdate -> Database [lhead=cluster0, label="状态更新"];
+
+    // Database Subgraph
+    subgraph cluster0 {
+      label="后端数据库";
+      Database;
+    }
+}

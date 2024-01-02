@@ -66,7 +66,7 @@
 
 \paragraph{5.} 有文法规则$S\rightarrow if\ E\ S\ |\ if\ E\ S\ else\ S$，用扩充的BNF范式表示为 \underline{$if\ E\ S\ [else\ S]$}
 
-\paragraph{6.} 常见的程序设计语言按乔姆斯基的分类是 \underline{1} 型文法，也称为上下文无关文法。如果采用属性翻译文法处理声明语句$int a;$时，通常可以得到变量类型和名字这样的 \underline{继承} 属性，并填入到 \underline{符号表} 中，以便在使用变量a时，能够查找到变量的有关信息。没有声明就使用变量，这属于 \underline{语义错误} ，在语法分析只能进行句子的结构分析时并不能发现这个问题
+\paragraph{6.} 常见的程序设计语言按乔姆斯基的分类是 \underline{1} 型文法，也称为上下文无关文法。如果采用属性翻译文法处理声明语句$int\ a;$时，通常可以得到变量类型和名字这样的 \underline{继承} 属性，并填入到 \underline{符号表} 中，以便在使用变量a时，能够查找到变量的有关信息。没有声明就使用变量，这属于 \underline{语义错误} ，在语法分析只能进行句子的结构分析时并不能发现这个问题
 
 \paragraph{7.} 对文法$G[T]:\ T\Rightarrow T-T|T/T|(T)|i$，规范句型$T-T/i$的句柄为 \underline{i} 和 \underline{T-T} ，由此判断该文法 \underline{有} (有/无)二义性。
 
@@ -281,7 +281,7 @@ $b*(abb*)*(a|\epsilon)$
         D  & \{b\}   & \{a,b,\#\} \\
         \hline
     \end{tabular}
-    \caption{LASTVT}
+    \caption{FIRST FOLLOW集}
 \end{table}
 
 \paragraph{2.} 求拓展后的SLR分析表，包括GOTO表和ACTION表，表头如下
@@ -587,13 +587,13 @@ L3: writeln (t8)
         \hline
         OUT[B] & B1 & B2 & B3 & B4 & B5 \\
         \hline
-        i      & 1  &    &    &    &    \\
+        i      & 1  & 1  &    & 1  &    \\
         \hline
-        ans    &    &    &    &    &    \\
+        ans    & 1  & 1  & 1  & 1  &    \\
         \hline
-        n      &    &    &    &    &    \\
+        n      & 1  & 1  &    & 1  &    \\
         \hline
-        m      &    &    &    &    &    \\
+        m      & 1  & 1  &    & 1  &    \\
         \hline
         t1     &    &    &    &    &    \\
         \hline
@@ -609,7 +609,7 @@ L3: writeln (t8)
         \hline
         t7     &    &    &    &    &    \\
         \hline
-        t8     &    &    &    &    &    \\
+        t8     & 1  & 1  & 1  & 1  &    \\
         \hline
         t9     &    &    &    &    &    \\
         \hline
@@ -617,5 +617,64 @@ L3: writeln (t8)
 \end{table}
 
 \paragraph{3.} 给出每个基本块的def和use集合，做活跃变量分析，并给出变量的冲突图。注意：变量A,B冲突的标准为，变量B的定义点处变量A活跃，反之亦然
+
+三大计算准则如下:
+\begin{equation}
+    \begin{aligned}
+        IN[EXIT] & =\phi                            \\
+        IN[B]    & =f_B(OUT[B]) \quad (B\neq EXIT)  \\
+                 & f_B(x)    =use[B]\cup (x-def[B]) \\
+        OUT[B]   & =\bigcup_{S\in son[B]}IN[S]
+    \end{aligned}
+\end{equation}
+
+计算方程如下:
+\begin{lstlisting}
+IN[EXIT]=empty;
+for(除EXIT之外的每个基本块B){
+    IN[B]=empty;
+}
+while(某个IN值发生了改变){
+    for(除EXIT之外的每个基本块B){
+        OUT[B]=B所有后继基本块IN值的并集;
+        IN[B]=use[B]并(OUT[B]-def[B]);
+    }
+}
+\end{lstlisting}
+
+\newpage
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{1.1cm}<{\centering}|p{1.55cm}<{\centering}|p{0.8cm}<{\centering}|p{0.45cm}<{\centering}|p{4.2cm}<{\centering}|p{1.4cm}<{\centering}|}
+        \hline
+        use def & B1           & B2      & B3 & B4                             & B5         \\
+        \hline
+        use(B)  &              & \{i,n\} &    & \{ans,i,m\}                    & \{t8,ans\} \\
+        \hline
+        def(B)  & \{i,t1,ans\} &         &    & \{t1,t2,t3,t4,t5,t6,t7,t8,t9\} &            \\
+        \hline
+    \end{tabular}
+    \caption{def和use集}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/control-flow-simple.pdf}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{1.5cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}|p{1cm}<{\centering}|p{2cm}<{\centering}|p{1.2cm}<{\centering}|p{1.1cm}<{\centering}|}
+        \hline
+        IN OUT & B1           & B2           & B3*    & B4           & B5*    & EXIT*  \\
+        \hline
+        IN[B]  & n,m,t8       & ans,i,n,m,t8 & t8,ans & ans,i,n,m    & t8,ans & $\phi$ \\
+        \hline
+        OUT[B] & ans,i,n,m,t8 & ans,i,n,m,t8 & t8,ans & ans,i,n,m,t8 & $\phi$ &        \\
+        \hline
+    \end{tabular}
+    \caption{IN OUT}
+\end{table}
 
 \end{document}

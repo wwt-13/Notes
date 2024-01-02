@@ -1,0 +1,45 @@
+digraph G{
+    rankdir=LR
+    graph [label="银行系统架构图",labelloc=top,labeljust=center]
+    // subgraph cluster_0 {
+    //     label="12"
+    //     x->y->z[style=invis]
+    //     z->x[constraint=false]
+    // }
+    // subgraph cluster_2 {
+    //     label="1234"
+    //     5->6
+    //     subgraph cluster_3 {
+    //         label=test
+    //         g
+    //     }
+    //     subgraph cluster_4 {
+    //         label=test
+    //         h
+    //     }
+    //     g->h
+    //     6->h[style=invis]
+    //     h->6[constraint=false]
+    //     // {rank=same;h,6}
+    // }
+    subgraph cluster_env {
+        label="运行环境"
+        JVM
+    }
+    subgraph cluster_data {
+        label="数据层"
+        "MySQL5.7"
+    }
+    subgraph cluster_basic_stack {
+        label="基础技术栈"
+        "Spring Boot"
+    }
+    subgraph cluster_business {
+        label="业务层"
+        subgraph cluster_system {
+            label="底层系统"
+            // width_control_0[style=invis,width=3]
+            "核心系统"->"网上银行系统"->"支付结算系统"->"证券交易系统"->"柜员业务系统"->"ERP系统"[style=invis]
+        }
+    }
+}

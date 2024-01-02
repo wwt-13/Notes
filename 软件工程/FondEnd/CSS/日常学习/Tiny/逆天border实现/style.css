@@ -5,7 +5,7 @@
     inherits: false;
 }
 
-:root {
+div {
     /* :root该伪类会匹配文档树的根元素<html> */
     /* 需要注意的是:root一般用于定义全局变量 */
     --clr-1: #052b2f;

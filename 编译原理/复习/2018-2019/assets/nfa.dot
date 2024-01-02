@@ -1,0 +1,18 @@
+digraph G{
+    rankdir=LR
+
+    node [shape=plaintext] start;
+    node [shape=circle] A,B,C,D;
+    node [shape=doublecircle] E,F;
+
+    start->A;
+    A->B [label="a|b"];
+    B->B[label="a"];
+    B->D[label="b"];
+    B->C[label="a"];
+    C->C[label="b"];
+    C->F[label="ℇ"];
+    D->D[label="a"];
+    D->E[label="a|b"];
+    E->F[label="a"];
+}

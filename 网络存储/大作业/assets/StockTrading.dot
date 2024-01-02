@@ -1,0 +1,29 @@
+digraph StockTradeSystem {
+    compound=true;
+    node [shape=box];
+
+    // Nodes
+    User [label="用户"];
+    TradeRequest [label="交易请求\n(购买/出售/查询)"];
+    AccountVerification [label="账户验证"];
+    TradeExecution [label="交易执行"];
+    AccountUpdate [label="证券账户更新"];
+    PositionInfoUpdate [label="持仓信息更新"];
+    TradeConfirmation [label="交易确认"];
+    Database [label="数据库"];
+
+    // Edges
+    User -> TradeRequest [label="发起交易"];
+    TradeRequest -> AccountVerification [label="账户验证"];
+    AccountVerification -> TradeExecution [label="权限验证通过"];
+    TradeExecution -> AccountUpdate [label="交易执行"];
+    AccountUpdate -> PositionInfoUpdate [label="账户更新"];
+    PositionInfoUpdate -> TradeConfirmation [label="持仓信息更新"];
+    TradeConfirmation -> Database [lhead=cluster0, label="交易确认"];
+
+    // Database Subgraph
+    subgraph cluster0 {
+      label="后端数据库";
+      Database;
+    }
+}

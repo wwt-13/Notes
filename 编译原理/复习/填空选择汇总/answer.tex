@@ -1,0 +1,274 @@
+\documentclass[UTF8]{ctexart} % 添加中文支持
+
+% documentclass到begin之间称为导言区，可以在这里进行一些全局设置
+
+% 使用usepackage来添加宏包
+% 所谓宏包，就是一系列控制序列的合集，这些控制序列太常用，以至于人们会觉得每次将他们写在导言区太过繁琐，于是将他们打包放在同一个文件中
+% 宏包就是用于拓展Latex功能的
+\usepackage{graphicx} % 用于导入外部图片的宏包(推荐格式pdf>>>>png>jpg>eps)
+\usepackage{amsmath} % 使用 AMS-LaTeX 提供的数学功能
+\usepackage{lmodern} % 解决字体警告问题
+% \usepackage[pdf]{graphviz} % graphviz绘图支持(需要安装graphviz)
+% 我的评价是还不如把latex和graphviz分开使用（latex渲染，graphviz绘图，不必非得把两者合并到一起）
+\usepackage{float} % 防止图片乱浮动导致图片文字顺序混乱的包
+\usepackage{multirow} % 多行表格合并的宏包
+\usepackage{diagbox} % 表头斜线分割宏包
+\usepackage{listings} % 代码块宏包
+\usepackage{color} % 颜色宏包
+\usepackage{arydshln} % 表格虚线宏包
+\usepackage{amssymb} % 数学符号宏包
+\usepackage{ulem} % 删除线宏包
+
+\lstset{
+    basicstyle          =   \ttfamily,          % 基本代码风格
+    keywordstyle        =   \bfseries,          % 关键字风格
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+}
+
+\title{2018-2023编译原理填空汇总}
+\author{Garone Lombard}
+\date{\today}
+
+\begin{document}
+
+% 根据导言区设置生成标题、作者、日期
+\maketitle % Insert the title, author and date
+
+\newpage
+
+\begin{abstract}
+    编译原理2018-2023试卷填空选择自行整理
+\end{abstract}
+
+\newpage
+
+% 生成目录(需要注意的是，目录的正确生成至少需要编译两次)
+\tableofcontents
+
+\newpage
+
+\section{填空}
+
+\subsection{2018-2019}
+
+\paragraph{1.} 0型文法又称为 \underline{短语结构} 文法。
+
+\paragraph{2.} 规范推导又称 \underline{最右} 推导，它等价于 \underline{最左} 归约。
+
+\paragraph{3.} 自顶向下语法分析的主要处理方法为 \underline{递归子程序法} 和 \underline{LL分析法} 。
+
+\paragraph{4.} 给定正则文法：$A\rightarrow bB,A\rightarrow b,B\rightarrow dB,B\rightarrow e$，求等价的正则表达式 A= \underline{b(d*e)? or b|bd*e} 。
+
+\paragraph{5.} 给定文法：$S\rightarrow aAb|c,A\rightarrow B|d,B\rightarrow BS|S$，则句型aBaAbacbSb的句柄为 \underline{} 。
+
+\paragraph{6.} 设数组维度为4，则数组模板所需空间大小为 \underline{14} 。
+
+\paragraph{7.} 给定$array A(1:3,-2:1,0:3)$，设数字元素大小为4字节，求在计算数组元素地址时的不变部分RC= \underline{-32} 。
+
+\subsection{2019-2020}
+
+\paragraph{1.} 在编译过程的五个阶段中， \underline{词法分析} 的输出是token序列， \underline{语法分析} 的输出是抽象语法树。
+
+\paragraph{2.} 根据乔姆斯基对文法的分类，正则文法是 \underline{3} 型文法，它可以被 \underline{有穷自动机} 接受
+
+\paragraph{3.} 算符优先分析过程每次归约的是 \underline{最左素短语}
+
+\paragraph{4.} 向输入文法插入动作符号后得到的文法是 \underline{翻译} 文法，这个文法推导所产生的终结符号串称为 \underline{活动} 序列。
+
+\paragraph{5.} 根据能否在编译阶段确定所需数据空间大小，可将运行时的存储分配方式分为 \underline{静态存储分配} 和 \underline{动态存储分配}
+
+\subsection{2020-2021}
+
+\paragraph{1.} 2型文法就是指上下文 \underline{无关} 文法，若用 $G=(V_N,V_T,P,S)$表示，则它要求G中的所有规则$\alpha \rightarrow \beta$都满足：$\alpha$是一个非终结符，$\beta$属于 \underline{$(V_N\cup V_T)^*$}。
+
+\paragraph{2.} 词法分析器的输出结果是 \underline{token序列}
+
+\paragraph{3.} 如果文法无二义性，则与最右推导互为逆过程的是 \underline{最左归约}
+
+\paragraph{4.} 在符号表上最常执行的操作是登录符号表(就是填表的意思)和 \underline{查询符号表} ，这些操作根据所编译的语言是否具有显式声明而稍有不同
+
+\paragraph{5.} 某个C语言程序中有语句 a=f(5)，编译器报告改语句中含有错误，错误信息是函数f没有定义，编译程序是在 \underline{语义分析} 阶段发现此类错误的。
+
+\paragraph{6.} 翻译文法中的符号，包括非终结符、终结符和 \underline{动作符号}，都是有穷集合中的符号，都没有值的概念
+
+\paragraph{7.} 与及其相关的代码优化技术，一旦 \underline{机器架构} 产生变化，相应的优化方法也要做出调整
+
+\paragraph{8.} 以下中间代码含有 \underline{3} 个基本块，每个基本块分别含有的语句是 \underline{1-5,6-7,8} 。
+
+\begin{lstlisting}
+a=123456*
+b=567890
+c=100000007
+d=a*b
+if(d<c) goto 8
+d=d-c*
+goto 5
+return d*
+\end{lstlisting}
+
+\paragraph{9.} 已知行优先存储的数组x的各维度长度依次为2、5、10，各维度的下标都从0开始计算，则元素x[1][3][5]的地址和x的首地址之差是 \underline{85} 个元素长度。
+
+\subsection{2021-2022}
+
+\paragraph{1.} 编译过程本质上是 \underline{程序转换/翻译}过程，将用 \underline{高级语言}书写的源程序加工为与其等价的目标程序。
+
+\paragraph{2.} 在编译过程的5个基本阶段都要做 \underline{符号表管理} 和 \underline{错误处理} 两件事，因此典型的编译程序常划分为7个逻辑组成部分
+
+\paragraph{3.} 对源程序(包括源程序中间形式)从头到尾扫描一遍，并做有关的加工处理，生成新的源程序中间形式或目标程序，通常称之为 \underline{一遍}，完成编译工作最少需要对源程序做 \underline{1} 次扫描
+
+\paragraph{4.} 生产中间代码的目的是便于做 \underline{代码优化} 和 \underline{编译程序移植}
+
+\paragraph{5.} 有文法规则$S\rightarrow if\ E\ S\ |\ if\ E\ S\ else\ S$，用扩充的BNF范式表示为 \underline{$if\ E\ S\ [else\ S]$}
+
+\paragraph{6.} 常见的程序设计语言按乔姆斯基的分类是 \underline{1} 型文法，也称为上下文无关文法。如果采用属性翻译文法处理声明语句$int\ a;$时，通常可以得到变量类型和名字这样的 \underline{继承} 属性，并填入到 \underline{符号表} 中，以便在使用变量a时，能够查找到变量的有关信息。没有声明就使用变量，这属于 \underline{语义错误} ，在语法分析只能进行句子的结构分析时并不能发现这个问题
+
+\paragraph{7.} 对文法$G[T]:\ T\Rightarrow T-T|T/T|(T)|i$，规范句型$T-T/i$的句柄为 \underline{i} 和 \underline{T-T} ，由此判断该文法 \underline{有} (有/无)二义性。
+
+\paragraph{8.} 规范归约每次归约的是句型的 \underline{句柄} ，算符优先分析法每次归约的是当前句型的 \underline{最左素短语}
+
+\paragraph{9.} 活动记录中Display区存放的是 \underline{各外层模块活动记录的基地址}
+
+\paragraph{10.} 文法$G=(V_n,V_t,P,Z)$，其中$V_t$代表 \underline{文法中的终结符集合}
+
+\section{判断题}
+
+\subsection{2018-2019}
+
+\paragraph{false} 静态存储分配是在编译阶段由编译程序实现对存储空间的管理，并为源程序中的变量分配存储的方法，\sout{所有数据空间大小都能在编译过程中确定}
+
+\paragraph{true} 对于某个文法，该文法接受的一个句子必定是该文法的句型
+
+\paragraph{true} 2型语言是上下文无关语言，这种语言可以由下推自动机接受。3型语言又称正则语言，这种语言可以有有穷自动机接受。2型文法可以产生3型文法。
+
+\paragraph{true} 用3型文法所定义的语言都可以用正则表达式描述，而一个正则表达式则对应一个DFA M
+
+\paragraph{false} 在付出同等代价的情况下，循环优化一般比局部优化效果更好。
+
+\paragraph{false} \sout{算符文法允许两个非终结符相邻}，而算符优先文法则不允许两个非终结符相邻
+
+\paragraph{false} 素短语一定是简单短语
+
+\paragraph{true} 每个SLR(1)都是LR(1)文法，但反之不成立
+
+\paragraph{true} LR(1)文法合并同心集后只可能出现归约-归约冲突，而没有移入-归约冲突
+
+\paragraph{true} 从编译角度，将错误分为语法错误和语义错误，数据溢出错误属于语义错误
+
+\subsection{2019-2020}
+
+\paragraph{true} 整个编译过程中只对源代码做一次从头到尾扫描的编译器，就是“一遍扫描的编译器”
+
+\paragraph{false} 文法G所描述的语言，就是文法G的终结符集合Vt的闭包Vt*
+
+\paragraph{false} NFA 的接受状态可以多于一个，但 DFA 只能有一个
+
+\paragraph{false} 算符优先分析过程中，栈顶运算符优先级小于栈外输入运算符时，执行入栈操作；栈顶 运算符优先级大于栈外输入运算符时，执行出栈规约操作；其他情况说明遇到了错误
+
+\paragraph{true} 属性翻译文法中综合属性的求值是自下向上的；而继承属性的求值是自上向下的
+
+\paragraph{true} First集可以包含$\epsilon$，Follow集不可以包含$\epsilon$
+
+\paragraph{flase} 规范句型的活前缀不一定是唯一的
+
+\paragraph{true} LL(1)文法和SLR(1)文法一定都无二义性
+
+\paragraph{false} 与机器有关的优化一般是在中间代码上进行的
+
+\paragraph{true} 对于右侧的代码块：语句return j+1等价于return 1.....
+
+\subsection{2020-2021}
+
+\paragraph{true} 对给定的文法 G[S]，若至少有一个句型存在两个或两个以上的不同的最左(或最右)推导， 这是判定是二义文法的充分必要条件
+
+\paragraph{true} 素短语不含其它素短语，且至少含有一个终结符
+
+\paragraph{false} 动态数组的存储空间在编译时就可完全确定
+
+\paragraph{true} 在 C 语言程序执行过程中，静态变量的存储空间不在过程的活动记录中
+
+\paragraph{true} 对于源程序中的声明语句，编译程序通常不产生可执行代码
+
+\paragraph{true} LL(1)分析方法是非递归预测语法分析方法
+
+\paragraph{false} LR(1)文法是 3 型文法
+
+\section{简答题}
+
+\subsection{2019-2020}
+
+\paragraph{1.} 简述什么是错误的局部化处理，主要作用是什么？
+
+\paragraph{2.} 分别简述语法分析的任务和语义分析的任务
+
+\paragraph{3.} 分别简述静态存储分配和动态存储，二者的使用场景有什么不同
+
+\paragraph{4.} 分别说明什么是局部优化、全局优化和循环优化
+
+\paragraph{5.} 说明什么是交叉编译，什么时候需要使用交叉编译
+
+\section{知识点}
+
+\subsection{概论}
+
+\paragraph{源程序} 用汇编语言或高级语言编写的程序称为源程序
+
+\paragraph{目标程序} 用目标语言所表示的程序
+
+\paragraph{翻译程序} 将源程序转换为目标程序的程序称为翻译程序
+
+\paragraph{乔姆斯基文法体系}
+
+\begin{itemize}
+    \item 0型文法：短语结构文法，可以使用图灵机接受
+    \item 1型文法：上下文有关文法，可以使用\emph{线性有界自动机}接受
+    \item 2型文法：上下文无关文法，可以使用\emph{下推自动机}接受
+    \item 3型文法：正则文法，可以使用\emph{有穷自动机}接受
+\end{itemize}
+
+\paragraph{推导/归约} 最右推导和最左归约互为逆过程
+
+\paragraph{自顶向下分析} 主要问题在于左递归问题和回溯问题; 主要方法为递归子程序法和LL分析法
+
+\paragraph{自底向上分析} 主要问题在于句柄的识别问题; 主要方法为算符优先分析法和LR分析法
+
+\paragraph{数组模板大小} 取决于数组维数，为固定的$3n+2$，所以无论是常界或是变界数组，在编译时都能确定数组模板的大小
+
+\paragraph{静态存储分配} 在编译阶段由编译程序实现对存储空间管理和源程序中的变量分配存储的方法，\emph{但是并不是所有数据空间大小都能在编译过程中确定}
+
+\paragraph{动态存储分配} 在目标程序运行阶段由目标程序实现对存储空间的组织和管理，和为源程序中的变量分配存储的方法，需要在编译时生成进行动态分配的目标指令
+
+\paragraph{算符文法} 设有文法G，如果G中没有形如$A\rightarrow ...BC...$的产生式，其中B,C为\textbf{非终结符}，则称G为\emph{算符文法}
+
+\paragraph{算符优先文法} 设G是一个不含$\epsilon$产生式的算符文法，a和b是任意两个终结符，A,B,C是非终结符，算法优先关系$\doteq \lessdot \gtrdot $定义如下
+
+\begin{enumerate}
+    \item $a\doteq b$当且仅当G中含有形如$A\rightarrow ...ab...$或$A\rightarrow ...aBb...$的产生式
+    \item $a\lessdot b$当且仅当G中含有形如$A\rightarrow ...aB...$的产生式且$B\Rightarrow^+ b...$或$B\Rightarrow^+ Cb...$，也就是说$a\lessdot FIRSTVT(B)$
+    \item $a\gtrdot b$当且仅当G中含有形如$A\rightarrow ...Bb...$的产生式且$B\Rightarrow^+ ...a$或$B\Rightarrow^+ ...aC$，也就是说$LASTVT(B)\gtrdot b$
+\end{enumerate}
+
+设G是一个不含$\epsilon$产生式的算符文法，如果任一终结符对(a,b)之间\emph{至多}有$\doteq \lessdot \gtrdot $三种关系中的一种成立，则称G是一个\textbf{算符优先文法}
+
+\paragraph{素短语} 素短语是一个短语，它至少包含一个终结符号，并且除它自身以外不在包含其他素短语(算符优先分析归约的就是最左素短语)
+
+\paragraph{LR(0)文法} 如果LR(0)分析表中没有语法分析动作冲突，则称该文法为LR(0)文法
+
+\paragraph{SLR文法} 解决了部分移入-归约冲突和归约-归约冲突，每个SLR文法都是LR(1)文法（因为SLR文法的要求要比LR(1)文法高，需要处理的冲突更多）
+
+\paragraph{翻译文法} 插入动作符号的文法，由翻译文法通过推导产生活动序列
+
+\paragraph{活动序列} 由翻译文法推导出的符号串，由终结符和动作符号组成
+
+\paragraph{一遍扫描编译程序} 一遍扫描即可完成整个编译工作的称为一遍扫描编译程序
+
+\paragraph{活前缀} 规范句型的活前缀是唯一的
+
+\end{document}

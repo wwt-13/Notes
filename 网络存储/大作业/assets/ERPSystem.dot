@@ -1,0 +1,32 @@
+digraph ERPSystem {
+    compound=true;
+    node [shape=record];
+
+    // Nodes
+    DataInput [label="数据输入"];
+    DataProcessing [label="数据处理"];
+    ReportGeneration [label="报表生成"];
+    Finance [label="财务管理"];
+    HR [label="人力资源管理"];
+    CRM [label="客户关系管理"];
+    SCM [label="供应链管理"];
+    Database [label="数据库"];
+
+    // Edges
+    DataInput -> DataProcessing [label="输入数据"];
+    DataProcessing -> ReportGeneration [label="数据处理"];
+    ReportGeneration -> Finance [label="财务报表"];
+    ReportGeneration -> HR [label="人力报表"];
+    ReportGeneration -> CRM [label="客户报表"];
+    ReportGeneration -> SCM [label="供应报表"];
+    Finance -> Database [lhead=cluster0, label="更新财务数据"];
+    HR -> Database [lhead=cluster0, label="更新人力数据"];
+    CRM -> Database [lhead=cluster0, label="更新客户数据"];
+    SCM -> Database [lhead=cluster0, label="更新供应数据"];
+  
+    // Database Subgraph
+    subgraph cluster0 {
+      label="后端数据库";
+      Database;
+    }
+}

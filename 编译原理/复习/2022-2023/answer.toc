@@ -1,8 +1,35 @@
 \contentsline {section}{\numberline {1}填空}{4}{}%
-\contentsline {paragraph}{1}{4}{}%
-\contentsline {section}{\numberline {2}正则文法与自动机}{4}{}%
-\contentsline {section}{\numberline {3}符号表构造与运行时存储分析}{4}{}%
-\contentsline {section}{\numberline {4}LL(1)分析法}{4}{}%
-\contentsline {section}{\numberline {5}算符优先分析法}{4}{}%
-\contentsline {section}{\numberline {6}SLR分析法}{4}{}%
-\contentsline {section}{\numberline {7}代码优化}{4}{}%
+\contentsline {paragraph}{1.}{4}{}%
+\contentsline {paragraph}{2.}{4}{}%
+\contentsline {paragraph}{3.}{4}{}%
+\contentsline {paragraph}{4.}{4}{}%
+\contentsline {paragraph}{5.}{4}{}%
+\contentsline {paragraph}{6.}{4}{}%
+\contentsline {paragraph}{7.}{4}{}%
+\contentsline {paragraph}{8.}{4}{}%
+\contentsline {paragraph}{9.}{4}{}%
+\contentsline {paragraph}{10.}{4}{}%
+\contentsline {section}{\numberline {2}正则文法与自动机}{5}{}%
+\contentsline {paragraph}{题干}{5}{}%
+\contentsline {paragraph}{1.}{5}{}%
+\contentsline {paragraph}{2.}{5}{}%
+\contentsline {section}{\numberline {3}符号表构造与运行时存储分析}{6}{}%
+\contentsline {paragraph}{题干}{6}{}%
+\contentsline {paragraph}{1.}{6}{}%
+\contentsline {paragraph}{2.}{6}{}%
+\contentsline {paragraph}{3.}{6}{}%
+\contentsline {paragraph}{3.1}{7}{}%
+\contentsline {paragraph}{3.2}{8}{}%
+\contentsline {section}{\numberline {4}LL(1)分析法}{9}{}%
+\contentsline {paragraph}{题干}{9}{}%
+\contentsline {paragraph}{1.}{9}{}%
+\contentsline {paragraph}{2.}{9}{}%
+\contentsline {section}{\numberline {5}算符优先分析法}{10}{}%
+\contentsline {paragraph}{题干}{10}{}%
+\contentsline {paragraph}{1.}{10}{}%
+\contentsline {paragraph}{2.}{10}{}%
+\contentsline {section}{\numberline {6}SLR分析法}{10}{}%
+\contentsline {paragraph}{题干}{10}{}%
+\contentsline {paragraph}{1.}{11}{}%
+\contentsline {paragraph}{2.}{11}{}%
+\contentsline {section}{\numberline {7}代码优化}{11}{}%

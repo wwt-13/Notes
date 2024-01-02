@@ -1,0 +1,29 @@
+digraph TellerOperations {
+    compound=true;
+    node [shape=box];
+
+    // Nodes
+    Teller [label="柜员"];
+    Customer [label="客户"];
+    Authentication [label="柜员验证"];
+    BusinessProcessing [label="业务处理\n(存取款/转账/结售汇/贷款申请)"];
+    AccountUpdate [label="账户更新"];
+    TransactionRecording [label="交易记录"];
+    ReportGeneration [label="生成交易报告"];
+    Database [label="数据库"];
+
+    // Edges
+    Teller -> Authentication [label="上台登录"];
+    Authentication -> BusinessProcessing [label="权限验证"];
+    Customer -> BusinessProcessing [label="业务请求"];
+    BusinessProcessing -> AccountUpdate [label="处理请求"];
+    AccountUpdate -> TransactionRecording [label="更新账户"];
+    TransactionRecording -> ReportGeneration [label="记录交易"];
+    ReportGeneration -> Database [lhead=cluster0, label="生成报告"];
+
+    // Database Subgraph
+    subgraph cluster0 {
+      label="后端数据库";
+      Database;
+    }
+}

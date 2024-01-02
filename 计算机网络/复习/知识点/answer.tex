@@ -1,0 +1,184 @@
+\documentclass[UTF8]{ctexart} % 添加中文支持
+
+% documentclass到begin之间称为导言区，可以在这里进行一些全局设置
+
+% 使用usepackage来添加宏包
+% 所谓宏包，就是一系列控制序列的合集，这些控制序列太常用，以至于人们会觉得每次将他们写在导言区太过繁琐，于是将他们打包放在同一个文件中
+% 宏包就是用于拓展Latex功能的
+\usepackage{graphicx} % 用于导入外部图片的宏包(推荐格式pdf>>>>png>jpg>eps)
+\usepackage{amsmath} % 使用 AMS-LaTeX 提供的数学功能
+\usepackage{lmodern} % 解决字体警告问题
+% \usepackage[pdf]{graphviz} % graphviz绘图支持(需要安装graphviz)
+% 我的评价是还不如把latex和graphviz分开使用（latex渲染，graphviz绘图，不必非得把两者合并到一起）
+\usepackage{float} % 防止图片乱浮动导致图片文字顺序混乱的包
+\usepackage{multirow} % 多行表格合并的宏包
+\usepackage{diagbox} % 表头斜线分割宏包
+\usepackage{listings} % 代码块宏包
+\usepackage{color} % 颜色宏包
+\usepackage{arydshln} % 表格虚线宏包
+\usepackage{amssymb} % 数学符号宏包
+
+
+\lstset{
+    basicstyle          =   \ttfamily,          % 基本代码风格
+    keywordstyle        =   \bfseries,          % 关键字风格
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+}
+
+\lstdefinestyle{Python}{
+    language        =   Python, % 语言选Python
+    basicstyle      =   \zihao{-5}\ttfamily,
+    numberstyle     =   \zihao{-5}\ttfamily,
+    keywordstyle    =   \color{blue},
+    keywordstyle    =   [2] \color{teal},
+    stringstyle     =   \color{magenta},
+    commentstyle    =   \color{red}\ttfamily,
+    breaklines      =   true,   % 自动换行，建议不要写太长的行
+    columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth       =   0.5em,
+}
+
+\lstdefinestyle{c}{
+    language        =   c, % 语言选Python
+    basicstyle      =   \zihao{-5}\ttfamily,
+    numberstyle     =   \zihao{-5}\ttfamily,
+    keywordstyle    =   \color{blue},
+    keywordstyle    =   [2] \color{teal},
+    stringstyle     =   \color{magenta},
+    commentstyle    =   \color{red}\ttfamily,
+    breaklines      =   true,   % 自动换行，建议不要写太长的行
+    columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth       =   0.5em,
+}
+
+\title{计算机网络复习}
+\author{Garone Lombard}
+\date{\today}
+
+\begin{document}
+
+% 根据导言区设置生成标题、作者、日期
+\maketitle % Insert the title, author and date
+
+\newpage
+
+\begin{abstract}
+    计算机网络烤漆复习手册
+\end{abstract}
+
+\newpage
+
+% 生成目录(需要注意的是，目录的正确生成至少需要编译两次)
+\tableofcontents
+
+\newpage
+
+\section{概述}
+
+\subsection{知识点}
+
+\paragraph{OSI模型} 七层模型，从下到上分别是物理层、数据链路层、网络层、传输层、会话层、表示层、应用层
+
+\paragraph{通信子网} 只包括OSI模型的下三层，即物理层、数据链路层、网络层
+
+\paragraph{资源子网} 只包括OSI模型的上三层，即会话层、表示层、应用层
+
+\paragraph{TCP/IP模型} 四层模型，从下到上分别是链路层层、网络层、传输层、应用层
+
+\subsection{试题}
+
+\section{网络层}
+
+\subsection{知识点}
+
+\paragraph{1.} 网络的异构性是指传输介质、数据编码方式、链路控制协议以及不同的数据单元格式和转发机制，这些特点分别在物理层和数据链路层协议中定义
+
+\paragraph{2.} 在路由器互联的多个局域网的结构中，要求每个局域网物理层、数据链路层、网络层协议可以不同，而网络层以上的高层协议必须相同
+
+\paragraph{3.} 路由器分隔广播域，交换机分隔冲突域，集线器和中继器既不能分隔广播域也不能分隔冲突域
+
+\subsection{习题}
+
+\section{传输层}
+
+\subsection{知识点}
+
+\paragraph{1.} 传输层提供的是应用进程之间的逻辑通信（即\textbf{端到端通信}）
+
+\paragraph{2.} 网络层即下层构成的通信子网提供主机到主机或点到点的通信
+
+\paragraph{3.} 面向连接的服务可以保证数据的可靠和\emph{顺序交付}
+
+\paragraph{4.} 如果一个协议使用确认机制对传输的数据进行确认，那么这个协议就是\emph{可靠的}
+
+\paragraph{5.} 套接字用于在互联网上唯一的确定一个进程
+
+\paragraph{端口号} 0$\thicksim$1023为熟知端口，1024$\thicksim$49151为注册端口，49152$\thicksim$65535为动态端口
+
+\begin{table}[H]
+    \resizebox{\linewidth}{!}{
+    \centering
+    % 解决了表格过宽报错问题
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        协议 & FTP & SSH & Telnet & SMTP & DNS & TFTP & HTTP & HTTTPS & SNMP \\
+        \hline
+        端口号 & 21 & 22 & 23 & 25 & 53 & 69 & 80 & 443 & 161 \\
+        \hline
+    \end{tabular}}
+    \caption{常用熟知端口}
+\end{table}
+
+\paragraph{6.} TCP首部和IP首部的固定长度都是20字节
+
+\paragraph{7.} UDP只在IP的数据报服务上添加了两个基本服务：复用分用和差错检测
+
+\paragraph{8.} UDP首部为固定的8字节，其中长度代表的是首部和数据的总长度
+
+\paragraph{9.} UDP校验流程，首先在UDP首部前添加12字节的伪首部（并将校验和置为全0），再把伪首部和UDP数据报看成是很多4字节字串接而成（非4字节整除则填充0字段，该字段不发送），然后计算这些子串的二进制反码和x，最后将x的二进制反码作为校验和填入UDP首部的校验和字段。接收方则同理计算出x，如果x的二进制反码全为1，则认为数据报没有出错，否则认为出错
+
+\paragraph{10.} UDP的校验和并不是必须的，将校验和字段全置为0即可
+
+\paragraph{11.} 以太网的MTU=1500字节
+
+\paragraph{12.} IP首部的协议字段，17代表UDP，6代表TCP
+
+\paragraph{13.} TCP发送⽅在任⼀时刻可以发送的最⼤数据流是接收⽅允许的发送窗⼝和拥塞窗⼝中的最⼩值
+
+\paragraph{14.} TCP的滑动窗口设置的太小会产生过多的ack（因为大了可以累计确认），过大则由会因为传送的数据过多导致路由器拥塞，丢失分组
+
+\paragraph{15.} 拥塞窗口是发送端根据网络拥塞情况确定的窗口值
+
+\paragraph{16.} RTT等于2倍的端到端时延
+
+\subsection{试题}
+
+\paragraph{1.} 为什么要使用UDP？使用IP协议不就可以了吗？
+
+\paragraph{答} 仅仅使用IP分组还不够，IP分组只包含了IP地址，该地址指定一个目的机器。但网络控制程序并不知道要将它交给哪个进程。而UDP分组包含了一个目的端口，有了它分组才能被投递给正确的进程。此外，UDP还可以对数据报做数据校验，而IP协议只会对IP首部做差错校验
+
+\paragraph{2.} 使用TCP对实时语音数据的传输是否有问题？使用UDP传送数据文件有什么问题？
+
+\paragraph{答} TCP是面向连接的，因此会有较大的时延，不适合实时语音数据的传输。UDP是不可靠的，因此不适合传输数据文件
+
+\paragraph{3.} 一个应用程序用UDP，到了IP层将数据报划分为 4个数据报片发送出去。结果前两个数据报片丢失，后两个到达目的站。过了一段时间应用程序重传 UDP，而 IP 层仍然划分为4个数据报片来传送。结果这次前两个到达目的站而后两个丢失。试问：在目的站能否将这两次传输的4个数据报片组装成为完整的数据报？假定目的站第一次收到的后两个数据片仍然保存在目的站的缓存中。
+
+\paragraph{答} 不能，因为重传后的IP首部标识符不一致，无法重组
+
+\paragraph{4.} 如果收到的报文段无差错，只是报文段失序，那么TCP未对此作明确规定，只是让TCP的实现者自行确定，试讨论两种可能的方法的优劣\\
+1. 丢弃失序的报文段，不作处理\\
+2. 将失序的报文段按序号存放在缓存区中，等待后续的报文段到达，再按序交付
+
+\paragraph{答} 1. 丢弃失序的报文段，不作处理：优点是简单，缺点是会导致大量的重传，降低网络效率
+2. 将失序的报文段按序号存放在缓存区中，等待后续的报文段到达，再按序交付：优点是可以提高网络效率，缺点是需要额外的缓存区，增加了实现的复杂度
+
+
+\end{document}

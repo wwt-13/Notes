@@ -1,0 +1,10 @@
+digraph G{
+    rankdir=LR
+    node[shape=plaintext] start
+    node[shape=circle] T2
+    node[shape=doublecircle] T1
+    start->T1
+    T1->T1[label="a"]
+    T1->T2[label="b"]
+    T2->T1[label="a"]
+}
