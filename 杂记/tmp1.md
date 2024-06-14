@@ -1107,8 +1107,6 @@ diff指令基本格式：`diff [options] file1 file2`
 |       -e        | 进行多项编辑（可以对输入行应用多条sed语句） |
 |       -i        |           直接修改读取的档案内容            |
 
-
-
 #### 替换
 
 > 命令基本格式（也就是command的基本格式）：[address]s/pattern/replacement/flags
